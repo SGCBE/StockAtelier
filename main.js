@@ -10,107 +10,129 @@ const firebaseConfig = {
 };
 
 
-// Initialisez Firebase
+// Initialisation de Firebase
 firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-// Référence à la base de données Firebase
-const database = firebase.database();
+// Référence à la collection "equipments" dans la base de données
+const equipmentRef = db.ref("equipments");
 
-// Obtenez une référence à la table dans laquelle vous souhaitez enregistrer les équipements
-const equipmentRef = database.ref("equipments");
-
-// Obtenez une référence à l'élément du formulaire d'ajout d'équipement
-const addEquipmentForm = document.getElementById("addEquipmentForm");
-
-// Obtenez une référence à l'élément du tableau des équipements
+// Référence aux éléments du DOM
 const equipmentTableBody = document.getElementById("equipmentTableBody");
-
-// Obtenez une référence à l'élément du modal
+const addEquipmentForm = document.getElementById("addEquipmentForm");
 const addEquipmentModal = document.getElementById("addEquipmentModal");
-
-// Obtenez une référence à l'élément canvas
-const photoCanvas = document.getElementById("photoCanvas");
 const captureButton = document.getElementById("captureButton");
+const photoCanvas = document.getElementById("photoCanvas");
 
-// Gérer le clic sur le bouton "Ajouter un équipement"
-document.getElementById("addEquipmentButton").addEventListener("click", function() {
-  addEquipmentModal.style.display = "block";
-});
-
-// Gérer la soumission du formulaire d'ajout d'équipement
-addEquipmentForm.addEventListener("submit", function(event) {
-  event.preventDefault();
+// Écouter l'événement de soumission du formulaire "addEquipmentForm"
+addEquipmentForm.addEventListener("submit", (e) => {
+  e.preventDefault();
 
   // Récupérer les valeurs des champs du formulaire
   const nom = addEquipmentForm.nom.value;
   const description = addEquipmentForm.description.value;
   const quantite = parseInt(addEquipmentForm.quantite.value);
 
-  // Enregistrer les données dans la base de données
-  const equipment = {
+  // Récupérer l'image capturée
+  const photoDataUrl = photoCanvas.toDataURL("image/jpeg");
+
+  // Créer un nouvel équipement avec les valeurs du formulaire
+  const newEquipment = {
     nom: nom,
     description: description,
-    quantite: quantite
+    quantite: quantite,
+    photo: photoDataUrl
   };
-  equipmentRef.push(equipment);
 
-  // Réinitialiser les champs du formulaire
+  // Ajouter le nouvel équipement à la base de données
+  equipmentRef.push(newEquipment);
+
+  // Réinitialiser le formulaire
   addEquipmentForm.reset();
 
-  // Masquer le modal après l'ajout de l'équipement
+  // Cacher le modal
   hideModal();
 });
 
-// Gérer le clic sur le bouton "Capturer la photo"
-captureButton.addEventListener("click", capturePhoto);
-
-// Fonction de capture de photo
-function capturePhoto() {
-  // Obtenir une référence à la vidéo en cours d'affichage
-  const cameraPreview = document.getElementById("cameraPreview");
-
-  // Dessiner la vidéo sur le canevas
-  const context = photoCanvas.getContext("2d");
-  context.drawImage(cameraPreview, 0, 0, photoCanvas.width, photoCanvas.height);
-
-  // Vous pouvez maintenant utiliser les données du canevas (photo) comme vous le souhaitez,
-  // par exemple, l'enregistrer sur le serveur, l'afficher à l'utilisateur, etc.
+// Fonction pour afficher le modal
+function showModal() {
+  addEquipmentModal.style.display = "block";
 }
 
-// Masquer le modal
+// Fonction pour masquer le modal
 function hideModal() {
   addEquipmentModal.style.display = "none";
 }
 
-// Gérer les modifications des équipements dans la base de données
-equipmentRef.on("value", function(snapshot) {
-  // Réinitialiser le tableau des équipements
+// Fonction pour dessiner la vidéo de la caméra sur le canevas
+function drawVideoOnCanvas(videoElement, canvasElement) {
+  const context = canvasElement.getContext("2d");
+  context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+}
+
+// Fonction pour capturer une photo à partir de la vidéo de la caméra
+function capturePhoto() {
+  drawVideoOnCanvas(video, photoCanvas);
+}
+
+// Obtenir une référence à l'élément vidéo
+const cameraPreview = document.getElementById("cameraPreview");
+
+// Obtenir une référence au bouton "Ajouter un équipement"
+const addEquipmentButton = document.getElementById("addEquipmentButton");
+
+// Obtenir une référence au bouton de fermeture du modal
+const closeModalButton = document.getElementById("closeModalButton");
+
+// Gérer le clic sur le bouton "Ajouter un équipement"
+addEquipmentButton.addEventListener("click", () => {
+  showModal();
+});
+
+// Gérer le clic sur le bouton de fermeture du modal
+closeModalButton.addEventListener("click", () => {
+  hideModal();
+});
+
+// Obtenir l'accès à la caméra et afficher la vidéo sur l'élément <video>
+navigator.mediaDevices.getUserMedia({ video: true })
+  .then((stream) => {
+    cameraPreview.srcObject = stream;
+  })
+  .catch((error) => {
+    console.error("Erreur lors de l'accès à la caméra :", error);
+  });
+
+// Gérer le clic sur le bouton de capture
+captureButton.addEventListener("click", capturePhoto);
+
+// Écouter les modifications des équipements dans la base de données
+equipmentRef.on("value", (snapshot) => {
+  // Réinitialiser le contenu de la table
   equipmentTableBody.innerHTML = "";
 
   // Parcourir les équipements de la base de données
-  snapshot.forEach(function(childSnapshot) {
+  snapshot.forEach((childSnapshot) => {
     const equipmentKey = childSnapshot.key;
     const equipmentData = childSnapshot.val();
 
-    // Créer une nouvelle ligne dans le tableau pour chaque équipement
+    // Générer une ligne pour l'équipement
     const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${equipmentData.nom}</td>
+      <td>${equipmentData.description}</td>
+      <td>${equipmentData.quantite}</td>
+      <td>
+        <button onclick="deleteEquipment('${equipmentKey}')">Supprimer</button>
+      </td>
+    `;
 
-    // Créer les cellules de données pour l'équipement
-    const nomCell = document.createElement("td");
-    nomCell.textContent = equipmentData.nom;
-
-    const descriptionCell = document.createElement("td");
-    descriptionCell.textContent = equipmentData.description;
-
-    const quantiteCell = document.createElement("td");
-    quantiteCell.textContent = equipmentData.quantite;
-
-    // Ajouter les cellules de données à la ligne
-    row.appendChild(nomCell);
-    row.appendChild(descriptionCell);
-    row.appendChild(quantiteCell);
-
-    // Ajouter la ligne au tableau
+    // Ajouter la ligne à la table
     equipmentTableBody.appendChild(row);
   });
 });
+
+// Fonction pour supprimer un équipement de la base de données
+function deleteEquipment(key) {
+  equipmentRef.child(key).remove();
+}
