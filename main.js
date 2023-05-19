@@ -9,130 +9,133 @@ const firebaseConfig = {
   appId: "1:92935528444:web:57786855ed9cc7ef129c79"
 };
 
-
 // Initialisation de Firebase
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
 
-// Référence à la collection "equipments" dans la base de données
-const equipmentRef = db.ref("equipments");
+// Référence à la base de données Firebase
+const database = firebase.database();
 
-// Référence aux éléments du DOM
-const equipmentTableBody = document.getElementById("equipmentTableBody");
-const addEquipmentForm = document.getElementById("addEquipmentForm");
-const addEquipmentModal = document.getElementById("addEquipmentModal");
-const captureButton = document.getElementById("captureButton");
-const photoCanvas = document.getElementById("photoCanvas");
+// Référence à la table "equipments" dans la base de données
+const equipmentRef = database.ref("equipments");
 
-// Écouter l'événement de soumission du formulaire "addEquipmentForm"
-addEquipmentForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  // Récupérer les valeurs des champs du formulaire
-  const nom = addEquipmentForm.nom.value;
-  const description = addEquipmentForm.description.value;
-  const quantite = parseInt(addEquipmentForm.quantite.value);
-
-  // Récupérer l'image capturée
-  const photoDataUrl = photoCanvas.toDataURL("image/jpeg");
-
-  // Créer un nouvel équipement avec les valeurs du formulaire
-  const newEquipment = {
-    nom: nom,
-    description: description,
-    quantite: quantite,
-    photo: photoDataUrl
-  };
-
-  // Ajouter le nouvel équipement à la base de données
-  equipmentRef.push(newEquipment);
-
-  // Réinitialiser le formulaire
-  addEquipmentForm.reset();
-
-  // Cacher le modal
-  hideModal();
-});
+// Variables globales pour la capture de photo
+let stream;
+let videoTrack;
+let photoCanvas;
+let captureButton;
 
 // Fonction pour afficher le modal
 function showModal() {
+  const addEquipmentModal = document.getElementById("addEquipmentModal");
   addEquipmentModal.style.display = "block";
+
+  // Démarrer la vidéo
+  startVideo();
 }
 
 // Fonction pour masquer le modal
 function hideModal() {
+  const addEquipmentModal = document.getElementById("addEquipmentModal");
   addEquipmentModal.style.display = "none";
+
+  // Arrêter la vidéo et libérer la ressource du flux
+  stopVideo();
 }
 
-// Fonction pour dessiner la vidéo de la caméra sur le canevas
-function drawVideoOnCanvas(videoElement, canvasElement) {
-  const context = canvasElement.getContext("2d");
-  context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+// Fonction pour démarrer la vidéo
+function startVideo() {
+  const cameraPreview = document.getElementById("cameraPreview");
+
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then((stream) => {
+      cameraPreview.srcObject = stream;
+      videoTrack = stream.getVideoTracks()[0];
+      captureButton.disabled = false;
+    })
+    .catch((error) => {
+      console.error("Erreur lors de l'accès à la caméra :", error);
+    });
 }
 
-// Fonction pour capturer une photo à partir de la vidéo de la caméra
+// Fonction pour arrêter la vidéo
+function stopVideo() {
+  const cameraPreview = document.getElementById("cameraPreview");
+
+  if (videoTrack) {
+    videoTrack.stop();
+  }
+
+  if (cameraPreview.srcObject) {
+    cameraPreview.srcObject.getTracks().forEach((track) => {
+      track.stop();
+    });
+  }
+}
+
+// Fonction pour capturer la photo
 function capturePhoto() {
-  drawVideoOnCanvas(video, photoCanvas);
+  const cameraPreview = document.getElementById("cameraPreview");
+  const photoCanvas = document.getElementById("photoCanvas");
+  const context = photoCanvas.getContext("2d");
+
+  // Définir la taille du canevas en fonction de la vidéo
+  photoCanvas.width = cameraPreview.videoWidth;
+  photoCanvas.height = cameraPreview.videoHeight;
+
+  // Dessiner l'image capturée sur le canevas
+  context.drawImage(cameraPreview, 0, 0, photoCanvas.width, photoCanvas.height);
+
+  // Arrêter la vidéo
+  stopVideo();
 }
 
-// Obtenir une référence à l'élément vidéo
-const cameraPreview = document.getElementById("cameraPreview");
-
-// Obtenir une référence au bouton "Ajouter un équipement"
-const addEquipmentButton = document.getElementById("addEquipmentButton");
-
-// Obtenir une référence au bouton de fermeture du modal
-const closeModalButton = document.getElementById("closeModalButton");
-
-// Gérer le clic sur le bouton "Ajouter un équipement"
-addEquipmentButton.addEventListener("click", () => {
-  showModal();
-});
-
-// Gérer le clic sur le bouton de fermeture du modal
-closeModalButton.addEventListener("click", () => {
-  hideModal();
-});
-
-// Obtenir l'accès à la caméra et afficher la vidéo sur l'élément <video>
-navigator.mediaDevices.getUserMedia({ video: true })
-  .then((stream) => {
-    cameraPreview.srcObject = stream;
-  })
-  .catch((error) => {
-    console.error("Erreur lors de l'accès à la caméra :", error);
-  });
-
-// Gérer le clic sur le bouton de capture
-captureButton.addEventListener("click", capturePhoto);
-
-// Écouter les modifications des équipements dans la base de données
-equipmentRef.on("value", (snapshot) => {
-  // Réinitialiser le contenu de la table
-  equipmentTableBody.innerHTML = "";
-
-  // Parcourir les équipements de la base de données
-  snapshot.forEach((childSnapshot) => {
-    const equipmentKey = childSnapshot.key;
-    const equipmentData = childSnapshot.val();
-
-    // Générer une ligne pour l'équipement
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${equipmentData.nom}</td>
-      <td>${equipmentData.description}</td>
-      <td>${equipmentData.quantite}</td>
-      <td>
-        <button onclick="deleteEquipment('${equipmentKey}')">Supprimer</button>
-      </td>
-    `;
-
-    // Ajouter la ligne à la table
-    equipmentTableBody.appendChild(row);
-  });
-});
-
-// Fonction pour supprimer un équipement de la base de données
-function deleteEquipment(key) {
-  equipmentRef.child(key).remove();
+// Fonction pour ajouter un équipement à la base de données
+function addEquipment(equipmentData) {
+  equipmentRef.push().set(equipmentData)
+    .then(() => {
+      console.log("Équipement ajouté avec succès !");
+      hideModal();
+    })
+    .catch((error) => {
+      console.error("Erreur lors de l'ajout de l'équipement :", error);
+    });
 }
+
+// Fonction pour gérer la soumission du formulaire
+function handleFormSubmit(event) {
+  event.preventDefault();
+
+  const nomInput = document.getElementById("nom");
+  const descriptionInput = document.getElementById("description");
+  const quantiteInput = document.getElementById("quantite");
+
+  const equipmentData = {
+    nom: nomInput.value,
+    description: descriptionInput.value,
+    quantite: quantiteInput.value,
+    photo: photoCanvas.toDataURL("image/jpeg")
+  };
+
+  addEquipment(equipmentData);
+}
+
+// Fonction d'initialisation de l'application
+function initializeApp() {
+  // Référence aux éléments du DOM
+  const addEquipmentButton = document.getElementById("addEquipmentButton");
+  captureButton = document.getElementById("captureButton");
+  photoCanvas = document.getElementById("photoCanvas");
+  const addEquipmentForm = document.getElementById("addEquipmentForm");
+
+  // Gérer l'événement clic sur le bouton "Ajouter un équipement"
+  addEquipmentButton.addEventListener("click", showModal);
+
+  // Gérer l'événement clic sur le bouton "Capturer la photo"
+  captureButton.addEventListener("click", capturePhoto);
+
+  // Gérer l'événement de soumission du formulaire
+  addEquipmentForm.addEventListener("submit", handleFormSubmit);
+}
+
+// Exécuter la fonction d'initialisation de l'application une fois que le DOM est prêt
+document.addEventListener("DOMContentLoaded", initializeApp);
