@@ -1,3 +1,6 @@
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, push, onValue, remove } from "firebase/database";
+
 // Configuration de Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyCRxjJPOHEBAbnXQariFN6funIWPpsIe28",
@@ -7,19 +10,6 @@ const firebaseConfig = {
   storageBucket: "atelier---gestion-de-stock.appspot.com",
   messagingSenderId: "92935528444",
   appId: "1:92935528444:web:57786855ed9cc7ef129c79"
-};
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, push, onValue, remove } from "firebase/database";
-
-// Configuration de Firebase
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  databaseURL: "YOUR_DATABASE_URL",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
 };
 
 // Initialisation de Firebase
