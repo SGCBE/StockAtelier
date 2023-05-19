@@ -1,12 +1,6 @@
 // Configuration de Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyCRxjJPOHEBAbnXQariFN6funIWPpsIe28",
-  authDomain: "atelier---gestion-de-stock.firebaseapp.com",
-  databaseURL: "https://atelier---gestion-de-stock-default-rtdb.firebaseio.com",
-  projectId: "atelier---gestion-de-stock",
-  storageBucket: "atelier---gestion-de-stock.appspot.com",
-  messagingSenderId: "92935528444",
-  appId: "1:92935528444:web:57786855ed9cc7ef129c79"
+  // Votre configuration Firebase
 };
 
 // Initialisation de Firebase
@@ -51,8 +45,6 @@ function addEquipment(event) {
       const context = canvas.getContext("2d");
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
       const photoURL = canvas.toDataURL();
-
-      // Mettre à jour la valeur de la photo dans le nouvel équipement
       newEquipment.photo = photoURL;
 
       // Mettre à jour la liste des équipements
@@ -106,6 +98,17 @@ function showModal() {
   const modal = document.getElementById("addEquipmentModal");
   modal.style.display = "block";
 
+  // Obtenir l'accès à la caméra
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then((stream) => {
+      const video = document.getElementById("cameraPreview");
+      video.srcObject = stream;
+      video.play();
+    })
+    .catch((error) => {
+      console.error("Erreur lors de l'accès à la caméra :", error);
+    });
+
   // Capturer la photo
   const captureButton = document.getElementById("captureButton");
   captureButton.addEventListener("click", capturePhoto);
@@ -115,6 +118,15 @@ function showModal() {
 function hideModal() {
   const modal = document.getElementById("addEquipmentModal");
   modal.style.display = "none";
+
+  // Arrêter la vidéo et libérer l'accès à la caméra
+  const video = document.getElementById("cameraPreview");
+  if (video.srcObject) {
+    video.srcObject.getTracks().forEach((track) => {
+      track.stop();
+    });
+    video.srcObject = null;
+  }
 }
 
 // Fonction pour capturer la photo
