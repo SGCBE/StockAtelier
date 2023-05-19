@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Gestion de stock d'équipements</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="modal.css">
+</head>
+<body>
+  <header>
+    <img src="P:\BUREAU ETUDES\Sites internet\logo_schnell_coul.jpg" alt="Logo de l'entreprise" style="height: 96px;">
+    <h1>Gestion de stock d'équipements</h1>
+  </header>
+  <main>
+    <table>
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Description</th>
+          <th>Quantité</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="equipmentTableBody">
+        <!-- Les données seront générées dynamiquement ici -->
+      </tbody>
+    </table>
+
+    <!-- Ajout d'un bouton "Ajouter un équipement" -->
+    <button id="addEquipmentButton" class="full-width-button">Ajouter un équipement</button>
+
+    <!-- Code HTML pour le modal -->
+    <div id="addEquipmentModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="hideModal()">&times;</span>
+        <h2>Ajouter un équipement</h2>
+        <form id="addEquipmentForm">
+          <label for="nom">Nom</label>
+          <input type="text" id="nom" name="nom" required>
+          <label for="description">Description</label>
+          <textarea id="description" name="description" required></textarea>
+          <label for="quantite">Quantité</label>
+          <input type="number" id="quantite" name="quantite" required>
+          <video id="cameraPreview" autoplay></video>
+          <button id="captureButton" type="button">Capturer la photo</button>
+          <input type="submit" value="Ajouter">
+        </form>
+      </div>
+      <!-- Ajouter le bouton de fermeture du modal -->
+      <button id="closeModalButton" onclick="hideModal()">Fermer</button>
+    </div>
+
+    <!-- Chargement du fichier main.js -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+    <!-- Chargement du fichier main.js -->
+    <script src="main.js"></script>
+  </main>
+</body>
+</html>
