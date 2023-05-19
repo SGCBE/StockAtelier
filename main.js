@@ -121,8 +121,8 @@ const closeModalButton = document.getElementById("closeModalButton");
 closeModalButton.addEventListener("click", hideModal);
 
 // Événement pour ajouter un équipement lors de la soumission du formulaire d'ajout d'équipement
-const addForm = document.getElementById("addEquipmentForm");
-addForm.addEventListener("submit", addEquipment);
+const addEquipmentForm = document.getElementById("addEquipmentForm");
+addEquipmentForm.addEventListener("submit", addEquipment);
 
 // Fonction pour récupérer la liste des équipements depuis la base de données
 function getEquipments() {
@@ -130,10 +130,13 @@ function getEquipments() {
     .then((snapshot) => {
       const equipments = [];
       snapshot.forEach((childSnapshot) => {
-        const equipment = childSnapshot.val();
-        equipment.id = childSnapshot.key;
+        const equipment = {
+          id: childSnapshot.key,
+          ...childSnapshot.val()
+        };
         equipments.push(equipment);
       });
+
       displayEquipmentList(equipments);
     })
     .catch((error) => {
@@ -141,6 +144,16 @@ function getEquipments() {
     });
 }
 
+// Fonction pour supprimer un équipement
+function deleteEquipment(equipmentId) {
+  equipmentRef.child(equipmentId).remove()
+    .then(() => {
+      getEquipments();
+    })
+    .catch((error) => {
+      console.error("Erreur lors de la suppression de l'équipement :", error);
+    });
+}
+
 // Appel initial pour afficher la liste des équipements
 getEquipments();
-
