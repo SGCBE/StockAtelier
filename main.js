@@ -9,6 +9,11 @@ const firebaseConfig = {
   appId: "1:92935528444:web:57786855ed9cc7ef129c79"
 };
 
+// Configuration de Firebase
+const firebaseConfig = {
+  // Votre configuration Firebase
+};
+
 // Initialisation de Firebase
 firebase.initializeApp(firebaseConfig);
 
@@ -35,7 +40,8 @@ function addEquipment(event) {
     photo: ""
   };
 
-  equipmentRef.push(newEquipment)
+  equipmentRef
+    .push(newEquipment)
     .then((snapshot) => {
       // Réinitialiser les champs du formulaire
       document.getElementById("nom").value = "";
@@ -102,12 +108,28 @@ function displayEquipmentList(equipments) {
 function showModal() {
   const modal = document.getElementById("addEquipmentModal");
   modal.style.display = "block";
+
+  // Capturer la photo
+  const captureButton = document.getElementById("captureButton");
+  captureButton.addEventListener("click", capturePhoto);
 }
 
 // Fonction pour masquer le modal d'ajout d'équipement
 function hideModal() {
   const modal = document.getElementById("addEquipmentModal");
   modal.style.display = "none";
+}
+
+// Fonction pour capturer la photo
+function capturePhoto() {
+  const video = document.getElementById("cameraPreview");
+  const canvas = document.createElement("canvas");
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  const context = canvas.getContext("2d");
+  context.drawImage(video, 0, 0, canvas.width, canvas.height);
+  const photoURL = canvas.toDataURL();
+  newEquipment.photo = photoURL;
 }
 
 // Événement pour afficher le modal d'ajout d'équipement lors du clic sur le bouton "Ajouter un équipement"
@@ -126,7 +148,8 @@ addEquipmentForm.addEventListener("submit", addEquipment);
 
 // Fonction pour récupérer la liste des équipements depuis la base de données
 function getEquipments() {
-  equipmentRef.once("value")
+  equipmentRef
+    .once("value")
     .then((snapshot) => {
       const equipments = [];
       snapshot.forEach((childSnapshot) => {
@@ -146,7 +169,9 @@ function getEquipments() {
 
 // Fonction pour supprimer un équipement
 function deleteEquipment(equipmentId) {
-  equipmentRef.child(equipmentId).remove()
+  equipmentRef
+    .child(equipmentId)
+    .remove()
     .then(() => {
       getEquipments();
     })
