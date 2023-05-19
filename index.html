@@ -24,7 +24,6 @@
       word-break: break-word;
     }
   </style>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
   <header>
@@ -61,7 +60,7 @@
           <textarea id="description" name="description" required></textarea>
           <label for="quantite">Quantité</label>
           <input type="number" id="quantite" name="quantite" required>
-          <video id="cameraPreview" autoplay playsinline></video>
+          <canvas id="photoCanvas"></canvas>
           <button id="captureButton" class="capture-button" type="button">Capturer la photo</button>
           <input type="submit" value="Ajouter">
         </form>
