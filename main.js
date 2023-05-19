@@ -1,6 +1,3 @@
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, push, onValue, remove } from "firebase/database";
-
 // Configuration de Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyCRxjJPOHEBAbnXQariFN6funIWPpsIe28",
@@ -12,8 +9,9 @@ const firebaseConfig = {
   appId: "1:92935528444:web:57786855ed9cc7ef129c79"
 };
 
+
 // Initialisation de Firebase
-const app = firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 // Référence à la collection "equipments" dans la base de données
