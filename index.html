@@ -27,7 +27,7 @@
 </head>
 <body>
   <header>
-    <img src="logo_schnell_coul.jpg" alt="Logo de l'entreprise" style="height: 96px;">
+    <img src="P:\BUREAU ETUDES\Sites internet\logo_schnell_coul.jpg" alt="Logo de l'entreprise" style="height: 96px;">
     <h1>Gestion de stock d'équipements</h1>
   </header>
   <main>
@@ -64,18 +64,16 @@
           <button id="captureButton" class="capture-button" type="button">Capturer la photo</button>
           <input type="submit" value="Ajouter">
         </form>
+        <!-- Ajouter le bouton de fermeture du modal -->
+        <button id="closeModalButton" onclick="hideModal()">Fermer</button>
       </div>
-      <!-- Ajouter le bouton de fermeture du modal -->
-      <button id="closeModalButton" onclick="hideModal()">Fermer</button>
     </div>
 
     <!-- Chargement du fichier main.js -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-
-    <!-- Chargement du fichier main.js -->
-    <script src="main.js" type="module"></script>
+    <script src="main.js"></script>
   </main>
 </body>
 </html>
