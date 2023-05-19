@@ -6,22 +6,138 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="modal.css">
   <style>
-    .full-width-button {
+    /* Ajoutez vos styles CSS ici */
+
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #fff;
+      color: #00A1E0;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 48px;
+      margin-left: 16px;
+    }
+
+    img {
+      height: 48px;
+      margin: 16px;
+    }
+
+    table {
+      border-collapse: collapse;
       width: 100%;
     }
-    
+
+    th, td {
+      text-align: left;
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+      word-break: break-word; /* Nouvelle règle pour le texte long */
+    }
+
+    th {
+      background-color: #333;
+      color: #fff;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    /* Styles pour les modales */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 16px;
+      border: 1px solid #888;
+      width: 50%;
+      max-width: 600px; /* Nouvelle règle pour limiter la largeur du modal */
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* Styles pour les formulaires */
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    input,
+    select {
+      padding: 8px;
+      margin-bottom: 16px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      width: 100%; /* Nouvelle règle pour occuper toute la largeur */
+    }
+
+    input[type=submit] {
+      background-color: #333;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    input[type=submit]:hover {
+      background-color: #444;
+    }
+
+    /* Styles pour le bouton "Ajouter un équipement" */
+    .full-width-button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: #337ab7;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    /* Nouvelle règle pour les boutons de capture */
     .capture-button {
       width: 100%;
       font-size: 1.5em;
       padding: 10px;
-    }
-    
-    table {
-      width: 100%;
-    }
-    
-    td {
-      word-break: break-word;
     }
   </style>
 </head>
