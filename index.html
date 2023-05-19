@@ -5,6 +5,25 @@
   <title>Gestion de stock d'équipements</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="modal.css">
+  <style>
+    .full-width-button {
+      width: 100%;
+    }
+    
+    .capture-button {
+      width: 100%;
+      font-size: 1.5em;
+      padding: 10px;
+    }
+    
+    table {
+      width: 100%;
+    }
+    
+    td {
+      word-break: break-word;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -42,7 +61,7 @@
           <label for="quantite">Quantité</label>
           <input type="number" id="quantite" name="quantite" required>
           <video id="cameraPreview" autoplay playsinline></video>
-          <button id="captureButton" type="button">Capturer la photo</button>
+          <button id="captureButton" class="capture-button" type="button">Capturer la photo</button>
           <input type="submit" value="Ajouter">
         </form>
       </div>
