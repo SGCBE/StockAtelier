@@ -9,11 +9,6 @@ const firebaseConfig = {
   appId: "1:92935528444:web:57786855ed9cc7ef129c79"
 };
 
-// Configuration de Firebase
-const firebaseConfig = {
-  // Votre configuration Firebase
-};
-
 // Initialisation de Firebase
 firebase.initializeApp(firebaseConfig);
 
@@ -56,6 +51,8 @@ function addEquipment(event) {
       const context = canvas.getContext("2d");
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
       const photoURL = canvas.toDataURL();
+
+      // Mettre à jour la valeur de la photo dans le nouvel équipement
       newEquipment.photo = photoURL;
 
       // Mettre à jour la liste des équipements
@@ -129,7 +126,15 @@ function capturePhoto() {
   const context = canvas.getContext("2d");
   context.drawImage(video, 0, 0, canvas.width, canvas.height);
   const photoURL = canvas.toDataURL();
-  newEquipment.photo = photoURL;
+
+  // Mettre à jour la valeur de la photo dans le nouvel équipement
+  const newEquipment = {
+    photo: photoURL
+  };
+
+  // Faire le traitement supplémentaire avec newEquipment si nécessaire
+
+  // ...
 }
 
 // Événement pour afficher le modal d'ajout d'équipement lors du clic sur le bouton "Ajouter un équipement"
