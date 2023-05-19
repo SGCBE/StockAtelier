@@ -9,6 +9,8 @@ const firebaseConfig = {
   appId: "1:92935528444:web:57786855ed9cc7ef129c79"
 };
 
+
+
 // Initialisation de Firebase
 firebase.initializeApp(firebaseConfig);
 
@@ -17,6 +19,9 @@ const database = firebase.database();
 
 // Référence à la table "equipments" dans la base de données
 const equipmentRef = database.ref("equipments");
+
+// Référence à l'emplacement de stockage dans Firebase Storage
+const storageRef = firebase.storage().ref();
 
 // Variables globales pour la capture de photo
 let stream;
@@ -101,6 +106,38 @@ function addEquipment(equipmentData) {
     });
 }
 
+// Fonction pour télécharger la photo dans Firebase Storage
+function uploadPhoto(photoData) {
+  // Générer un nom de fichier unique pour la photo
+  const filename = "photo_" + Date.now() + ".jpg";
+
+  // Référence à l'emplacement spécifique où vous souhaitez stocker la photo
+  const photoRef = storageRef.child("images/" + filename);
+
+  // Téléchargement de la photo
+  photoRef.putString(photoData, "data_url")
+    .then((snapshot) => {
+      console.log("Photo téléchargée avec succès !");
+      // Obtenir l'URL de téléchargement de la photo
+      return snapshot.ref.getDownloadURL();
+    })
+    .then((downloadURL) => {
+      // Ajouter l'URL de la photo à l'objet equipmentData
+      const equipmentData = {
+        nom: document.getElementById("nom").value,
+        description: document.getElementById("description").value,
+        quantite: document.getElementById("quantite").value,
+        photo: downloadURL
+      };
+
+      // Ajouter l'équipement à la base de données
+      addEquipment(equipmentData);
+    })
+    .catch((error) => {
+      console.error("Erreur lors du téléchargement de la photo :", error);
+    });
+}
+
 // Fonction pour gérer la soumission du formulaire
 function handleFormSubmit(event) {
   event.preventDefault();
@@ -112,11 +149,20 @@ function handleFormSubmit(event) {
   const equipmentData = {
     nom: nomInput.value,
     description: descriptionInput.value,
-    quantite: quantiteInput.value,
-    photo: photoCanvas.toDataURL("image/jpeg")
+    quantite: quantiteInput.value
   };
 
-  addEquipment(equipmentData);
+  // Vérifier si une photo a été capturée
+  if (photoCanvas.toDataURL) {
+    // Convertir le canevas en une représentation de données d'URL
+    const photoData = photoCanvas.toDataURL("image/jpeg");
+
+    // Télécharger la photo dans Firebase Storage
+    uploadPhoto(photoData);
+  } else {
+    // Ajouter l'équipement à la base de données sans photo
+    addEquipment(equipmentData);
+  }
 }
 
 // Fonction d'initialisation de l'application
@@ -139,3 +185,5 @@ function initializeApp() {
 
 // Exécuter la fonction d'initialisation de l'application une fois que le DOM est prêt
 document.addEventListener("DOMContentLoaded", initializeApp);
+
+
