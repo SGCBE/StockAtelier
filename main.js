@@ -13,21 +13,21 @@ const firebaseConfig = {
 };
 
 // Initialisation de Firebase
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
 // Référence à la collection "equipments" dans la base de données
-const equipmentRef = ref(db, "equipments");
+const equipmentRef = db.ref("equipments");
 
 // Fonction pour ajouter un nouvel équipement
 function addEquipment(equipment) {
-  push(equipmentRef, equipment);
+  equipmentRef.push(equipment);
 }
 
 // Fonction pour supprimer un équipement
 function deleteEquipment(equipmentId) {
-  const equipmentToDeleteRef = ref(db, `equipments/${equipmentId}`);
-  remove(equipmentToDeleteRef);
+  const equipmentToDeleteRef = db.ref(`equipments/${equipmentId}`);
+  equipmentToDeleteRef.remove();
 }
 
 // Fonction de rappel pour mettre à jour la liste des équipements
@@ -54,7 +54,7 @@ function updateEquipmentList(snapshot) {
 }
 
 // Écouter les modifications dans la base de données
-onValue(equipmentRef, updateEquipmentList);
+equipmentRef.on("value", updateEquipmentList);
 
 // Fonction pour masquer le modal
 function hideModal() {
