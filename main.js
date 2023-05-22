@@ -42,6 +42,7 @@ function generateEquipmentList(data) {
       <td>${equipment.categorie}</td>
       <td>
         <button onclick="removeEquipment('${equipment.id}')">Supprimer</button>
+        <button onclick="editEquipment('${equipment.id}')">Modifier</button>
       </td>
     `;
     equipmentTableBody.appendChild(equipmentRow);
@@ -105,6 +106,50 @@ window.addEventListener('click', (event) => {
     addEquipmentModal.style.display = 'none';
   }
 });
+
+// Fonction pour éditer un équipement
+function editEquipment(id) {
+  const equipmentRef = database.ref(`equipments/${id}`);
+  equipmentRef.once('value', (snapshot) => {
+    const equipment = snapshot.val();
+    showEditEquipmentModal(id, equipment);
+  });
+}
+
+// Fonction pour afficher le modal d'édition d'équipement
+function showEditEquipmentModal(id, equipment) {
+  const editEquipmentModal = document.getElementById('editEquipmentModal');
+  const editEquipmentForm = document.getElementById('editEquipmentForm');
+  const editEquipmentId = document.getElementById('editEquipmentId');
+  const editEquipmentNom = document.getElementById('editEquipmentNom');
+  const editEquipmentDescription = document.getElementById('editEquipmentDescription');
+  const editEquipmentQuantite = document.getElementById('editEquipmentQuantite');
+  const editEquipmentCategorie = document.getElementById('editEquipmentCategorie');
+
+  editEquipmentId.value = id;
+  editEquipmentNom.value = equipment.nom;
+  editEquipmentDescription.value = equipment.description;
+  editEquipmentQuantite.value = equipment.quantite;
+  editEquipmentCategorie.value = equipment.categorie;
+
+  editEquipmentModal.style.display = 'block';
+
+  editEquipmentForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const updatedEquipment = {
+      nom: editEquipmentNom.value,
+      description: editEquipmentDescription.value,
+      quantite: editEquipmentQuantite.value,
+      categorie: editEquipmentCategorie.value
+    };
+
+    const equipmentRef = database.ref(`equipments/${id}`);
+    equipmentRef.update(updatedEquipment);
+
+    editEquipmentModal.style.display = 'none';
+  });
+}
 
 // Événement de suppression d'un équipement
 function removeEquipment(id) {
