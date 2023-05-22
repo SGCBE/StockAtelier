@@ -13,22 +13,114 @@ const addModalForm = document.getElementById('add-modal-form');
 const addModalClose = document.getElementById('add-modal-close');
 const photoPreview = document.getElementById('photo-preview');
 
-// Initialisez Firebase avec votre propre configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyCRxjJPOHEBAbnXQariFN6funIWPpsIe28",
-  authDomain: "atelier---gestion-de-stock.firebaseapp.com",
-  databaseURL: "https://atelier---gestion-de-stock-default-rtdb.firebaseio.com",
-  projectId: "atelier---gestion-de-stock",
-  storageBucket: "atelier---gestion-de-stock.appspot.com",
-  messagingSenderId: "92935528444",
-  appId: "1:92935528444:web:57786855ed9cc7ef129c79"
-};
-
-// Initialisez Firebase
-firebase.initializeApp(firebaseConfig);
-
 // Référence à la collection "equipments" dans Firestore
 const equipmentsCollection = firebase.firestore().collection('equipments');
 
-// Le reste du code reste inchangé
-// ...
+// Fonction pour afficher les détails d'un équipement dans le modal
+function showEquipmentDetails(equipment) {
+  detailsModalTitle.textContent = equipment.designation;
+  detailsModalCategory.textContent = equipment.category;
+  detailsModalDescription.textContent = equipment.description;
+
+  if (equipment.imageUrl) {
+    detailsModalImage.src = equipment.imageUrl;
+    detailsModalImageContainer.style.display = 'block';
+  } else {
+    detailsModalImageContainer.style.display = 'none';
+  }
+
+  detailsModal.style.display = 'block';
+}
+
+// Fonction pour afficher la liste des équipements
+function displayEquipmentList(equipments) {
+  equipmentList.innerHTML = '';
+
+  equipments.forEach((equipment) => {
+    const equipmentCard = document.createElement('div');
+    equipmentCard.classList.add('equipment-card');
+    equipmentCard.textContent = equipment.designation;
+
+    equipmentCard.addEventListener('click', () => {
+      showEquipmentDetails(equipment);
+    });
+
+    equipmentList.appendChild(equipmentCard);
+  });
+}
+
+// Fonction pour afficher l'aperçu de la photo sélectionnée
+function showPhotoPreview(event) {
+  const file = event.target.files[0];
+
+  if (file) {
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      photoPreview.innerHTML = '';
+      photoPreview.appendChild(img);
+    };
+
+    reader.readAsDataURL(file);
+  } else {
+    photoPreview.innerHTML = '';
+  }
+}
+
+// Gérer l'ouverture du modal d'ajout d'équipement
+function handleAddEquipmentClick() {
+  addModal.style.display = 'block';
+}
+
+// Gérer la fermeture du modal des détails d'équipement
+function handleDetailsModalClose() {
+  detailsModal.style.display = 'none';
+}
+
+// Gérer la fermeture du modal d'ajout d'équipement
+function handleAddModalClose() {
+  addModal.style.display = 'none';
+  addModalForm.reset();
+  photoPreview.innerHTML = '';
+}
+
+// Gérer l'envoi du formulaire d'ajout d'équipement
+function handleAddModalFormSubmit(event) {
+  event.preventDefault();
+
+  // Récupérer les valeurs des champs du formulaire
+  const category = document.getElementById('category').value;
+  const designation = document.getElementById('designation').value;
+  const description = document.getElementById('description').value;
+  const quantity = document.getElementById('quantity').value;
+  const photo = document.getElementById('photo').files[0];
+
+  // Créer un objet représentant le nouvel équipement
+  const newEquipment = {
+    category,
+    designation,
+    description,
+    quantity: parseInt(quantity),
+  };
+
+  // Enregistrer l'équipement dans Firebase Firestore
+  equipmentsCollection.add(newEquipment)
+    .then(() => {
+      // Réinitialiser le formulaire et fermer le modal d'ajout
+      addModalForm.reset();
+      photoPreview.innerHTML = '';
+      addModal.style.display = 'none';
+    })
+    .catch((error) => {
+      console.error("Erreur lors de l'enregistrement de l'équipement:", error);
+    });
+}
+
+// Ajouter des gestionnaires d'événements
+addEquipmentBtn.addEventListener('click', handleAddEquipmentClick);
+detailsModalClose.addEventListener('click', handleDetailsModalClose);
+addModalClose.addEventListener('click', handleAddModalClose);
+addModalForm.addEventListener('submit', handleAddModalFormSubmit);
+document.getElementById('photo').addEventListener('change', showPhotoPreview);
