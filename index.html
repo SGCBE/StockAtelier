@@ -1,127 +1,80 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Gestion de stock d'équipements</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="modal.css">
-  <style>
-    .logo-container {
-      display: flex;
-      align-items: center;
-    }
-
-    .logo {
-      height: 96px;
-      margin-right: 10px;
-    }
-
-    .title {
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    .full-width-button {
-      width: 100%;
-    }
-    
-    .capture-button {
-      width: 100%;
-      font-size: 1.5em;
-      padding: 10px;
-    }
-    
-    table {
-      width: 100%;
-    }
-    
-    td {
-      word-break: break-word;
-    }
-  </style>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Gestion des équipements</title>
 </head>
 <body>
   <header>
-    <div class="logo-container">
-      <img src="logo.jpg" alt="Logo de l'entreprise" class="logo">
-      <h1 class="title">Gestion de stock d'équipements</h1>
-    </div>
+    <h1>Gestion des équipements</h1>
   </header>
+
   <main>
-    <table>
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Description</th>
-          <th>Quantité</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="equipmentTableBody">
-        <!-- Les données seront générées dynamiquement ici -->
-      </tbody>
-    </table>
+    <div id="equipment-list">
+      <!-- La liste des équipements sera générée dynamiquement ici -->
+    </div>
 
-    <!-- Ajout d'un bouton "Ajouter un équipement" -->
-    <button id="addEquipmentButton" class="full-width-button">Ajouter un équipement</button>
+    <button id="add-equipment-btn">Ajouter un équipement</button>
 
-    <!-- Code HTML pour le modal -->
-    <div id="equipmentModal" class="modal">
-      <div id="modalContent" class="modal-content">
-        <span class="close" onclick="hideModal()">&times;</span>
-        <h2>Détails de l'équipement</h2>
-        <p><strong>Catégorie:</strong> <span id="modalCategorie"></span></p>
-        <p><strong>Désignation:</strong> <span id="modalDesignation"></span></p>
-        <p><strong>Description:</strong> <span id="modalDescription"></span></p>
-        <img id="modalPhoto" src="" alt="Photo de l'équipement">
-        <button onclick="hideModal()">Retour à la liste des équipements</button>
+    <!-- Modal pour afficher les détails de l'équipement -->
+    <div id="details-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-close">
+          <button id="details-modal-close">Retour à la liste des équipements</button>
+        </div>
+        <h2 id="details-modal-title"></h2>
+        <p><strong>Catégorie:</strong> <span id="details-modal-category"></span></p>
+        <p><strong>Description:</strong> <span id="details-modal-description"></span></p>
+        <div id="details-modal-image-container">
+          <img id="details-modal-image" src="" alt="Image de l'équipement">
+        </div>
       </div>
     </div>
 
-    <!-- Code HTML pour le modal d'ajout d'équipement -->
-    <div id="addEquipmentModal" class="modal">
-      <div id="addEquipmentModalContent" class="modal-content">
-        <span class="close" onclick="hideAddEquipmentModal()">&times;</span>
+    <!-- Modal pour ajouter un nouvel équipement -->
+    <div id="add-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-close">
+          <button id="add-modal-close">Retour à la liste des équipements</button>
+        </div>
         <h2>Ajouter un équipement</h2>
-        <form id="addEquipmentForm">
-          <label for="categorie">Catégorie</label>
-          <select id="categorie" name="categorie" required>
+        <form id="add-modal-form">
+          <label for="category">Catégorie:</label>
+          <select id="category" required>
+            <option value="">Sélectionner une catégorie</option>
             <option value="Inox">Inox</option>
             <option value="Laverie">Laverie</option>
             <option value="Equipement chaud">Equipement chaud</option>
             <option value="Equipement froid">Equipement froid</option>
             <option value="Equipement de préparation">Equipement de préparation</option>
           </select>
-          <label for="designation">Désignation</label>
-          <input type="text" id="designation" name="designation" required>
-          <label for="description">Description</label>
-          <textarea id="description" name="description" required></textarea>
-          <label for="quantite">Quantité</label>
-          <input type="number" id="quantite" name="quantite" required>
-          <button id="submitEquipmentButton" class="full-width-button" type="submit">Ajouter</button>
+
+          <label for="designation">Désignation:</label>
+          <input type="text" id="designation" required>
+
+          <label for="description">Description:</label>
+          <textarea id="description" required></textarea>
+
+          <label for="quantity">Quantité:</label>
+          <input type="number" id="quantity" required>
+
+          <div>
+            <label for="photo">Photo:</label>
+            <input type="file" accept="image/*" capture="camera" id="photo">
+            <div id="photo-preview"></div>
+          </div>
+
+          <button type="submit">Ajouter</button>
         </form>
       </div>
     </div>
-
-    <!-- Code HTML pour le modal de capture de photo -->
-    <div id="capturePhotoModal" class="modal">
-      <div id="capturePhotoModalContent" class="modal-content">
-        <span class="close" onclick="hideCapturePhotoModal()">&times;</span>
-        <h2>Capture de photo</h2>
-        <video id="video" autoplay></video>
-        <button id="captureButton" class="capture-button">Capturer</button>
-      </div>
-    </div>
-
-    <!-- Chargement des bibliothèques Firebase -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-
-    <!-- Chargement du fichier main.js -->
-    <script src="main.js"></script>
   </main>
+
+  <script src="https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js"></script>
+  <script src="firebase.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
