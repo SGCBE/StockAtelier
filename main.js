@@ -1,126 +1,95 @@
-// Récupérer les références des éléments HTML
-const equipmentList = document.getElementById('equipment-list');
-const addEquipmentBtn = document.getElementById('add-equipment-btn');
-const detailsModal = document.getElementById('details-modal');
-const detailsModalClose = document.getElementById('details-modal-close');
-const detailsModalTitle = document.getElementById('details-modal-title');
-const detailsModalCategory = document.getElementById('details-modal-category');
-const detailsModalDescription = document.getElementById('details-modal-description');
-const detailsModalImageContainer = document.getElementById('details-modal-image-container');
-const detailsModalImage = document.getElementById('details-modal-image');
-const addModal = document.getElementById('add-modal');
-const addModalForm = document.getElementById('add-modal-form');
-const addModalClose = document.getElementById('add-modal-close');
-const photoPreview = document.getElementById('photo-preview');
+// Configuration de Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyCRxjJPOHEBAbnXQariFN6funIWPpsIe28",
+  authDomain: "atelier---gestion-de-stock.firebaseapp.com",
+  databaseURL: "https://atelier---gestion-de-stock-default-rtdb.firebaseio.com",
+  projectId: "atelier---gestion-de-stock",
+  storageBucket: "atelier---gestion-de-stock.appspot.com",
+  messagingSenderId: "92935528444",
+  appId: "1:92935528444:web:57786855ed9cc7ef129c79"
+};
 
-// Référence à la collection "equipments" dans Firestore
-const equipmentsCollection = firebase.firestore().collection('equipments');
 
-// Fonction pour afficher les détails d'un équipement dans le modal
-function showEquipmentDetails(equipment) {
-  detailsModalTitle.textContent = equipment.designation;
-  detailsModalCategory.textContent = equipment.category;
-  detailsModalDescription.textContent = equipment.description;
+// Initialisation de Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-  if (equipment.imageUrl) {
-    detailsModalImage.src = equipment.imageUrl;
-    detailsModalImageContainer.style.display = 'block';
-  } else {
-    detailsModalImageContainer.style.display = 'none';
-  }
+// Référence à la collection "equipments" dans la base de données
+const equipmentRef = db.ref("equipments");
 
-  detailsModal.style.display = 'block';
+// Fonction pour ajouter un nouvel équipement
+function addEquipment(equipment) {
+  equipmentRef.push(equipment);
 }
 
-// Fonction pour afficher la liste des équipements
-function displayEquipmentList(equipments) {
-  equipmentList.innerHTML = '';
+// Fonction pour supprimer un équipement
+function deleteEquipment(equipmentId) {
+  const equipmentToDeleteRef = db.ref(`equipments/${equipmentId}`);
+  equipmentToDeleteRef.remove();
+}
 
-  equipments.forEach((equipment) => {
-    const equipmentCard = document.createElement('div');
-    equipmentCard.classList.add('equipment-card');
-    equipmentCard.textContent = equipment.designation;
+// Fonction de rappel pour mettre à jour la liste des équipements
+function updateEquipmentList(snapshot) {
+  const equipmentTableBody = document.getElementById("equipmentTableBody");
+  equipmentTableBody.innerHTML = "";
 
-    equipmentCard.addEventListener('click', () => {
-      showEquipmentDetails(equipment);
-    });
+  snapshot.forEach((childSnapshot) => {
+    const equipment = childSnapshot.val();
+    const equipmentId = childSnapshot.key;
 
-    equipmentList.appendChild(equipmentCard);
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${equipment.nom}</td>
+      <td>${equipment.description}</td>
+      <td>${equipment.quantite}</td>
+      <td>
+        <button onclick="deleteEquipment('${equipmentId}')">Supprimer</button>
+      </td>
+    `;
+
+    equipmentTableBody.appendChild(row);
   });
 }
 
-// Fonction pour afficher l'aperçu de la photo sélectionnée
-function showPhotoPreview(event) {
-  const file = event.target.files[0];
+// Écouter les modifications dans la base de données
+equipmentRef.on("value", updateEquipmentList);
 
-  if (file) {
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      const img = document.createElement('img');
-      img.src = e.target.result;
-      photoPreview.innerHTML = '';
-      photoPreview.appendChild(img);
-    };
-
-    reader.readAsDataURL(file);
-  } else {
-    photoPreview.innerHTML = '';
-  }
+// Fonction pour masquer le modal
+function hideModal() {
+  const addEquipmentModal = document.getElementById("addEquipmentModal");
+  addEquipmentModal.style.display = "none";
 }
 
-// Gérer l'ouverture du modal d'ajout d'équipement
-function handleAddEquipmentClick() {
-  addModal.style.display = 'block';
-}
+// Gérer la soumission du formulaire d'ajout d'équipement
+const addEquipmentForm = document.getElementById("addEquipmentForm");
+addEquipmentForm.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-// Gérer la fermeture du modal des détails d'équipement
-function handleDetailsModalClose() {
-  detailsModal.style.display = 'none';
-}
+  const nomInput = document.getElementById("nom");
+  const descriptionInput = document.getElementById("description");
+  const quantiteInput = document.getElementById("quantite");
 
-// Gérer la fermeture du modal d'ajout d'équipement
-function handleAddModalClose() {
-  addModal.style.display = 'none';
-  addModalForm.reset();
-  photoPreview.innerHTML = '';
-}
-
-// Gérer l'envoi du formulaire d'ajout d'équipement
-function handleAddModalFormSubmit(event) {
-  event.preventDefault();
-
-  // Récupérer les valeurs des champs du formulaire
-  const category = document.getElementById('category').value;
-  const designation = document.getElementById('designation').value;
-  const description = document.getElementById('description').value;
-  const quantity = document.getElementById('quantity').value;
-  const photo = document.getElementById('photo').files[0];
-
-  // Créer un objet représentant le nouvel équipement
-  const newEquipment = {
-    category,
-    designation,
-    description,
-    quantity: parseInt(quantity),
+  const equipment = {
+    nom: nomInput.value,
+    description: descriptionInput.value,
+    quantite: quantiteInput.value
   };
 
-  // Enregistrer l'équipement dans Firebase Firestore
-  equipmentsCollection.add(newEquipment)
-    .then(() => {
-      // Réinitialiser le formulaire et fermer le modal d'ajout
-      addModalForm.reset();
-      photoPreview.innerHTML = '';
-      addModal.style.display = 'none';
-    })
-    .catch((error) => {
-      console.error("Erreur lors de l'enregistrement de l'équipement:", error);
-    });
+  addEquipment(equipment);
+
+  nomInput.value = "";
+  descriptionInput.value = "";
+  quantiteInput.value = "";
+
+  hideModal();
+});
+
+// Fonction pour afficher le modal
+function showModal() {
+  const addEquipmentModal = document.getElementById("addEquipmentModal");
+  addEquipmentModal.style.display = "block";
 }
 
-// Ajouter des gestionnaires d'événements
-addEquipmentBtn.addEventListener('click', handleAddEquipmentClick);
-detailsModalClose.addEventListener('click', handleDetailsModalClose);
-addModalClose.addEventListener('click', handleAddModalClose);
-addModalForm.addEventListener('submit', handleAddModalFormSubmit);
-document.getElementById('photo').addEventListener('change', showPhotoPreview);
+// Gérer le clic sur le bouton "Ajouter un équipement"
+const addEquipmentButton = document.getElementById("addEquipmentButton");
+addEquipmentButton.addEventListener("click", showModal);
