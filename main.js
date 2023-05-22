@@ -38,7 +38,7 @@ function updateEquipmentList(snapshot) {
 
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td>${equipment.nom}</td>
+      <td>${equipment.categorie}</td>
       <td>${equipment.description}</td>
       <td>${equipment.quantite}</td>
       <td>
@@ -109,4 +109,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
