@@ -1,99 +1,79 @@
-/* Style du modal */
-#equipmentModal {
-  display: none; /* Masquer le modal par défaut */
+/* Styles CSS pour les modales */
+.modal {
+  display: none;
   position: fixed;
   z-index: 1;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4); /* Fond semi-transparent */
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
-/* Contenu du modal */
-#modalContent {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 16px;
   border: 1px solid #888;
-  width: 80%;
-  max-width: 600px;
+  width: 50%;
+  max-width: 500px; /* Ajout d'une largeur maximale pour le contenu du modal */
 }
 
-/* Bouton pour fermer le modal */
-#modalContent button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
+.close {
+  color: #aaa;
   float: right;
+  font-size: 28px;
+  font-weight: bold;
 }
 
-#modalContent button:hover {
-  background-color: #45a049;
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-/* Style du formulaire d'ajout d'équipement */
-#addEquipmentForm {
-  margin-bottom: 20px;
+/* Styles CSS pour les formulaires */
+form {
+  display: flex;
+  flex-direction: column;
 }
 
-#addEquipmentForm label {
+label {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+input,
+select {
+  padding: 8px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%; /* Utilisation de la largeur maximale disponible */
+  box-sizing: border-box; /* Inclusion de la largeur des bordures et du padding dans la largeur totale */
+}
+
+input[type=submit] {
+  background-color: #333;
+  color: #fff;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #444;
+}
+
+/* Nouveau style pour le bouton "Ajouter un équipement" */
+.full-width-button {
   display: block;
-  margin-bottom: 10px;
-}
-
-#addEquipmentForm input[type="text"],
-#addEquipmentForm textarea {
   width: 100%;
   padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-  resize: vertical;
-}
-
-#addEquipmentForm button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
+  margin-top: 10px;
+  background-color: #337ab7;
+  color: #fff;
   border: none;
+  border-radius: 5px;
+  font-size: 16px;
   cursor: pointer;
-}
-
-#addEquipmentForm button:hover {
-  background-color: #45a049;
-}
-
-/* Styles pour écran mobile */
-@media (max-width: 767px) {
-  #modalContent {
-    width: 90%;
-    margin: 30% auto;
-  }
-
-  #addEquipmentForm input[type="text"],
-  #addEquipmentForm textarea {
-    font-size: 14px;
-  }
-
-  #modalContent button {
-    padding: 8px 16px;
-    font-size: 14px;
-  }
-}
-
-/* Styles pour écran PC */
-@media (min-width: 768px) {
-  #modalContent {
-    margin: 10% auto;
-    padding: 40px;
-  }
-
-  #modalContent button {
-    padding: 12px 24px;
-    font-size: 16px;
-  }
 }
