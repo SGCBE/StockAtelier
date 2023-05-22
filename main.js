@@ -9,7 +9,6 @@ const firebaseConfig = {
   appId: "1:92935528444:web:57786855ed9cc7ef129c79"
 };
 
-
 // Initialisation de Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
@@ -44,6 +43,7 @@ function updateEquipmentList(snapshot) {
       <td>${equipment.quantite}</td>
       <td>
         <button onclick="deleteEquipment('${equipmentId}')">Supprimer</button>
+        <button onclick="openModal('${equipmentId}')">Détails</button>
       </td>
     `;
 
@@ -56,8 +56,29 @@ equipmentRef.on("value", updateEquipmentList);
 
 // Fonction pour masquer le modal
 function hideModal() {
-  const addEquipmentModal = document.getElementById("addEquipmentModal");
-  addEquipmentModal.style.display = "none";
+  const modal = document.getElementById("equipmentModal");
+  modal.style.display = "none";
+}
+
+// Fonction pour afficher le modal avec les détails de l'équipement
+function openModal(equipmentId) {
+  const modal = document.getElementById("equipmentModal");
+  const modalContent = document.getElementById("modalContent");
+  
+  equipmentRef.child(equipmentId).once("value", (snapshot) => {
+    const equipment = snapshot.val();
+    
+    modalContent.innerHTML = `
+      <h2>Détails de l'équipement</h2>
+      <p><strong>Catégorie:</strong> ${equipment.categorie}</p>
+      <p><strong>Désignation:</strong> ${equipment.designation}</p>
+      <p><strong>Description:</strong> ${equipment.description}</p>
+      <img src="${equipment.photo}" alt="Photo de l'équipement">
+      <button onclick="hideModal()">Retour à la liste des équipements</button>
+    `;
+    
+    modal.style.display = "block";
+  });
 }
 
 // Gérer la soumission du formulaire d'ajout d'équipement
@@ -65,31 +86,23 @@ const addEquipmentForm = document.getElementById("addEquipmentForm");
 addEquipmentForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const nomInput = document.getElementById("nom");
+  const categorieInput = document.getElementById("categorie");
+  const designationInput = document.getElementById("designation");
   const descriptionInput = document.getElementById("description");
-  const quantiteInput = document.getElementById("quantite");
+  const photoInput = document.getElementById("photo");
 
   const equipment = {
-    nom: nomInput.value,
+    categorie: categorieInput.value,
+    designation: designationInput.value,
     description: descriptionInput.value,
-    quantite: quantiteInput.value
+    photo: photoInput.value
   };
 
   addEquipment(equipment);
 
-  nomInput.value = "";
+  categorieInput.value = "";
+  designationInput.value = "";
   descriptionInput.value = "";
-  quantiteInput.value = "";
-
-  hideModal();
+  photoInput.value = "";
 });
 
-// Fonction pour afficher le modal
-function showModal() {
-  const addEquipmentModal = document.getElementById("addEquipmentModal");
-  addEquipmentModal.style.display = "block";
-}
-
-// Gérer le clic sur le bouton "Ajouter un équipement"
-const addEquipmentButton = document.getElementById("addEquipmentButton");
-addEquipmentButton.addEventListener("click", showModal);
