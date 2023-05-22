@@ -112,3 +112,35 @@ h1 {
 #addEquipmentForm button:hover {
   background-color: #45a049;
 }
+
+/* Styles pour écran mobile */
+@media (max-width: 767px) {
+  .container {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  .add-equipment-button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}
+
+/* Styles pour écran PC */
+@media (min-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  .add-equipment-button {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+}
