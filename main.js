@@ -151,15 +151,6 @@ function showEditEquipmentModal(id, equipment) {
   });
 }
 
-// Événement de suppression d'un équipement
-function removeEquipment(id) {
-  const confirmation = confirm('Voulez-vous vraiment supprimer cet équipement ?');
-  if (confirmation) {
-    const equipmentRef = database.ref(`equipments/${id}`);
-    equipmentRef.remove();
-  }
-}
-
 // Événement pour la mise à jour de la liste des équipements
 equipmentsRef.on('value', (snapshot) => {
   const data = [];
