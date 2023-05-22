@@ -50,23 +50,9 @@
     <button id="addEquipmentButton" class="full-width-button">Ajouter un équipement</button>
 
     <!-- Code HTML pour le modal -->
-    <div id="addEquipmentModal" class="modal">
-      <div class="modal-content">
+    <div id="equipmentModal" class="modal">
+      <div id="modalContent" class="modal-content">
         <span class="close" onclick="hideModal()">&times;</span>
-        <h2>Ajouter un équipement</h2>
-        <form id="addEquipmentForm">
-          <label for="nom">Nom</label>
-          <input type="text" id="nom" name="nom" required>
-          <label for="description">Description</label>
-          <textarea id="description" name="description" required></textarea>
-          <label for="quantite">Quantité</label>
-          <input type="number" id="quantite" name="quantite" required>
-          <video id="cameraPreview" autoplay playsinline></video>
-          <button id="captureButton" class="capture-button" type="button">Capturer la photo</button>
-          <input type="submit" value="Ajouter">
-        </form>
-        <!-- Ajouter le bouton de fermeture du modal -->
-        <button id="closeModalButton" onclick="hideModal()">Fermer</button>
       </div>
     </div>
 
