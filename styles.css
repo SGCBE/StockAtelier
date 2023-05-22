@@ -13,7 +13,7 @@ button {
 /* Styles spécifiques à la page */
 
 header {
-  background-color: #333;
+  /* background-color: #333; */
   color: #fff;
   padding: 20px;
   text-align: center;
@@ -21,6 +21,12 @@ header {
 
 header h1 {
   margin: 0;
+  color: #0083c7; /* Couleur PANTONE 308 C */
+}
+
+.logo {
+  float: right;
+  margin-right: 20px;
 }
 
 main {
@@ -58,10 +64,10 @@ table td {
 
 .modal-content {
   background-color: #fefefe;
-  margin: 10% auto;
+  margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 50%;
+  width: 80%;
 }
 
 .close {
@@ -69,20 +75,13 @@ table td {
   float: right;
   font-size: 28px;
   font-weight: bold;
-  cursor: pointer;
 }
 
 .close:hover,
 .close:focus {
-  color: black;
+  color: #000;
   text-decoration: none;
   cursor: pointer;
 }
 
-/* Styles responsives */
-
-@media screen and (max-width: 768px) {
-  .modal-content {
-    width: 80%;
-  }
-}
+/* ... Reste du contenu du fichier ... */
