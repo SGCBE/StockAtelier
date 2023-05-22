@@ -1,68 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Gestion des équipements</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <link rel="stylesheet" type="text/css" href="modal.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion des équipements</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <h1>Liste des équipements</h1>
+  <h1>Liste des équipements en stock</h1>
+  <ul id="equipments-list">
+    <!-- Les équipements seront ajoutés dynamiquement ici -->
+  </ul>
 
-    <ul id="equipment-list">
-        <!-- Les équipements seront générés dynamiquement ici -->
-    </ul>
+  <button id="add-equipment-btn">Ajouter un équipement</button>
 
-    <button id="add-equipment-btn">Ajouter un équipement</button>
-
-    <!-- Modal pour afficher les détails de l'équipement -->
-    <div id="equipment-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div id="modal-content">
-                <!-- Les détails de l'équipement seront affichés ici -->
-            </div>
-            <button id="back-to-list-btn">Retour à la liste des équipements</button>
+  <!-- Modal pour afficher les détails de l'équipement -->
+  <div id="equipment-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2>Détails de l'équipement</h2>
+      <div id="equipment-details">
+        <div>
+          <strong>Catégorie:</strong>
+          <span id="equipment-category"></span>
         </div>
-    </div>
-
-    <!-- Modal pour ajouter un nouvel équipement -->
-    <div id="add-equipment-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Ajouter un équipement</h2>
-            <form id="add-equipment-form">
-                <label for="category-select">Catégorie:</label>
-                <select id="category-select">
-                    <option value="Inox">Inox</option>
-                    <option value="Laverie">Laverie</option>
-                    <option value="Equipement chaud">Equipement chaud</option>
-                    <option value="Equipement froid">Equipement froid</option>
-                    <option value="Equipement de préparation">Equipement de préparation</option>
-                </select>
-
-                <label for="designation-input">Désignation:</label>
-                <input type="text" id="designation-input">
-
-                <label for="description-input">Description:</label>
-                <input type="text" id="description-input">
-
-                <label for="quantity-input">Quantité:</label>
-                <input type="number" id="quantity-input">
-
-                <label for="photo-input">Photo:</label>
-                <input type="file" id="photo-input">
-
-                <button type="submit" id="add-equipment-submit-btn">Ajouter</button>
-            </form>
+        <div>
+          <strong>Désignation:</strong>
+          <span id="equipment-designation"></span>
         </div>
+        <div>
+          <strong>Description:</strong>
+          <span id="equipment-description"></span>
+        </div>
+        <div>
+          <strong>Photo:</strong>
+          <img id="equipment-photo" src="" alt="Photo de l'équipement">
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-storage.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-analytics.js"></script>
-    <script src="main.js"></script>
+  <!-- Modal pour ajouter un nouvel équipement -->
+  <div id="add-equipment-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2>Ajouter un équipement</h2>
+      <form id="add-equipment-form">
+        <div>
+          <label for="category">Catégorie:</label>
+          <select id="category" name="category">
+            <option value="Inox">Inox</option>
+            <option value="Laverie">Laverie</option>
+            <option value="Equipement chaud">Equipement chaud</option>
+            <option value="Equipement froid">Equipement froid</option>
+            <option value="Equipement de préparation">Equipement de préparation</option>
+          </select>
+        </div>
+        <div>
+          <label for="designation">Désignation:</label>
+          <input type="text" id="designation" name="designation" required>
+        </div>
+        <div>
+          <label for="description">Description:</label>
+          <textarea id="description" name="description" required></textarea>
+        </div>
+        <div>
+          <label for="quantity">Quantité:</label>
+          <input type="number" id="quantity" name="quantity" required>
+        </div>
+        <div>
+          <label for="photo">Photo:</label>
+          <input type="file" id="photo" name="photo">
+        </div>
+        <button type="submit" id="add-equipment-submit-btn" disabled>Ajouter</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+  <script src="main.js"></script>
 </body>
+
 </html>
