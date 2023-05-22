@@ -28,10 +28,6 @@
     <table>
       <thead>
         <tr>
-          <th>Nom</th>
-          <th>Description</th>
-          <th>Quantité</th>
-          <th>Catégorie</th>
           <th>Date de livraison</th>
           <th>Fournisseur/Client</th>
           <th>Marque</th>
@@ -56,91 +52,85 @@
         <span id="closeModalButton" class="close">&times;</span>
         <h2>Ajouter un équipement</h2>
         <form id="addEquipmentForm">
-          <label for="nom">Nom :</label>
-          <input type="text" id="nom" required>
+          <label for="dateLivraison">Date de livraison :</label>
+          <input type="date" id="dateLivraison" required>
 
-          <label for="description">Description :</label>
-          <textarea id="description" required></textarea>
+          <label for="fournisseurClient">Fournisseur/Client :</label>
+          <input type="text" id="fournisseurClient" required>
 
-          <label for="quantite">Quantité :</label>
-          <input type="number" id="quantite" required>
+          <label for="marque">Marque :</label>
+          <input type="text" id="marque" required>
 
-          <label for="categorie">Catégorie :</label>
-          <select id="categorie" required>
-            <option value="Inox">Inox</option>
-            <option value="Laverie">Laverie</option>
-            <option value="Equipement chaud">Equipement chaud</option>
-            <option value="Equipement froid">Equipement froid</option>
-            <option value="Equipement de préparation">Equipement de préparation</option>
-            <option value="Stockage">Stockage</option>
-          </select>
+          <label for="type">Type :</label>
+          <input type="text" id="type" required>
 
-          <button type="submit" class="capture-button">Ajouter</button>
+          <label for="reference">Référence :</label>
+          <input type="text" id="reference" required>
+
+          <label for="numeroSerie">N° de série :</label>
+          <input type="text" id="numeroSerie" required>
+
+          <label for="valeurHT">Valeur HT :</label>
+          <input type="number" id="valeurHT" required>
+
+          <label for="factureAchat">Facture achat :</label>
+          <input type="text" id="factureAchat" required>
+
+          <label for="dateFacture">Date facture :</label>
+          <input type="date" id="dateFacture" required>
+
+          <label for="complementInfo">Complément d'information :</label>
+          <textarea id="complementInfo"></textarea>
+
+          <button type="submit">Ajouter</button>
         </form>
       </div>
     </div>
 
     <div id="editEquipmentModal" class="modal">
       <div class="modal-content">
-        <span id="editEquipmentCloseButton" class="close">&times;</span>
-        <h2>Modifier un équipement</h2>
+        <span id="closeEditModalButton" class="close">&times;</span>
+        <h2>Modifier l'équipement</h2>
         <form id="editEquipmentForm">
-          <input type="hidden" id="editEquipmentId">
+          <label for="editDateLivraison">Date de livraison :</label>
+          <input type="date" id="editDateLivraison" required>
 
-          <label for="editEquipmentNom">Nom :</label>
-          <input type="text" id="editEquipmentNom" required>
+          <label for="editFournisseurClient">Fournisseur/Client :</label>
+          <input type="text" id="editFournisseurClient" required>
 
-          <label for="editEquipmentDescription">Description :</label>
-          <textarea id="editEquipmentDescription" required></textarea>
+          <label for="editMarque">Marque :</label>
+          <input type="text" id="editMarque" required>
 
-          <label for="editEquipmentQuantite">Quantité :</label>
-          <input type="number" id="editEquipmentQuantite" required>
+          <label for="editType">Type :</label>
+          <input type="text" id="editType" required>
 
-          <label for="editEquipmentCategorie">Catégorie :</label>
-          <select id="editEquipmentCategorie" required>
-            <option value="Inox">Inox</option>
-            <option value="Laverie">Laverie</option>
-            <option value="Equipement chaud">Equipement chaud</option>
-            <option value="Equipement froid">Equipement froid</option>
-            <option value="Equipement de préparation">Equipement de préparation</option>
-            <option value="Stockage">Stockage</option>
-          </select>
+          <label for="editReference">Référence :</label>
+          <input type="text" id="editReference" required>
 
-          <button type="submit" class="capture-button">Enregistrer</button>
+          <label for="editNumeroSerie">N° de série :</label>
+          <input type="text" id="editNumeroSerie" required>
+
+          <label for="editValeurHT">Valeur HT :</label>
+          <input type="number" id="editValeurHT" required>
+
+          <label for="editFactureAchat">Facture achat :</label>
+          <input type="text" id="editFactureAchat" required>
+
+          <label for="editDateFacture">Date facture :</label>
+          <input type="date" id="editDateFacture" required>
+
+          <label for="editComplementInfo">Complément d'information :</label>
+          <textarea id="editComplementInfo"></textarea>
+
+          <button type="submit">Modifier</button>
         </form>
       </div>
     </div>
   </main>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.à/firebase-firestore.js"></script>
   <script src="main.js"></script>
   <script src="script.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const filterCategorySelect = document.getElementById('filterCategory');
-      filterCategorySelect.addEventListener('change', () => {
-        const selectedCategory = filterCategorySelect.value;
-        filterEquipmentListByCategory(selectedCategory);
-      });
-
-      function filterEquipmentListByCategory(category) {
-        const equipmentTableBody = document.getElementById('equipmentTableBody');
-        const equipmentRows = equipmentTableBody.querySelectorAll('tr');
-
-        equipmentRows.forEach((row) => {
-          const categoryCell = row.querySelector('td:nth-child(4)');
-          if (category === '' || categoryCell.textContent === category) {
-            row.style.display = '';
-          } else {
-            row.style.display = 'none';
-          }
-        });
-      }
-
-      // Appel initial pour afficher tous les équipements
-      filterEquipmentListByCategory('');
-    });
-  </script>
 </body>
 </html>
