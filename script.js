@@ -1,37 +1,46 @@
-// Fonction pour ouvrir le modal
-function openModal() {
-  document.getElementById("myModal").style.display = "block";
-}
+const equipmentTableBody = document.getElementById('equipmentTableBody');
+const addEquipmentButton = document.getElementById('addEquipmentButton');
+const addEquipmentModal = document.getElementById('addEquipmentModal');
+const closeModalButton = document.getElementById('closeModalButton');
+const addEquipmentForm = document.getElementById('addEquipmentForm');
 
-// Fonction pour fermer le modal
-function closeModal() {
-  document.getElementById("myModal").style.display = "none";
-}
+addEquipmentButton.addEventListener('click', () => {
+  addEquipmentModal.style.display = 'block';
+});
 
-// Fonction pour soumettre le formulaire
-function submitForm(event) {
-  event.preventDefault(); // Empêche le rechargement de la page
+closeModalButton.addEventListener('click', () => {
+  addEquipmentModal.style.display = 'none';
+});
 
-  // Récupère les valeurs du formulaire
-  var name = document.getElementById("name").value;
-  var description = document.getElementById("description").value;
-  var price = document.getElementById("price").value;
+addEquipmentForm.addEventListener('submit', (e) => {
+  e.preventDefault();
 
-  // Vérifie si les champs sont vides
-  if (name === "" || description === "" || price === "") {
-    document.getElementById("errorMessage").innerHTML = "Veuillez remplir tous les champs.";
-  } else {
-    // Ajoute une nouvelle ligne dans le tableau avec les valeurs du formulaire
-    var table = document.querySelector("table tbody");
-    var newRow = table.insertRow();
-    newRow.innerHTML = "<td></td><td>" + name + "</td><td>" + description + "</td><td>" + price + "</td>";
+  const dateLivraison = document.getElementById('dateLivraison').value;
+  const fournisseurClient = document.getElementById('fournisseurClient').value;
+  const marque = document.getElementById('marque').value;
+  const type = document.getElementById('type').value;
+  const reference = document.getElementById('reference').value;
+  const numeroSerie = document.getElementById('numeroSerie').value;
+  const valeurHT = document.getElementById('valeurHT').value;
+  const factureAchat = document.getElementById('factureAchat').value;
+  const dateFacture = document.getElementById('dateFacture').value;
+  const complement = document.getElementById('complement').value;
 
-    // Réinitialise les valeurs du formulaire
-    document.getElementById("name").value = "";
-    document.getElementById("description").value = "";
-    document.getElementById("price").value = "";
+  const newRow = document.createElement('tr');
+  newRow.innerHTML = `
+    <td>${dateLivraison}</td>
+    <td>${fournisseurClient}</td>
+    <td>${marque}</td>
+    <td>${type}</td>
+    <td>${reference}</td>
+    <td>${numeroSerie}</td>
+    <td>${valeurHT}</td>
+    <td>${factureAchat}</td>
+    <td>${dateFacture}</td>
+    <td>${complement}</td>
+  `;
+  equipmentTableBody.appendChild(newRow);
 
-    // Ferme le modal
-    closeModal();
-  }
-}
+  addEquipmentModal.style.display = 'none';
+  addEquipmentForm.reset();
+});
