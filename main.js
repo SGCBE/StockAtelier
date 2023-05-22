@@ -41,8 +41,8 @@ function generateEquipmentList(data) {
       <td>${equipment.quantite}</td>
       <td>${equipment.categorie}</td>
       <td>
+        <button onclick="showEditEquipmentModal('${equipment.id}')">Modifier</button>
         <button onclick="removeEquipment('${equipment.id}')">Supprimer</button>
-        <button onclick="openEditEquipmentModal('${equipment.id}')">Modifier</button>
       </td>
     `;
     equipmentTableBody.appendChild(equipmentRow);
@@ -54,8 +54,40 @@ function generateEquipmentList(data) {
 
 // Fonction pour supprimer un équipement
 function removeEquipment(id) {
+  const confirmation = confirm('Voulez-vous vraiment supprimer cet équipement ?');
+  if (confirmation) {
+    const equipmentRef = database.ref(`equipments/${id}`);
+    equipmentRef.remove();
+  }
+}
+
+// Fonction pour ouvrir le modal de modification d'équipement
+function showEditEquipmentModal(id) {
   const equipmentRef = database.ref(`equipments/${id}`);
-  equipmentRef.remove();
+  equipmentRef.once('value', (snapshot) => {
+    const equipment = snapshot.val();
+    if (equipment) {
+      const editEquipmentModal = document.getElementById('editEquipmentModal');
+      const editEquipmentForm = document.getElementById('editEquipmentForm');
+      const editEquipmentId = document.getElementById('editEquipmentId');
+      const editEquipmentNom = document.getElementById('editEquipmentNom');
+      const editEquipmentDescription = document.getElementById('editEquipmentDescription');
+      const editEquipmentQuantite = document.getElementById('editEquipmentQuantite');
+      const editEquipmentCategorie = document.getElementById('editEquipmentCategorie');
+
+      if (editEquipmentModal && editEquipmentForm && editEquipmentId && editEquipmentNom && editEquipmentDescription && editEquipmentQuantite && editEquipmentCategorie) {
+        // Remplir les champs du formulaire avec les informations actuelles de l'équipement
+        editEquipmentId.value = id;
+        editEquipmentNom.value = equipment.nom;
+        editEquipmentDescription.value = equipment.description;
+        editEquipmentQuantite.value = equipment.quantite;
+        editEquipmentCategorie.value = equipment.categorie;
+
+        // Ouvrir le modal de modification
+        editEquipmentModal.style.display = 'block';
+      }
+    }
+  });
 }
 
 // Fonction pour ajuster automatiquement les colonnes de la table
@@ -71,10 +103,10 @@ function adjustTableColumns() {
   });
 }
 
-// Événement de soumission du formulaire d'ajout d'équipement
+// Événement pour soumettre le formulaire d'ajout d'équipement
 const addEquipmentForm = document.getElementById('addEquipmentForm');
-addEquipmentForm.addEventListener('submit', (event) => {
-  event.preventDefault();
+addEquipmentForm.addEventListener('submit', (e) => {
+  e.preventDefault();
 
   const nom = document.getElementById('nom').value;
   const description = document.getElementById('description').value;
@@ -83,99 +115,56 @@ addEquipmentForm.addEventListener('submit', (event) => {
 
   addEquipment(nom, description, quantite, categorie);
 
-  // Réinitialisation du formulaire
+  // Réinitialiser le formulaire après avoir ajouté l'équipement
   addEquipmentForm.reset();
 });
 
-// Événement pour ouvrir le modal d'ajout d'équipement
-const addEquipmentButton = document.getElementById('addEquipmentButton');
-const addEquipmentModal = document.getElementById('addEquipmentModal');
-const closeModalButton = document.getElementById('closeModalButton');
-
-addEquipmentButton.addEventListener('click', () => {
-  addEquipmentModal.style.display = 'block';
+// Événement pour fermer le modal de modification d'équipement
+const editEquipmentModal = document.getElementById('editEquipmentModal');
+const editEquipmentCloseButton = document.getElementById('editEquipmentCloseButton');
+editEquipmentCloseButton.addEventListener('click', () => {
+  editEquipmentModal.style.display = 'none';
 });
 
-closeModalButton.addEventListener('click', () => {
-  addEquipmentModal.style.display = 'none';
-});
+// Événement pour soumettre le formulaire de modification d'équipement
+const editEquipmentForm = document.getElementById('editEquipmentForm');
+editEquipmentForm.addEventListener('submit', (e) => {
+  e.preventDefault();
 
-// Événement pour fermer le modal en cliquant en dehors de celui-ci
-window.addEventListener('click', (event) => {
-  if (event.target === addEquipmentModal) {
-    addEquipmentModal.style.display = 'none';
-  }
-});
+  const id = document.getElementById('editEquipmentId').value;
+  const nom = document.getElementById('editEquipmentNom').value;
+  const description = document.getElementById('editEquipmentDescription').value;
+  const quantite = document.getElementById('editEquipmentQuantite').value;
+  const categorie = document.getElementById('editEquipmentCategorie').value;
 
-// Fonction pour ouvrir le modal de modification d'équipement
-function openEditEquipmentModal(id) {
-  const editEquipmentModal = document.getElementById('editEquipmentModal');
-  const editEquipmentForm = document.getElementById('editEquipmentForm');
-  const editEquipmentId = document.getElementById('editEquipmentId');
-  const editEquipmentNom = document.getElementById('editEquipmentNom');
-  const editEquipmentDescription = document.getElementById('editEquipmentDescription');
-  const editEquipmentQuantite = document.getElementById('editEquipmentQuantite');
-  const editEquipmentCategorie = document.getElementById('editEquipmentCategorie');
-
-  // Récupérer les informations de l'équipement à partir de la base de données Firebase
   const equipmentRef = database.ref(`equipments/${id}`);
-  equipmentRef.once('value', (snapshot) => {
-    const equipment = snapshot.val();
-
-    // Remplir les champs du formulaire avec les informations actuelles de l'équipement
-    editEquipmentId.value = id;
-    editEquipmentNom.value = equipment.nom;
-    editEquipmentDescription.value = equipment.description;
-    editEquipmentQuantite.value = equipment.quantite;
-    editEquipmentCategorie.value = equipment.categorie;
-
-    // Ouvrir le modal de modification
-    editEquipmentModal.style.display = 'block';
+  equipmentRef.update({
+    nom,
+    description,
+    quantite,
+    categorie
   });
 
-  // Événement de soumission du formulaire de modification d'équipement
-  editEquipmentForm.addEventListener('submit', (event) => {
-    event.preventDefault();
+  // Fermer le modal de modification après avoir enregistré les modifications
+  editEquipmentModal.style.display = 'none';
+});
 
-    // Récupérer les nouvelles valeurs des champs du formulaire
-    const updatedNom = editEquipmentNom.value;
-    const updatedDescription = editEquipmentDescription.value;
-    const updatedQuantite = editEquipmentQuantite.value;
-    const updatedCategorie = editEquipmentCategorie.value;
-
-    // Mettre à jour les informations de l'équipement dans la base de données Firebase
-    const updatedEquipment = {
-      nom: updatedNom,
-      description: updatedDescription,
-      quantite: updatedQuantite,
-      categorie: updatedCategorie
-    };
-    equipmentRef.update(updatedEquipment);
-
-    // Fermer le modal de modification
+// Événement pour fermer le modal de modification d'équipement lorsque l'utilisateur clique en dehors du contenu du modal
+window.addEventListener('click', (e) => {
+  if (e.target === editEquipmentModal) {
     editEquipmentModal.style.display = 'none';
-  });
-}
-
-// Événement de suppression d'un équipement
-function removeEquipment(id) {
-  const confirmation = confirm('Voulez-vous vraiment supprimer cet équipement ?');
-  if (confirmation) {
-    const equipmentRef = database.ref(`equipments/${id}`);
-    equipmentRef.remove();
   }
-}
+});
 
-// Événement pour la mise à jour de la liste des équipements
+// Événement pour rafraîchir la liste des équipements à chaque modification dans la base de données
 equipmentsRef.on('value', (snapshot) => {
   const data = [];
-
   snapshot.forEach((childSnapshot) => {
-    const equipment = {
+    const childData = {
       id: childSnapshot.key,
       ...childSnapshot.val()
     };
-    data.push(equipment);
+    data.push(childData);
   });
 
   generateEquipmentList(data);
