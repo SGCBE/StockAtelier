@@ -45,64 +45,83 @@ function generateEquipmentList(data) {
     equipmentTableBody.appendChild(equipmentRow);
   });
 
-  // Appel à la fonction de redimensionnement des colonnes après avoir généré la liste
-  resizeTableColumns();
+  // Appel à la fonction de redimensionnement des colonnes après avoir généré la liste des équipements
+  adjustTableColumns();
 }
 
 // Fonction pour supprimer un équipement
-function removeEquipment(equipmentId) {
-  const equipmentRef = database.ref(`equipments/${equipmentId}`);
+function removeEquipment(id) {
+  const equipmentRef = database.ref(`equipments/${id}`);
   equipmentRef.remove();
 }
 
-// Fonction pour afficher le modal
-function showModal() {
-  const modal = document.getElementById('addEquipmentModal');
-  modal.style.display = 'block';
-}
+// Fonction pour ajuster automatiquement les colonnes de la table
+function adjustTableColumns() {
+  const table = document.querySelector('table');
+  const tableHeaders = table.querySelectorAll('thead th');
+  const tableBodyRows = table.querySelectorAll('tbody tr');
 
-// Fonction pour masquer le modal
-function hideModal() {
-  const modal = document.getElementById('addEquipmentModal');
-  modal.style.display = 'none';
-}
-
-// Fonction pour redimensionner les colonnes de la table en fonction du contenu
-function resizeTableColumns() {
-  const autoResizableCells = document.querySelectorAll('.auto-resizable');
-
-  autoResizableCells.forEach(cell => {
-    cell.style.width = '1px'; // Réinitialiser la largeur à une valeur minimale pour calculer la taille réelle du contenu
-    const computedWidth = `${cell.scrollWidth}px`;
-    cell.style.width = computedWidth; // Appliquer la largeur calculée pour ajuster la colonne
+  tableHeaders.forEach((header, index) => {
+    const cellWidths = Array.from(tableBodyRows, row => row.querySelectorAll('td')[index].offsetWidth);
+    const maxCellWidth = Math.max(...cellWidths);
+    header.style.width = `${maxCellWidth}px`;
   });
 }
 
-// Appeler la fonction de redimensionnement au chargement de la page et lors des modifications de la fenêtre
-window.addEventListener('load', resizeTableColumns);
-window.addEventListener('resize', resizeTableColumns);
+// Événement de soumission du formulaire d'ajout d'équipement
+const addEquipmentForm = document.getElementById('addEquipmentForm');
+addEquipmentForm.addEventListener('submit', (event) => {
+  event.preventDefault();
 
-// Écouteur d'événement pour le formulaire d'ajout d'équipement
-document.getElementById('addEquipmentForm').addEventListener('submit', (e) => {
-  e.preventDefault();
   const nom = document.getElementById('nom').value;
   const description = document.getElementById('description').value;
   const quantite = document.getElementById('quantite').value;
 
   addEquipment(nom, description, quantite);
-  hideModal();
+
+  // Réinitialisation du formulaire
+  addEquipmentForm.reset();
 });
 
-// Écouteur d'événement pour le bouton "Ajouter un équipement"
-document.getElementById('addEquipmentButton').addEventListener('click', showModal);
+// Événement pour ouvrir le modal d'ajout d'équipement
+const addEquipmentButton = document.getElementById('addEquipmentButton');
+const addEquipmentModal = document.getElementById('addEquipmentModal');
+const closeModalButton = document.getElementById('closeModalButton');
 
-// Événement pour détecter les modifications dans la base de données Firebase
+addEquipmentButton.addEventListener('click', () => {
+  addEquipmentModal.style.display = 'block';
+});
+
+closeModalButton.addEventListener('click', () => {
+  addEquipmentModal.style.display = 'none';
+});
+
+// Événement pour fermer le modal en cliquant en dehors de celui-ci
+window.addEventListener('click', (event) => {
+  if (event.target === addEquipmentModal) {
+    addEquipmentModal.style.display = 'none';
+  }
+});
+
+// Événement de suppression d'un équipement
+function removeEquipment(id) {
+  const confirmation = confirm('Voulez-vous vraiment supprimer cet équipement ?');
+  if (confirmation) {
+    const equipmentRef = database.ref(`equipments/${id}`);
+    equipmentRef.remove();
+  }
+}
+
+// Événement pour la mise à jour de la liste des équipements
 equipmentsRef.on('value', (snapshot) => {
   const data = [];
+
   snapshot.forEach((childSnapshot) => {
-    const childData = childSnapshot.val();
-    childData.id = childSnapshot.key;
-    data.push(childData);
+    const equipment = {
+      id: childSnapshot.key,
+      ...childSnapshot.val()
+    };
+    data.push(equipment);
   });
 
   generateEquipmentList(data);
