@@ -17,11 +17,12 @@ const database = firebase.database();
 const equipmentsRef = database.ref('equipments');
 
 // Fonction pour ajouter un nouvel équipement
-function addEquipment(nom, description, quantite) {
+function addEquipment(nom, description, quantite, categorie) {
   const equipment = {
     nom,
     description,
-    quantite
+    quantite,
+    categorie
   };
 
   equipmentsRef.push(equipment);
@@ -38,6 +39,7 @@ function generateEquipmentList(data) {
       <td>${equipment.nom}</td>
       <td>${equipment.description}</td>
       <td>${equipment.quantite}</td>
+      <td>${equipment.categorie}</td>
       <td>
         <button onclick="removeEquipment('${equipment.id}')">Supprimer</button>
       </td>
@@ -76,8 +78,9 @@ addEquipmentForm.addEventListener('submit', (event) => {
   const nom = document.getElementById('nom').value;
   const description = document.getElementById('description').value;
   const quantite = document.getElementById('quantite').value;
+  const categorie = document.getElementById('categorie').value;
 
-  addEquipment(nom, description, quantite);
+  addEquipment(nom, description, quantite, categorie);
 
   // Réinitialisation du formulaire
   addEquipmentForm.reset();
