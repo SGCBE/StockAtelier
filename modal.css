@@ -66,3 +66,24 @@
 #addEquipmentForm button:hover {
   background-color: #45a049;
 }
+
+/* Styles pour écran mobile */
+@media (max-width: 767px) {
+  #modalContent {
+    width: 90%;
+    margin: 30% auto;
+  }
+
+  #addEquipmentForm input[type="text"],
+  #addEquipmentForm textarea {
+    font-size: 14px;
+  }
+}
+
+/* Styles pour écran PC */
+@media (min-width: 768px) {
+  #modalContent {
+    margin: 10% auto;
+    padding: 40px;
+  }
+}
