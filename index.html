@@ -14,6 +14,17 @@
   </header>
 
   <main>
+    <label for="filterCategory">Filtrer par catégorie :</label>
+    <select id="filterCategory">
+      <option value="">Toutes</option>
+      <option value="Inox">Inox</option>
+      <option value="Laverie">Laverie</option>
+      <option value="Equipement chaud">Equipement chaud</option>
+      <option value="Equipement froid">Equipement froid</option>
+      <option value="Equipement de préparation">Equipement de préparation</option>
+      <option value="Stockage">Stockage</option>
+    </select>
+
     <table>
       <thead>
         <tr>
@@ -27,17 +38,6 @@
       <tbody id="equipmentTableBody">
       </tbody>
     </table>
-
-    <label for="filterCategory">Filtrer par catégorie :</label>
-    <select id="filterCategory">
-      <option value="">Toutes</option>
-      <option value="Inox">Inox</option>
-      <option value="Laverie">Laverie</option>
-      <option value="Equipement chaud">Equipement chaud</option>
-      <option value="Equipement froid">Equipement froid</option>
-      <option value="Equipement de préparation">Equipement de préparation</option>
-      <option value="Stockage">Stockage</option>
-    </select>
 
     <button id="addEquipmentButton" class="full-width-button">Ajouter un équipement</button>
 
