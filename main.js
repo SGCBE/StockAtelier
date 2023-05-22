@@ -82,26 +82,31 @@ function openModal(equipmentId) {
 }
 
 // Gérer la soumission du formulaire d'ajout d'équipement
-const addEquipmentForm = document.getElementById("addEquipmentForm");
-addEquipmentForm.addEventListener("submit", (e) => {
-  e.preventDefault();
+document.addEventListener("DOMContentLoaded", () => {
+  const addEquipmentForm = document.getElementById("addEquipmentForm");
+  if (addEquipmentForm) {
+    addEquipmentForm.addEventListener("submit", (e) => {
+      e.preventDefault();
 
-  const categorieInput = document.getElementById("categorie");
-  const designationInput = document.getElementById("designation");
-  const descriptionInput = document.getElementById("description");
-  const photoInput = document.getElementById("photo");
+      const categorieInput = document.getElementById("categorie");
+      const designationInput = document.getElementById("designation");
+      const descriptionInput = document.getElementById("description");
+      const photoInput = document.getElementById("photo");
 
-  const equipment = {
-    categorie: categorieInput.value,
-    designation: designationInput.value,
-    description: descriptionInput.value,
-    photo: photoInput.value
-  };
+      const equipment = {
+        categorie: categorieInput.value,
+        designation: designationInput.value,
+        description: descriptionInput.value,
+        photo: photoInput.value
+      };
 
-  addEquipment(equipment);
+      addEquipment(equipment);
 
-  categorieInput.value = "";
-  designationInput.value = "";
-  descriptionInput.value = "";
-  photoInput.value = "";
+      categorieInput.value = "";
+      designationInput.value = "";
+      descriptionInput.value = "";
+      photoInput.value = "";
+    });
+  }
 });
+
