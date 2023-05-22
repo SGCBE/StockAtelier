@@ -105,4 +105,3 @@ addEquipmentForm.addEventListener("submit", (e) => {
   descriptionInput.value = "";
   photoInput.value = "";
 });
-
