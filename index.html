@@ -19,6 +19,7 @@
           <th>Nom</th>
           <th>Description</th>
           <th>Quantité</th>
+          <th>Catégorie</th>
           <th></th>
         </tr>
       </thead>
@@ -41,6 +42,16 @@
 
           <label for="quantite">Quantité :</label>
           <input type="number" id="quantite" required>
+
+          <label for="categorie">Catégorie :</label>
+          <select id="categorie" required>
+            <option value="Inox">Inox</option>
+            <option value="Laverie">Laverie</option>
+            <option value="Equipement chaud">Equipement chaud</option>
+            <option value="Equipement froid">Equipement froid</option>
+            <option value="Equipement de préparation">Equipement de préparation</option>
+            <option value="Stockage">Stockage</option>
+          </select>
 
           <button type="submit" class="capture-button">Ajouter</button>
         </form>
