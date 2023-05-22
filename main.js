@@ -1,4 +1,8 @@
 // Configuration de Firebase
+
+import firebase from 'firebase/app';
+import 'firebase/database';
+
 const firebaseConfig = {
   apiKey: "AIzaSyCRxjJPOHEBAbnXQariFN6funIWPpsIe28",
   authDomain: "atelier---gestion-de-stock.firebaseapp.com",
@@ -8,7 +12,7 @@ const firebaseConfig = {
   messagingSenderId: "123456789",
   appId: "1:123456789:web:abcdefghijklmno"
 };
-
+// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
 // Get a reference to the Firestore database service
