@@ -1,50 +1,49 @@
-/* Styles CSS pour la mise en page */
+/* Styles de base */
+
 body {
-  font-family: sans-serif;
+  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
 }
 
+button {
+  cursor: pointer;
+}
+
+/* Styles spécifiques à la page */
+
 header {
-  background-color: #fff;
-  color: #00A1E0;
-  padding: 16px;
-  display: flex;
-  align-items: center;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
 }
 
-h1 {
+header h1 {
   margin: 0;
-  font-size: 48px;
-  margin-left: 16px;
 }
 
-img {
-  height: 48px;
-  margin: 16px;
+main {
+  margin: 20px;
 }
 
 table {
   border-collapse: collapse;
+  margin-bottom: 20px;
   width: 100%;
 }
 
-th, td {
-  text-align: left;
+table th,
+table td {
+  border: 1px solid #333;
   padding: 8px;
-  border-bottom: 1px solid #ddd;
 }
 
-th {
-  background-color: #333;
-  color: #fff;
+.full-width-button {
+  width: 100%;
+  margin-bottom: 10px;
 }
 
-tr:hover {
-  background-color: #f5f5f5;
-}
-
-/* Styles CSS pour les modales */
 .modal {
   display: none;
   position: fixed;
@@ -53,16 +52,16 @@ tr:hover {
   top: 0;
   width: 100%;
   height: 100%;
+  overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
-  background-color: #fff;
+  background-color: #fefefe;
   margin: 10% auto;
-  padding: 16px;
+  padding: 20px;
   border: 1px solid #888;
   width: 50%;
-  max-width: 500px; /* Ajout d'une largeur maximale pour le contenu du modal */
 }
 
 .close {
@@ -70,6 +69,7 @@ tr:hover {
   float: right;
   font-size: 28px;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .close:hover,
@@ -79,37 +79,10 @@ tr:hover {
   cursor: pointer;
 }
 
-/* Styles CSS pour les formulaires */
-form {
-  display: flex;
-  flex-direction: column;
-}
+/* Styles responsives */
 
-label {
-  font-weight: bold;
-  margin-bottom: 8px;
+@media screen and (max-width: 768px) {
+  .modal-content {
+    width: 80%;
+  }
 }
-
-input,
-select {
-  padding: 8px;
-  margin-bottom: 16px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  width: 100%; /* Utilisation de la largeur maximale disponible */
-  box-sizing: border-box; /* Inclusion de la largeur des bordures et du padding dans la largeur totale */
-}
-
-input[type=submit] {
-  background-color: #333;
-  color: #fff;
-  cursor: pointer;
-}
-
-input[type=submit]:hover {
-  background-color: #444;
-}
-
-/* Nouveau style pour le bouton "Ajouter un équipement" */
-.full-width-button {
-  display: block;
