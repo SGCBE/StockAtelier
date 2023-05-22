@@ -10,180 +10,86 @@ const firebaseConfig = {
 };
 
 
-
 // Initialisation de Firebase
 firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-// Référence à la base de données Firebase
-const database = firebase.database();
+// Référence à la collection "equipments" dans la base de données
+const equipmentRef = db.ref("equipments");
 
-// Référence à la table "equipments" dans la base de données
-const equipmentRef = database.ref("equipments");
-
-// Référence à l'emplacement de stockage dans Firebase Storage
-const storageRef = firebase.storage().ref();
-
-// Variables globales pour la capture de photo
-let stream;
-let videoTrack;
-let photoCanvas;
-let captureButton;
-
-// Fonction pour afficher le modal
-function showModal() {
-  const addEquipmentModal = document.getElementById("addEquipmentModal");
-  addEquipmentModal.style.display = "block";
-
-  // Démarrer la vidéo
-  startVideo();
+// Fonction pour ajouter un nouvel équipement
+function addEquipment(equipment) {
+  equipmentRef.push(equipment);
 }
+
+// Fonction pour supprimer un équipement
+function deleteEquipment(equipmentId) {
+  const equipmentToDeleteRef = db.ref(`equipments/${equipmentId}`);
+  equipmentToDeleteRef.remove();
+}
+
+// Fonction de rappel pour mettre à jour la liste des équipements
+function updateEquipmentList(snapshot) {
+  const equipmentTableBody = document.getElementById("equipmentTableBody");
+  equipmentTableBody.innerHTML = "";
+
+  snapshot.forEach((childSnapshot) => {
+    const equipment = childSnapshot.val();
+    const equipmentId = childSnapshot.key;
+
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${equipment.nom}</td>
+      <td>${equipment.description}</td>
+      <td>${equipment.quantite}</td>
+      <td>
+        <button onclick="deleteEquipment('${equipmentId}')">Supprimer</button>
+      </td>
+    `;
+
+    equipmentTableBody.appendChild(row);
+  });
+}
+
+// Écouter les modifications dans la base de données
+equipmentRef.on("value", updateEquipmentList);
 
 // Fonction pour masquer le modal
 function hideModal() {
   const addEquipmentModal = document.getElementById("addEquipmentModal");
   addEquipmentModal.style.display = "none";
-
-  // Arrêter la vidéo et libérer la ressource du flux
-  stopVideo();
 }
 
-// Fonction pour démarrer la vidéo
-function startVideo() {
-  const cameraPreview = document.getElementById("cameraPreview");
-
-  navigator.mediaDevices.getUserMedia({ video: true })
-    .then((stream) => {
-      cameraPreview.srcObject = stream;
-      videoTrack = stream.getVideoTracks()[0];
-      captureButton.disabled = false;
-    })
-    .catch((error) => {
-      console.error("Erreur lors de l'accès à la caméra :", error);
-    });
-}
-
-// Fonction pour arrêter la vidéo
-function stopVideo() {
-  const cameraPreview = document.getElementById("cameraPreview");
-
-  if (videoTrack) {
-    videoTrack.stop();
-  }
-
-  if (cameraPreview.srcObject) {
-    cameraPreview.srcObject.getTracks().forEach((track) => {
-      track.stop();
-    });
-  }
-}
-
-// Fonction pour capturer la photo
-function capturePhoto() {
-  const cameraPreview = document.getElementById("cameraPreview");
-  const photoCanvas = document.getElementById("photoCanvas");
-  const context = photoCanvas.getContext("2d");
-
-  // Définir la taille du canevas en fonction de la vidéo
-  photoCanvas.width = cameraPreview.videoWidth;
-  photoCanvas.height = cameraPreview.videoHeight;
-
-  // Dessiner l'image capturée sur le canevas
-  context.drawImage(cameraPreview, 0, 0, photoCanvas.width, photoCanvas.height);
-
-  // Arrêter la vidéo
-  stopVideo();
-}
-
-// Fonction pour ajouter un équipement à la base de données
-function addEquipment(equipmentData) {
-  equipmentRef.push().set(equipmentData)
-    .then(() => {
-      console.log("Équipement ajouté avec succès !");
-      hideModal();
-    })
-    .catch((error) => {
-      console.error("Erreur lors de l'ajout de l'équipement :", error);
-    });
-}
-
-// Fonction pour télécharger la photo dans Firebase Storage
-function uploadPhoto(photoData) {
-  // Générer un nom de fichier unique pour la photo
-  const filename = "photo_" + Date.now() + ".jpg";
-
-  // Référence à l'emplacement spécifique où vous souhaitez stocker la photo
-  const photoRef = storageRef.child("images/" + filename);
-
-  // Téléchargement de la photo
-  photoRef.putString(photoData, "data_url")
-    .then((snapshot) => {
-      console.log("Photo téléchargée avec succès !");
-      // Obtenir l'URL de téléchargement de la photo
-      return snapshot.ref.getDownloadURL();
-    })
-    .then((downloadURL) => {
-      // Ajouter l'URL de la photo à l'objet equipmentData
-      const equipmentData = {
-        nom: document.getElementById("nom").value,
-        description: document.getElementById("description").value,
-        quantite: document.getElementById("quantite").value,
-        photo: downloadURL
-      };
-
-      // Ajouter l'équipement à la base de données
-      addEquipment(equipmentData);
-    })
-    .catch((error) => {
-      console.error("Erreur lors du téléchargement de la photo :", error);
-    });
-}
-
-// Fonction pour gérer la soumission du formulaire
-function handleFormSubmit(event) {
-  event.preventDefault();
+// Gérer la soumission du formulaire d'ajout d'équipement
+const addEquipmentForm = document.getElementById("addEquipmentForm");
+addEquipmentForm.addEventListener("submit", (e) => {
+  e.preventDefault();
 
   const nomInput = document.getElementById("nom");
   const descriptionInput = document.getElementById("description");
   const quantiteInput = document.getElementById("quantite");
 
-  const equipmentData = {
+  const equipment = {
     nom: nomInput.value,
     description: descriptionInput.value,
     quantite: quantiteInput.value
   };
 
-  // Vérifier si une photo a été capturée
-  if (photoCanvas.toDataURL) {
-    // Convertir le canevas en une représentation de données d'URL
-    const photoData = photoCanvas.toDataURL("image/jpeg");
+  addEquipment(equipment);
 
-    // Télécharger la photo dans Firebase Storage
-    uploadPhoto(photoData);
-  } else {
-    // Ajouter l'équipement à la base de données sans photo
-    addEquipment(equipmentData);
-  }
+  nomInput.value = "";
+  descriptionInput.value = "";
+  quantiteInput.value = "";
+
+  hideModal();
+});
+
+// Fonction pour afficher le modal
+function showModal() {
+  const addEquipmentModal = document.getElementById("addEquipmentModal");
+  addEquipmentModal.style.display = "block";
 }
 
-// Fonction d'initialisation de l'application
-function initializeApp() {
-  // Référence aux éléments du DOM
-  const addEquipmentButton = document.getElementById("addEquipmentButton");
-  captureButton = document.getElementById("captureButton");
-  photoCanvas = document.getElementById("photoCanvas");
-  const addEquipmentForm = document.getElementById("addEquipmentForm");
-
-  // Gérer l'événement clic sur le bouton "Ajouter un équipement"
-  addEquipmentButton.addEventListener("click", showModal);
-
-  // Gérer l'événement clic sur le bouton "Capturer la photo"
-  captureButton.addEventListener("click", capturePhoto);
-
-  // Gérer l'événement de soumission du formulaire
-  addEquipmentForm.addEventListener("submit", handleFormSubmit);
-}
-
-// Exécuter la fonction d'initialisation de l'application une fois que le DOM est prêt
-document.addEventListener("DOMContentLoaded", initializeApp);
-
-
+// Gérer le clic sur le bouton "Ajouter un équipement"
+const addEquipmentButton = document.getElementById("addEquipmentButton");
+addEquipmentButton.addEventListener("click", showModal);
