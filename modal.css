@@ -78,6 +78,11 @@
   #addEquipmentForm textarea {
     font-size: 14px;
   }
+
+  #modalContent button {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
 }
 
 /* Styles pour écran PC */
@@ -85,5 +90,10 @@
   #modalContent {
     margin: 10% auto;
     padding: 40px;
+  }
+
+  #modalContent button {
+    padding: 12px 24px;
+    font-size: 16px;
   }
 }
