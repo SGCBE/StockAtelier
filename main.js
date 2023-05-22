@@ -11,20 +11,19 @@ const firebaseConfig = {
 
 // Initialisation de Firebase
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const db = firebase.firestore();
 
 // Référence à la collection "equipments" dans la base de données
-const equipmentRef = db.ref("equipments");
+const equipmentRef = db.collection("equipments");
 
 // Fonction pour ajouter un nouvel équipement
 function addEquipment(equipment) {
-  equipmentRef.push(equipment);
+  equipmentRef.add(equipment);
 }
 
 // Fonction pour supprimer un équipement
 function deleteEquipment(equipmentId) {
-  const equipmentToDeleteRef = db.ref(`equipments/${equipmentId}`);
-  equipmentToDeleteRef.remove();
+  equipmentRef.doc(equipmentId).delete();
 }
 
 // Fonction de rappel pour mettre à jour la liste des équipements
@@ -32,9 +31,9 @@ function updateEquipmentList(snapshot) {
   const equipmentTableBody = document.getElementById("equipmentTableBody");
   equipmentTableBody.innerHTML = "";
 
-  snapshot.forEach((childSnapshot) => {
-    const equipment = childSnapshot.val();
-    const equipmentId = childSnapshot.key;
+  snapshot.forEach((doc) => {
+    const equipment = doc.data();
+    const equipmentId = doc.id;
 
     const row = document.createElement("tr");
     row.innerHTML = `
@@ -52,7 +51,7 @@ function updateEquipmentList(snapshot) {
 }
 
 // Écouter les modifications dans la base de données
-equipmentRef.on("value", updateEquipmentList);
+equipmentRef.onSnapshot(updateEquipmentList);
 
 // Fonction pour masquer le modal
 function hideModal() {
@@ -65,8 +64,8 @@ function openModal(equipmentId) {
   const modal = document.getElementById("equipmentModal");
   const modalContent = document.getElementById("modalContent");
   
-  equipmentRef.child(equipmentId).once("value", (snapshot) => {
-    const equipment = snapshot.val();
+  equipmentRef.doc(equipmentId).get().then((doc) => {
+    const equipment = doc.data();
     
     modalContent.innerHTML = `
       <h2>Détails de l'équipement</h2>
@@ -92,12 +91,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const designationInput = document.getElementById("designation");
       const descriptionInput = document.getElementById("description");
       const photoInput = document.getElementById("photo");
+      const quantiteInput = document.getElementById("quantite");
 
       const equipment = {
         categorie: categorieInput.value,
         designation: designationInput.value,
         description: descriptionInput.value,
-        photo: photoInput.value
+        photo: photoInput.value,
+        quantite: parseInt(quantiteInput.value)
       };
 
       addEquipment(equipment);
@@ -106,6 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
       designationInput.value = "";
       descriptionInput.value = "";
       photoInput.value = "";
+      quantiteInput.value = "";
     });
   }
 });
