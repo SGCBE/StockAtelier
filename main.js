@@ -1,14 +1,7 @@
 // Configuration de Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyCRxjJPOHEBAbnXQariFN6funIWPpsIe28",
-  authDomain: "atelier---gestion-de-stock.firebaseapp.com",
-  databaseURL: "https://atelier---gestion-de-stock-default-rtdb.firebaseio.com",
-  projectId: "atelier---gestion-de-stock",
-  storageBucket: "atelier---gestion-de-stock.appspot.com",
-  messagingSenderId: "92935528444",
-  appId: "1:92935528444:web:57786855ed9cc7ef129c79"
+  // ... votre configuration Firebase ...
 };
-
 
 // Initialisation de Firebase
 firebase.initializeApp(firebaseConfig);
@@ -43,6 +36,7 @@ function updateEquipmentList(snapshot) {
       <td>${equipment.description}</td>
       <td>${equipment.quantite}</td>
       <td>
+        <button onclick="selectEquipmentRow('${equipmentId}')">Voir les détails</button>
         <button onclick="deleteEquipment('${equipmentId}')">Supprimer</button>
       </td>
     `;
@@ -84,12 +78,58 @@ addEquipmentForm.addEventListener("submit", (e) => {
   hideModal();
 });
 
-// Fonction pour afficher le modal
-function showModal() {
+// Fonction pour afficher les détails de l'équipement dans le modal
+function showEquipmentDetails(equipment) {
+  const modalContent = document.querySelector(".modal-content");
+
+  // Construire le contenu du modal avec les données de l'équipement
+  modalContent.innerHTML = `
+    <span class="close" onclick="hideModal()">&times;</span>
+    <h2>Détails de l'équipement</h2>
+    <p><strong>Nom:</strong> ${equipment.nom}</p>
+    <p><strong>Description:</strong> ${equipment.description}</p>
+    <p><strong>Quantité:</strong> ${equipment.quantite}</p>
+    <button onclick="hideModal()">Retour à la liste</button>
+  `;
+
+  // Afficher le modal
   const addEquipmentModal = document.getElementById("addEquipmentModal");
   addEquipmentModal.style.display = "block";
 }
 
-// Gérer le clic sur le bouton "Ajouter un équipement"
-const addEquipmentButton = document.getElementById("addEquipmentButton");
-addEquipmentButton.addEventListener("click", showModal);
+// Fonction pour afficher les détails de l'équipement lors de la sélection d'une ligne
+function selectEquipmentRow(equipmentId) {
+  // Récupérer les données de l'équipement sélectionné à partir de la base de données
+  const selectedEquipmentRef = db.ref(`equipments/${equipmentId}`);
+  selectedEquipmentRef.once("value", (snapshot) => {
+    const equipment = snapshot.val();
+    showEquipmentDetails(equipment);
+  });
+}
+
+// Fonction pour générer les lignes du tableau
+function generateTableRows(snapshot) {
+  const equipmentTableBody = document.getElementById("equipmentTableBody");
+  equipmentTableBody.innerHTML = "";
+
+  snapshot.forEach((childSnapshot) => {
+    const equipment = childSnapshot.val();
+    const equipmentId = childSnapshot.key;
+
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${equipment.nom}</td>
+      <td>${equipment.description}</td>
+      <td>${equipment.quantite}</td>
+      <td>
+        <button onclick="selectEquipmentRow('${equipmentId}')">Voir les détails</button>
+        <button onclick="deleteEquipment('${equipmentId}')">Supprimer</button>
+      </td>
+    `;
+
+    equipmentTableBody.appendChild(row);
+  });
+}
+
+// Mettre à jour la liste des équipements lors de la modification de la base de données
+equipmentRef.on("value", generateTableRows);
