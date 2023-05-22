@@ -28,6 +28,17 @@
       </tbody>
     </table>
 
+    <label for="filterCategory">Filtrer par catégorie :</label>
+    <select id="filterCategory">
+      <option value="">Toutes</option>
+      <option value="Inox">Inox</option>
+      <option value="Laverie">Laverie</option>
+      <option value="Equipement chaud">Equipement chaud</option>
+      <option value="Equipement froid">Equipement froid</option>
+      <option value="Equipement de préparation">Equipement de préparation</option>
+      <option value="Stockage">Stockage</option>
+    </select>
+
     <button id="addEquipmentButton" class="full-width-button">Ajouter un équipement</button>
 
     <div id="addEquipmentModal" class="modal">
@@ -95,5 +106,31 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
   <script src="main.js"></script>
   <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const filterCategorySelect = document.getElementById('filterCategory');
+      filterCategorySelect.addEventListener('change', () => {
+        const selectedCategory = filterCategorySelect.value;
+        filterEquipmentListByCategory(selectedCategory);
+      });
+
+      function filterEquipmentListByCategory(category) {
+        const equipmentTableBody = document.getElementById('equipmentTableBody');
+        const equipmentRows = equipmentTableBody.querySelectorAll('tr');
+
+        equipmentRows.forEach((row) => {
+          const categoryCell = row.querySelector('td:nth-child(4)');
+          if (category === '' || categoryCell.textContent === category) {
+            row.style.display = '';
+          } else {
+            row.style.display = 'none';
+          }
+        });
+      }
+
+      // Appel initial pour afficher tous les équipements
+      filterEquipmentListByCategory('');
+    });
+  </script>
 </body>
 </html>
