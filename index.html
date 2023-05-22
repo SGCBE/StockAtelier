@@ -49,48 +49,32 @@
     <!-- Ajout d'un bouton "Ajouter un équipement" -->
     <button id="addEquipmentButton" class="full-width-button">Ajouter un équipement</button>
 
-    <!-- Code HTML pour le modal d'ajout d'équipement -->
+    <!-- Code HTML pour le modal -->
     <div id="addEquipmentModal" class="modal">
       <div class="modal-content">
         <span class="close" onclick="hideModal()">&times;</span>
         <h2>Ajouter un équipement</h2>
         <form id="addEquipmentForm">
-          <label for="categorie">Catégorie</label>
-          <select id="categorie" name="categorie" required>
-            <option value="Inox">Inox</option>
-            <option value="Laverie">Laverie</option>
-            <option value="Equipement chaud">Equipement chaud</option>
-            <option value="Equipement froid">Equipement froid</option>
-            <option value="Equipement de préparation">Equipement de préparation</option>
-          </select>
-          <label for="designation">Désignation</label>
-          <input type="text" id="designation" name="designation" required>
+          <label for="nom">Nom</label>
+          <input type="text" id="nom" name="nom" required>
           <label for="description">Description</label>
           <textarea id="description" name="description" required></textarea>
-          <label for="photo">Photo</label>
-          <input type="file" id="photo" name="photo">
-          <button id="captureButton" class="capture-button" type="button">Prendre une photo</button>
+          <label for="quantite">Quantité</label>
+          <input type="number" id="quantite" name="quantite" required>
+          <video id="cameraPreview" autoplay playsinline></video>
+          <button id="captureButton" class="capture-button" type="button">Capturer la photo</button>
           <input type="submit" value="Ajouter">
         </form>
-        <button id="closeModalButton" onclick="hideModal()">Retour à la liste des équipements</button>
-      </div>
-    </div>
-
-    <!-- Code HTML pour le modal d'affichage des détails de l'équipement -->
-    <div id="equipmentDetailsModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="hideModal()">&times;</span>
-        <h2>Détails de l'équipement</h2>
-        <div id="equipmentDetails"></div>
+        <!-- Ajouter le bouton de fermeture du modal -->
         <button id="closeModalButton" onclick="hideModal()">Fermer</button>
       </div>
     </div>
-        <!-- Chargement des scripts -->
+
+    <!-- Chargement des scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
     <script src="main.js"></script>
   </main>
-  <script src="script.js"></script>
 </body>
 </html>
