@@ -70,20 +70,47 @@
     <div id="equipmentModal" class="modal">
       <div id="modalContent" class="modal-content">
         <span class="close" onclick="hideModal()">&times;</span>
+        <h2>Détails de l'équipement</h2>
+        <p><strong>Catégorie:</strong> <span id="modalCategorie"></span></p>
+        <p><strong>Désignation:</strong> <span id="modalDesignation"></span></p>
+        <p><strong>Description:</strong> <span id="modalDescription"></span></p>
+        <img id="modalPhoto" src="" alt="Photo de l'équipement">
+        <button onclick="hideModal()">Retour à la liste des équipements</button>
+      </div>
+    </div>
+
+    <!-- Code HTML pour le modal d'ajout d'équipement -->
+    <div id="addEquipmentModal" class="modal">
+      <div id="addEquipmentModalContent" class="modal-content">
+        <span class="close" onclick="hideAddEquipmentModal()">&times;</span>
         <h2>Ajouter un équipement</h2>
         <form id="addEquipmentForm">
           <label for="categorie">Catégorie</label>
-          <input type="text" id="categorie" name="categorie" required>
+          <select id="categorie" name="categorie" required>
+            <option value="Inox">Inox</option>
+            <option value="Laverie">Laverie</option>
+            <option value="Equipement chaud">Equipement chaud</option>
+            <option value="Equipement froid">Equipement froid</option>
+            <option value="Equipement de préparation">Equipement de préparation</option>
+          </select>
           <label for="designation">Désignation</label>
           <input type="text" id="designation" name="designation" required>
           <label for="description">Description</label>
           <textarea id="description" name="description" required></textarea>
-          <label for="photo">Photo</label>
-          <input type="text" id="photo" name="photo" required>
           <label for="quantite">Quantité</label>
           <input type="number" id="quantite" name="quantite" required>
           <button id="submitEquipmentButton" class="full-width-button" type="submit">Ajouter</button>
         </form>
+      </div>
+    </div>
+
+    <!-- Code HTML pour le modal de capture de photo -->
+    <div id="capturePhotoModal" class="modal">
+      <div id="capturePhotoModalContent" class="modal-content">
+        <span class="close" onclick="hideCapturePhotoModal()">&times;</span>
+        <h2>Capture de photo</h2>
+        <video id="video" autoplay></video>
+        <button id="captureButton" class="capture-button">Capturer</button>
       </div>
     </div>
 
