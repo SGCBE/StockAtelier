@@ -49,17 +49,17 @@
 
     <div id="addEquipmentModal" class="modal">
       <div class="modal-content">
-        <span id="closeModalButton" class="close">&times;</span>
+                <span id="closeModalButton" class="close">&times;</span>
         <h2>Ajouter un équipement</h2>
         <form id="addEquipmentForm">
-          <label for="dateLivraison">Date de livraison :</label>
-          <input type="date" id="dateLivraison" required>
+          <label for="deliveryDate">Date de livraison :</label>
+          <input type="date" id="deliveryDate" required>
 
-          <label for="fournisseurClient">Fournisseur/Client :</label>
-          <input type="text" id="fournisseurClient" required>
+          <label for="supplierClient">Fournisseur/Client :</label>
+          <input type="text" id="supplierClient" required>
 
-          <label for="marque">Marque :</label>
-          <input type="text" id="marque" required>
+          <label for="brand">Marque :</label>
+          <input type="text" id="brand" required>
 
           <label for="type">Type :</label>
           <input type="text" id="type" required>
@@ -67,17 +67,17 @@
           <label for="reference">Référence :</label>
           <input type="text" id="reference" required>
 
-          <label for="numeroSerie">N° de série :</label>
-          <input type="text" id="numeroSerie" required>
+          <label for="serialNumber">N° de série :</label>
+          <input type="text" id="serialNumber" required>
 
-          <label for="valeurHT">Valeur HT :</label>
-          <input type="number" id="valeurHT" required>
+          <label for="value">Valeur HT :</label>
+          <input type="number" id="value" required>
 
-          <label for="factureAchat">Facture achat :</label>
-          <input type="text" id="factureAchat" required>
+          <label for="purchaseInvoice">Facture achat :</label>
+          <input type="text" id="purchaseInvoice" required>
 
-          <label for="dateFacture">Date facture :</label>
-          <input type="date" id="date.Facture" required>
+          <label for="invoiceDate">Date facture :</label>
+          <input type="date" id="invoiceDate" required>
 
           <label for="complement">Complément d'information :</label>
           <textarea id="complement"></textarea>
@@ -86,8 +86,49 @@
         </form>
       </div>
     </div>
-  </main>
 
-  <script src="script.js"></script>
-</body>
+    <div id="editEquipmentModal" class="modal">
+      <div class="modal-content">
+        <span id="closeEditModalButton" class="close">&times;</span>
+        <h2>Modifier l'équipement</h2>
+        <form id="editEquipmentForm">
+          <input type="hidden" id="editEquipmentId">
+
+          <label for="editDeliveryDate">Date de livraison :</label>
+          <input type="date" id="editDeliveryDate" required>
+
+          <label for="editSupplierClient">Fournisseur/Client :</label>
+          <input type="text" id="editSupplierClient" required>
+
+          <label for="editBrand">Marque :</label>
+          <input type="text" id="editBrand" required>
+
+          <label for="editType">Type :</label>
+          <input type="text" id="editType" required>
+
+          <label for="editReference">Référence :</label>
+          <input type="text" id="editReference" required>
+
+          <label for="editSerialNumber">N° de série :</label>
+          <input type="text" id="editSerialNumber" required>
+
+          <label for="editValue">Valeur HT :</label>
+          <input type="number" id="editValue" required>
+
+          <label for="editPurchaseInvoice">Facture achat :</label>
+          <input type="text" id="editPurchaseInvoice" required>
+
+          <label for="editInvoiceDate">Date facture :</label>
+          <input type="date" id="editInvoiceDate" required>
+
+          <label for="editComplement">Complément d'information :</label>
+          <textarea id="editComplement"></textarea>
+
+          <button type="submit" class="full-width-button">Enregistrer</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
 </html>
