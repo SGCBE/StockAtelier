@@ -1,5 +1,4 @@
 // Configuration de Firebase
-
 import firebase from 'firebase/app';
 import 'firebase/database';
 
@@ -25,7 +24,86 @@ var addEquipmentModal = document.getElementById('addEquipmentModal');
 var closeModalButton = document.getElementById('closeModalButton');
 var addEquipmentForm = document.getElementById('addEquipmentForm');
 
-// Add equipment form submit event
+// Fonction pour afficher tous les équipements dans le tableau
+function displayEquipments(equipments) {
+  equipmentTableBody.innerHTML = '';
+
+  equipments.forEach(function(equipment) {
+    var tr = document.createElement('tr');
+    tr.setAttribute('data-id', equipment.id);
+    tr.innerHTML = `
+      <td>${equipment.dateLivraison}</td>
+      <td>${equipment.fournisseurClient}</td>
+      <td>${equipment.marque}</td>
+      <td>${equipment.type}</td>
+      <td>${equipment.reference}</td>
+      <td>${equipment.numeroSerie}</td>
+      <td>${equipment.valeurHT}</td>
+      <td>${equipment.factureAchat}</td>
+      <td>${equipment.dateFacture}</td>
+      <td>${equipment.complementInfo}</td>
+      <td>
+        <button class="editButton" data-id="${equipment.id}">Modifier</button>
+        <button class="deleteButton" data-id="${equipment.id}">Supprimer</button>
+      </td>
+    `;
+
+    // Ajouter un événement de clic sur le bouton Modifier
+    var editButton = tr.querySelector('.editButton');
+    editButton.addEventListener('click', function() {
+      openEditModal(equipment.id);
+    });
+
+    // Ajouter un événement de clic sur le bouton Supprimer
+    var deleteButton = tr.querySelector('.deleteButton');
+    deleteButton.addEventListener('click', function() {
+      deleteEquipment(equipment.id);
+    });
+
+    equipmentTableBody.appendChild(tr);
+  });
+}
+
+// Fonction pour ajouter un nouvel équipement
+function addEquipment(equipment) {
+  db.collection('equipments').add(equipment)
+    .then(function(docRef) {
+      console.log('Equipment added with ID: ', docRef.id);
+      addEquipmentForm.reset();
+      closeModal();
+    })
+    .catch(function(error) {
+      console.error('Error adding equipment: ', error);
+    });
+}
+
+// Fonction pour mettre à jour un équipement existant
+function updateEquipment(equipmentId, updatedEquipment) {
+  db.collection('equipments').doc(equipmentId).update(updatedEquipment)
+    .then(function() {
+      console.log('Equipment updated with ID: ', equipmentId);
+      closeEditModal();
+    })
+    .catch(function(error) {
+      console.error('Error updating equipment: ', error);
+    });
+}
+
+// Fonction pour supprimer un équipement
+function deleteEquipment(equipmentId) {
+  var confirmation = confirm('Voulez-vous vraiment supprimer cet équipement ?');
+  if (confirmation) {
+    db.collection('equipments').doc(equipmentId).delete()
+      .then(function() {
+        console.log('Equipment deleted with ID: ', equipmentId);
+      })
+      .catch(function(error) {
+        console.error('Error deleting equipment: ', error);
+      });
+  }
+}
+
+// Ajouter un événement de soumission du formulaire d'ajout d'équipement
 addEquipmentForm.addEventListener('submit', function(e) {
   e.preventDefault();
 
@@ -40,8 +118,7 @@ addEquipmentForm.addEventListener('submit', function(e) {
   var dateFacture = document.getElementById('dateFacture').value;
   var complementInfo = document.getElementById('complementInfo').value;
 
-  // Add the equipment to Firestore
-  db.collection('equipments').add({
+  var newEquipment = {
     dateLivraison: dateLivraison,
     fournisseurClient: fournisseurClient,
     marque: marque,
@@ -52,30 +129,97 @@ addEquipmentForm.addEventListener('submit', function(e) {
     factureAchat: factureAchat,
     dateFacture: dateFacture,
     complementInfo: complementInfo
-  })
-  .then(function(docRef) {
-    console.log('Equipment added with ID: ', docRef.id);
-    addEquipmentForm.reset();
-    closeModal();
-  })
-  .catch(function(error) {
-    console.error('Error adding equipment: ', error);
-  });
+  };
+
+  addEquipment(newEquipment);
 });
 
-// Open add equipment modal
+// Ouvrir la fenêtre modale d'ajout d'équipement
 addEquipmentButton.addEventListener('click', function() {
   addEquipmentModal.style.display = 'block';
 });
 
-// Close modal
+// Fermer la fenêtre modale
 function closeModal() {
   addEquipmentModal.style.display = 'none';
 }
 
 closeModalButton.addEventListener('click', closeModal);
 
-// Real-time listener for equipment changes
+// Ouvrir la fenêtre modale de modification d'équipement
+function openEditModal(equipmentId) {
+  var editEquipmentModal = document.getElementById('editEquipmentModal');
+  var closeEditModalButton = document.getElementById('closeEditModalButton');
+  var editEquipmentForm = document.getElementById('editEquipmentForm');
+
+  // Récupérer les données de l'équipement à modifier depuis Firestore
+  db.collection('equipments').doc(equipmentId).get()
+    .then(function(doc) {
+      if (doc.exists) {
+        var equipmentData = doc.data();
+
+        // Pré-remplir les champs du formulaire avec les données existantes
+        document.getElementById('editDateLivraison').value = equipmentData.dateLivraison;
+        document.getElementById('editFournisseurClient').value = equipmentData.fournisseurClient;
+        document.getElementById('editMarque').value = equipmentData.marque;
+        document.getElementById('editType').value = equipmentData.type;
+        document.getElementById('editReference').value = equipmentData.reference;
+        document.getElementById('editNumeroSerie').value = equipmentData.numeroSerie;
+        document.getElementById('editValeurHT').value = equipmentData.valeurHT;
+        document.getElementById('editFactureAchat').value = equipmentData.factureAchat;
+        document.getElementById('editDateFacture').value = equipmentData.dateFacture;
+        document.getElementById('editComplementInfo').value = equipmentData.complementInfo;
+
+        // Ajouter un événement de soumission du formulaire de modification d'équipement
+        editEquipmentForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+
+          var editedDateLivraison = document.getElementById('editDateLivraison').value;
+          var editedFournisseurClient = document.getElementById('editFournisseurClient').value;
+          var editedMarque = document.getElementById('editMarque').value;
+          var editedType = document.getElementById('editType').value;
+          var editedReference = document.getElementById('editReference').value;
+          var editedNumeroSerie = document.getElementById('editNumeroSerie').value;
+          var editedValeurHT = document.getElementById('editValeurHT').value;
+          var editedFactureAchat = document.getElementById('editFactureAchat').value;
+          var editedDateFacture = document.getElementById('editDateFacture').value;
+          var editedComplementInfo = document.getElementById('editComplementInfo').value;
+
+          var editedEquipment = {
+            dateLivraison: editedDateLivraison,
+            fournisseurClient: editedFournisseurClient,
+            marque: editedMarque,
+            type: editedType,
+            reference: editedReference,
+            numeroSerie: editedNumeroSerie,
+            valeurHT: editedValeurHT,
+            factureAchat: editedFactureAchat,
+            dateFacture: editedDateFacture,
+            complementInfo: editedComplementInfo
+          };
+
+          updateEquipment(equipmentId, editedEquipment);
+        });
+
+        // Ouvrir la fenêtre modale de modification d'équipement
+        editEquipmentModal.style.display = 'block';
+
+        // Fermer la fenêtre modale de modification
+        function closeEditModal() {
+          editEquipmentModal.style.display = 'none';
+        }
+
+        closeEditModalButton.addEventListener('click', closeEditModal);
+      } else {
+        console.log('No such document!');
+      }
+    })
+    .catch(function(error) {
+      console.error('Error getting equipment: ', error);
+    });
+}
+
+// Observer les modifications en temps réel des équipements
 db.collection('equipments').onSnapshot(function(snapshot) {
   var changes = snapshot.docChanges();
   changes.forEach(function(change) {
@@ -92,7 +236,7 @@ db.collection('equipments').onSnapshot(function(snapshot) {
   });
 });
 
-// Render equipment data in the table
+// Afficher les données de l'équipement dans le tableau
 function renderEquipment(doc) {
   var tr = document.createElement('tr');
   tr.setAttribute('data-id', doc.id);
@@ -113,98 +257,17 @@ function renderEquipment(doc) {
     </td>
   `;
 
-  // Add edit button click event
+  // Ajouter un événement de clic sur le bouton de modification
   var editButton = tr.querySelector('.editButton');
   editButton.addEventListener('click', function() {
-    openEditModal(doc);
+    openEditModal(doc.id);
   });
 
-  // Add delete button click event
+  // Ajouter un événement de clic sur le bouton de suppression
   var deleteButton = tr.querySelector('.deleteButton');
   deleteButton.addEventListener('click', function() {
-    deleteEquipment(doc);
+    deleteEquipment(doc.id);
   });
 
   equipmentTableBody.appendChild(tr);
-}
-
-// Open edit equipment modal
-function openEditModal(doc) {
-  var editEquipmentModal = document.getElementById('editEquipmentModal');
-  var closeEditModalButton = document.getElementById('closeEditModalButton');
-  var editEquipmentForm = document.getElementById('editEquipmentForm');
-
-  // Prefill form fields with existing data
-  document.getElementById('editDateLivraison').value = doc.data().dateLivraison;
-  document.getElementById('editFournisseurClient').value = doc.data().fournisseurClient;
-  document.getElementById('editMarque').value = doc.data().marque;
-  document.getElementById('editType').value = doc.data().type;
-  document.getElementById('editReference').value = doc.data().reference;
-  document.getElementById('editNumeroSerie').value = doc.data().numeroSerie;
-  document.getElementById('editValeurHT').value = doc.data().valeurHT;
-  document.getElementById('editFactureAchat').value = doc.data().factureAchat;
-  document.getElementById('editDateFacture').value = doc.data().dateFacture;
-  document.getElementById('editComplementInfo').value = doc.data().complementInfo;
-
-  // Submit edit equipment form event
-  editEquipmentForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    var editedDateLivraison = document.getElementById('editDateLivraison').value;
-    var editedFournisseurClient = document.getElementById('editFournisseurClient').value;
-    var editedMarque = document.getElementById('editMarque').value;
-    var editedType = document.getElementById('editType').value;
-    var editedReference = document.getElementById('editReference').value;
-    var editedNumeroSerie = document.getElementById('editNumeroSerie').value;
-    var editedValeurHT = document.getElementById('editValeurHT').value;
-    var editedFactureAchat = document.getElementById('editFactureAchat').value;
-    var editedDateFacture = document.getElementById('editDateFacture').value;
-    var editedComplementInfo = document.getElementById('editComplementInfo').value;
-
-    // Update the equipment in Firestore
-    db.collection('equipments').doc(doc.id).update({
-      dateLivraison: editedDateLivraison,
-      fournisseurClient: editedFournisseurClient,
-      marque: editedMarque,
-      type: editedType,
-      reference: editedReference,
-      numeroSerie: editedNumeroSerie,
-      valeurHT: editedValeurHT,
-      factureAchat: editedFactureAchat,
-      dateFacture: editedDateFacture,
-      complementInfo: editedComplementInfo
-    })
-    .then(function() {
-      console.log('Equipment updated with ID: ', doc.id);
-      editEquipmentForm.reset();
-      closeEditModal();
-    })
-    .catch(function(error) {
-      console.error('Error updating equipment: ', error);
-    });
-  });
-
-  // Open edit equipment modal
-  editEquipmentModal.style.display = 'block';
-
-  // Close edit modal
-  function closeEditModal() {
-    editEquipmentModal.style.display = 'none';
-  }
-
-  closeEditModalButton.addEventListener('click', closeEditModal);
-}
-
-// Delete equipment
-function deleteEquipment(doc) {
-  var confirmation = confirm('Voulez-vous vraiment supprimer cet équipement ?');
-  if (confirmation) {
-    db.collection('equipments').doc(doc.id).delete()
-    .then(function() {
-      console.log('Equipment deleted with ID: ', doc.id);
-    })
-    .catch(function(error) {
-      console.error('Error deleting equipment: ', error);
-    });
-  }
 }
