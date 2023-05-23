@@ -1,6 +1,6 @@
 // Configuration de Firebase
-import firebase from 'firebase/app';
-import 'firebase/database';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/database';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCRxjJPOHEBAbnXQariFN6funIWPpsIe28",
@@ -31,21 +31,21 @@ function displayEquipments(equipments) {
   equipments.forEach(function(equipment) {
     var tr = document.createElement('tr');
     tr.setAttribute('data-id', equipment.id);
-    tr.innerHTML = `
-      <td>${equipment.dateLivraison}</td>
-      <td>${equipment.fournisseurClient}</td>
-      <td>${equipment.marque}</td>
-      <td>${equipment.type}</td>
-      <td>${equipment.reference}</td>
-      <td>${equipment.numeroSerie}</td>
-      <td>${equipment.valeurHT}</td>
-      <td>${equipment.factureAchat}</td>
-      <td>${equipment.dateFacture}</td>
-      <td>${equipment.complementInfo}</td>
-      <td>
-        <button class="editButton" data-id="${equipment.id}">Modifier</button>
-        <button class="deleteButton" data-id="${equipment.id}">Supprimer</button>
-      </td>
+tr.innerHTML = `
+  <td>${equipment.dateLivraison}</td>
+  <td>${equipment.fournisseurClient}</td>
+  <td>${equipment.marque}</td>
+  <td>${equipment.type}</td>
+  <td>${equipment.reference}</td>
+  <td>${equipment.numeroSerie}</td>
+  <td>${equipment.valeurHT}</td>
+  <td>${equipment.factureAchat}</td>
+  <td>${equipment.dateFacture}</td>
+  <td>${equipment.complementInfo}</td>
+  <td>
+    <button class="editButton" data-id="${equipment.id}">Modifier</button>
+    <button class="deleteButton" data-id="${equipment.id}">Supprimer</button>
+  </td>
     `;
 
     // Ajouter un événement de clic sur le bouton Modifier
@@ -66,6 +66,16 @@ function displayEquipments(equipments) {
 
 // Fonction pour ajouter un nouvel équipement
 function addEquipment(equipment) {
+var dateLivraison = document.getElementById('deliveryDate').value;
+var fournisseurClient = document.getElementById('supplierClient').value;
+var marque = document.getElementById('brand').value;
+var type = document.getElementById('type').value;
+var reference = document.getElementById('reference').value;
+var numeroSerie = document.getElementById('serialNumber').value;
+var valeurHT = document.getElementById('value').value;
+var factureAchat = document.getElementById('purchaseInvoice').value;
+var dateFacture = document.getElementById('invoiceDate').value;
+var complementInfo = document.getElementById('complement').value;
   db.collection('equipments').add(equipment)
     .then(function(docRef) {
       console.log('Equipment added with ID: ', docRef.id);
@@ -159,16 +169,17 @@ function openEditModal(equipmentId) {
         var equipmentData = doc.data();
 
         // Pré-remplir les champs du formulaire avec les données existantes
-        document.getElementById('editDateLivraison').value = equipmentData.dateLivraison;
-        document.getElementById('editFournisseurClient').value = equipmentData.fournisseurClient;
-        document.getElementById('editMarque').value = equipmentData.marque;
-        document.getElementById('editType').value = equipmentData.type;
-        document.getElementById('editReference').value = equipmentData.reference;
-        document.getElementById('editNumeroSerie').value = equipmentData.numeroSerie;
-        document.getElementById('editValeurHT').value = equipmentData.valeurHT;
-        document.getElementById('editFactureAchat').value = equipmentData.factureAchat;
-        document.getElementById('editDateFacture').value = equipmentData.dateFacture;
-        document.getElementById('editComplementInfo').value = equipmentData.complementInfo;
+document.getElementById('editDeliveryDate').value = equipmentData.dateLivraison;
+document.getElementById('editSupplierClient').value = equipmentData.fournisseurClient;
+document.getElementById('editBrand').value = equipmentData.marque;
+document.getElementById('editType').value = equipmentData.type;
+document.getElementById('editReference').value = equipmentData.reference;
+document.getElementById('editSerialNumber').value = equipmentData.numeroSerie;
+document.getElementById('editValue').value = equipmentData.valeurHT;
+document.getElementById('editPurchaseInvoice').value = equipmentData.factureAchat;
+document.getElementById('editInvoiceDate').value = equipmentData.dateFacture;
+document.getElementById('editComplement').value = equipmentData.complementInfo;
+
 
         // Ajouter un événement de soumission du formulaire de modification d'équipement
         editEquipmentForm.addEventListener('submit', function(e) {
@@ -241,16 +252,17 @@ function renderEquipment(doc) {
   var tr = document.createElement('tr');
   tr.setAttribute('data-id', doc.id);
   tr.innerHTML = `
-    <td>${doc.data().dateLivraison}</td>
-    <td>${doc.data().fournisseurClient}</td>
-    <td>${doc.data().marque}</td>
-    <td>${doc.data().type}</td>
-    <td>${doc.data().reference}</td>
-    <td>${doc.data().numeroSerie}</td>
-    <td>${doc.data().valeurHT}</td>
-    <td>${doc.data().factureAchat}</td>
-    <td>${doc.data().dateFacture}</td>
-    <td>${doc.data().complementInfo}</td>
+<td>${doc.data().dateLivraison}</td>
+<td>${doc.data().fournisseurClient}</td>
+<td>${doc.data().marque}</td>
+<td>${doc.data().type}</td>
+<td>${doc.data().reference}</td>
+<td>${doc.data().numeroSerie}</td>
+<td>${doc.data().valeurHT}</td>
+<td>${doc.data().factureAchat}</td>
+<td>${doc.data().dateFacture}</td>
+<td>${doc.data().complementInfo}</td>
+
     <td>
       <button class="editButton" data-id="${doc.id}">Modifier</button>
       <button class="deleteButton" data-id="${doc.id}">Supprimer</button>
