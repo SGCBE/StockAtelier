@@ -43,12 +43,16 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // Gestion de l'événement de changement de catégorie
-  filterCategory.addEventListener("change", filterEquipment);
+  if (filterCategory) {
+    filterCategory.addEventListener("change", filterEquipment);
+  }
 
   // Gestion de l'événement de clic sur le bouton "Ajouter un équipement"
-  addButton.addEventListener("click", function() {
-    addModal.style.display = "block";
-  });
+  if (addButton) {
+    addButton.addEventListener("click", function() {
+      addModal.style.display = "block";
+    });
+  }
 
   // Gestion de l'événement de clic sur le bouton de fermeture du modal
   for (let i = 0; i < closeButtons.length; i++) {
@@ -58,35 +62,37 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // Gestion de l'événement de soumission du formulaire d'ajout d'équipement
-  addForm.addEventListener("submit", function(event) {
-    event.preventDefault();
+  if (addForm) {
+    addForm.addEventListener("submit", function(event) {
+      event.preventDefault();
 
-    // Récupération des valeurs du formulaire
-    const deliveryDate = document.getElementById("deliveryDate").value;
-    const supplierClient = document.getElementById("supplierClient").value;
-    const category = document.getElementById("category").value;
-    const name = document.getElementById("name").value;
-    const complement = document.getElementById("complement").value;
+      // Récupération des valeurs du formulaire
+      const deliveryDate = document.getElementById("deliveryDate").value;
+      const supplierClient = document.getElementById("supplierClient").value;
+      const category = document.getElementById("category").value;
+      const name = document.getElementById("name").value;
+      const complement = document.getElementById("complement").value;
 
-    // Création d'un nouvel objet équipement
-    const newEquipment = {
-      deliveryDate: deliveryDate,
-      supplierClient: supplierClient,
-      category: category,
-      name: name,
-      complement: complement
-    };
+      // Création d'un nouvel objet équipement
+      const newEquipment = {
+        deliveryDate: deliveryDate,
+        supplierClient: supplierClient,
+        category: category,
+        name: name,
+        complement: complement
+      };
 
-    // Ajout du nouvel équipement à la liste des équipements
-    equipmentList.push(newEquipment);
+      // Ajout du nouvel équipement à la liste des équipements
+      equipmentList.push(newEquipment);
 
-    // Réinitialisation du formulaire
-    addForm.reset();
+      // Réinitialisation du formulaire
+      addForm.reset();
 
-    // Fermeture du modal d'ajout
-    addModal.style.display = "none";
+      // Fermeture du modal d'ajout
+      addModal.style.display = "none";
 
-    // Filtrage et affichage des équipements mis à jour
-    filterEquipment();
-  });
+      // Filtrage et affichage des équipements mis à jour
+      filterEquipment();
+    });
+  }
 });
