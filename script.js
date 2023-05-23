@@ -79,9 +79,12 @@ document.addEventListener("DOMContentLoaded", function() {
         supplierClient: supplierClient,
         brand: brand,
         type:type,
-        category: category,
+        reference:reference,
+        serialNumber:serialNumber,
+        value:value,
+        purchaseInvoice:purchaseInvoice,
+        complement:complement,
         
-        complement: complement
       };
 
       // Ajout du nouvel équipement à la liste des équipements
