@@ -43,6 +43,10 @@ function displayEquipment() {
     const row = document.createElement('tr');
 
     const deliveryDateCell = document.createElement('td');
+    deliveryDateCell.textContent = equipment.category;
+    row.appendChild(categoryCell);
+    
+    const deliveryDateCell = document.createElement('td');
     deliveryDateCell.textContent = equipment.deliveryDate;
     row.appendChild(deliveryDateCell);
 
