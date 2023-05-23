@@ -49,7 +49,7 @@
 
     <div id="addEquipmentModal" class="modal">
       <div class="modal-content">
-                <span id="closeModalButton" class="close">&times;</span>
+        <span id="closeModalButton" class="close">&times;</span>
         <h2>Ajouter un équipement</h2>
         <form id="addEquipmentForm">
           <label for="deliveryDate">Date de livraison :</label>
@@ -82,53 +82,12 @@
           <label for="complement">Complément d'information :</label>
           <textarea id="complement"></textarea>
 
-          <button type="submit" class="full-width-button">Ajouter</button>
+          <button type="submit" id="addEquipmentSubmitButton">Ajouter</button>
         </form>
       </div>
     </div>
+  </main>
 
-    <div id="editEquipmentModal" class="modal">
-      <div class="modal-content">
-        <span id="closeEditModalButton" class="close">&times;</span>
-        <h2>Modifier l'équipement</h2>
-        <form id="editEquipmentForm">
-          <input type="hidden" id="editEquipmentId">
-
-          <label for="editDeliveryDate">Date de livraison :</label>
-          <input type="date" id="editDeliveryDate" required>
-
-          <label for="editSupplierClient">Fournisseur/Client :</label>
-          <input type="text" id="editSupplierClient" required>
-
-          <label for="editBrand">Marque :</label>
-          <input type="text" id="editBrand" required>
-
-          <label for="editType">Type :</label>
-          <input type="text" id="editType" required>
-
-          <label for="editReference">Référence :</label>
-          <input type="text" id="editReference" required>
-
-          <label for="editSerialNumber">N° de série :</label>
-          <input type="text" id="editSerialNumber" required>
-
-          <label for="editValue">Valeur HT :</label>
-          <input type="number" id="editValue" required>
-
-          <label for="editPurchaseInvoice">Facture achat :</label>
-          <input type="text" id="editPurchaseInvoice" required>
-
-          <label for="editInvoiceDate">Date facture :</label>
-          <input type="date" id="editInvoiceDate" required>
-
-          <label for="editComplement">Complément d'information :</label>
-          <textarea id="editComplement"></textarea>
-
-          <button type="submit" class="full-width-button">Enregistrer</button>
-        </form>
-      </div>
-    </div>
-
-    <script src="main.js"></script>
-  </body>
+  <script src="script.js"></script>
+</body>
 </html>
