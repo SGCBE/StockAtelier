@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", function() {
   const filterCategory = document.getElementById("filterCategory");
   const equipmentTableBody = document.getElementById("equipmentTableBody");
-  const addEquipmentButton = document.getElementById("addEquipmentButton");
-  const addEquipmentModal = document.getElementById("addEquipmentModal");
-  const closeModalButton = document.getElementById("closeModalButton");
-  const addEquipmentForm = document.getElementById("addEquipmentForm");
+  const addButton = document.getElementById("addButton");
+  const addModal = document.getElementById("addModal");
+  const closeButtons = document.getElementsByClassName("close");
+  const addForm = document.getElementById("addForm");
 
   // Fonction pour afficher les équipements en fonction de la catégorie sélectionnée
   function filterEquipment() {
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
     equipmentTableBody.innerHTML = "";
 
     // Filtrage des équipements
-    const filteredEquipment = equipment.filter(function(equipment) {
+    const filteredEquipment = equipmentList.filter(function(equipment) {
       return selectedCategory === "" || equipment.category === selectedCategory;
     });
 
@@ -45,18 +45,20 @@ document.addEventListener("DOMContentLoaded", function() {
   // Gestion de l'événement de changement de catégorie
   filterCategory.addEventListener("change", filterEquipment);
 
-  // Gestion de l'événement de clic sur le bouton "Ajouter équipement"
-  addEquipmentButton.addEventListener("click", function() {
-    addEquipmentModal.style.display = "block";
+  // Gestion de l'événement de clic sur le bouton "Ajouter un équipement"
+  addButton.addEventListener("click", function() {
+    addModal.style.display = "block";
   });
 
   // Gestion de l'événement de clic sur le bouton de fermeture du modal
-  closeModalButton.addEventListener("click", function() {
-    addEquipmentModal.style.display = "none";
-  });
+  for (let i = 0; i < closeButtons.length; i++) {
+    closeButtons[i].addEventListener("click", function() {
+      addModal.style.display = "none";
+    });
+  }
 
   // Gestion de l'événement de soumission du formulaire d'ajout d'équipement
-  addEquipmentForm.addEventListener("submit", function(event) {
+  addForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
     // Récupération des valeurs du formulaire
@@ -76,13 +78,13 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     // Ajout du nouvel équipement à la liste des équipements
-    equipment.push(newEquipment);
+    equipmentList.push(newEquipment);
 
     // Réinitialisation du formulaire
-    addEquipmentForm.reset();
+    addForm.reset();
 
-    // Fermeture du modal
-    addEquipmentModal.style.display = "none";
+    // Fermeture du modal d'ajout
+    addModal.style.display = "none";
 
     // Filtrage et affichage des équipements mis à jour
     filterEquipment();
