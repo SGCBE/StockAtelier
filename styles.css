@@ -12,10 +12,17 @@ h1, h2 {
 }
 
 .logo {
-  display: block;
-  margin: 0 auto;
+  display: inline-block;
+  vertical-align: middle;
   max-width: 200px;
   height: auto;
+}
+
+.title {
+  display: inline-block;
+  text-align: center;
+  width: calc(100% - 200px);
+  vertical-align: middle;
 }
 
 .modal {
@@ -56,10 +63,6 @@ h1, h2 {
 header {
   background-color: #f1f1f1;
   padding: 20px;
-}
-
-.title {
-  margin-top: 0;
 }
 
 table {
