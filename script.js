@@ -67,22 +67,30 @@ document.addEventListener("DOMContentLoaded", function() {
       event.preventDefault();
 
       // Récupération des valeurs du formulaire
+      const category = document.getElementById("category").value;
       const deliveryDate = document.getElementById("deliveryDate").value;
       const supplierClient = document.getElementById("supplierClient").value;
-      const category = document.getElementById("category").value;
-      const name = document.getElementById("name").value;
+      const brand = document.getElementById("brand").value;
+      const type = document.getElementById("type").value;
+      const reference = document.getElementById("reference").value;
+      const serialNumber = document.getElementById("serialNumber").value;
+      const value = document.getElementById("value").value;
+      const purchaseInvoice = document.getElementById("purchaseInvoice").value;
+      const invoiceDate = document.getElementById("invoiceDate").value;
       const complement = document.getElementById("complement").value;
 
       // Création d'un nouvel objet équipement
       const newEquipment = {
-        deliveryDate: deliveryDate,
-        supplierClient: supplierClient,
+        category:category,
+        deliveryDate:deliveryDate,
+        supplierClient:supplierClient,
         brand: brand,
         type:type,
         reference:reference,
         serialNumber:serialNumber,
         value:value,
         purchaseInvoice:purchaseInvoice,
+        invoiceDate:invoiceDate,
         complement:complement,
         
       };
