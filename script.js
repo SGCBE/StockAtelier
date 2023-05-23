@@ -77,8 +77,10 @@ document.addEventListener("DOMContentLoaded", function() {
       const newEquipment = {
         deliveryDate: deliveryDate,
         supplierClient: supplierClient,
+        brand: brand,
+        type:type,
         category: category,
-        name: name,
+        
         complement: complement
       };
 
