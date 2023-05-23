@@ -3,92 +3,115 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Permissions-Policy" content="interest-cohort=()"/>
   <title>Gestion des équipements</title>
-  <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="modal.css">
+  <style>
+    /* Votre style CSS ici */
+  </style>
 </head>
 <body>
-  <header>
-    <h1 class="title">Gestion des équipements</h1>
-    <img src="logo.jpg" alt="Logo" class="logo">
-  </header>
+  <h1>Gestion des équipements</h1>
 
-  <main>
-    <label for="filterCategory">Filtrer par catégorie :</label>
-    <select id="filterCategory">
-      <option value="">Toutes</option>
-      <option value="Inox">Inox</option>
-      <option value="Laverie">Laverie</option>
-      <option value="Equipement chaud">Equipement chaud</option>
-      <option value="Equipement froid">Equipement froid</option>
-      <option value="Equipement de préparation">Equipement de préparation</option>
-      <option value="Stockage">Stockage</option>
-    </select>
+  <button id="addButton">Ajouter un équipement</button>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Date de livraison</th>
-          <th>Fournisseur/Client</th>
-          <th>Marque</th>
-          <th>Type</th>
-          <th>Référence</th>
-          <th>N° de série</th>
-          <th>Valeur HT</th>
-          <th>Facture achat</th>
-          <th>Date facture</th>
-          <th>Complément d'information</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="equipmentTableBody">
-      </tbody>
-    </table>
+  <table id="equipmentTable">
+    <tr>
+      <th>Date de livraison</th>
+      <th>Fournisseur / Client</th>
+      <th>Marque</th>
+      <th>Type</th>
+      <th>Référence</th>
+      <th>Numéro de série</th>
+      <th>Valeur HT</th>
+      <th>Facture d'achat</th>
+      <th>Date de facture</th>
+      <th>Informations complémentaires</th>
+      <th>Actions</th>
+    </tr>
+  </table>
 
-    <button id="addEquipmentButton" class="full-width-button">Ajouter un équipement</button>
+  <div id="addModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Ajouter un équipement</h2>
+      <form id="addForm">
+        <label for="deliveryDate">Date de livraison :</label>
+        <input type="date" id="deliveryDate" required><br>
 
-    <div id="addEquipmentModal" class="modal">
-      <div class="modal-content">
-        <span id="closeModalButton" class="close">&times;</span>
-        <h2>Ajouter un équipement</h2>
-        <form id="addEquipmentForm">
-          <label for="deliveryDate">Date de livraison :</label>
-          <input type="date" id="deliveryDate" required>
+        <label for="supplierClient">Fournisseur / Client :</label>
+        <input type="text" id="supplierClient" required><br>
 
-          <label for="supplierClient">Fournisseur/Client :</label>
-          <input type="text" id="supplierClient" required>
+        <label for="brand">Marque :</label>
+        <input type="text" id="brand" required><br>
 
-          <label for="brand">Marque :</label>
-          <input type="text" id="brand" required>
+        <label for="type">Type :</label>
+        <input type="text" id="type" required><br>
 
-          <label for="type">Type :</label>
-          <input type="text" id="type" required>
+        <label for="reference">Référence :</label>
+        <input type="text" id="reference" required><br>
 
-          <label for="reference">Référence :</label>
-          <input type="text" id="reference" required>
+        <label for="serialNumber">Numéro de série :</label>
+        <input type="text" id="serialNumber" required><br>
 
-          <label for="serialNumber">N° de série :</label>
-          <input type="text" id="serialNumber" required>
+        <label for="value">Valeur HT :</label>
+        <input type="number" id="value" required><br>
 
-          <label for="value">Valeur HT :</label>
-          <input type="number" id="value" required>
+        <label for="purchaseInvoice">Facture d'achat :</label>
+        <input type="text" id="purchaseInvoice" required><br>
 
-          <label for="purchaseInvoice">Facture achat :</label>
-          <input type="text" id="purchaseInvoice" required>
+        <label for="invoiceDate">Date de facture :</label>
+        <input type="date" id="invoiceDate" required><br>
 
-          <label for="invoiceDate">Date facture :</label>
-          <input type="date" id="invoiceDate" required>
+        <label for="complement">Informations complémentaires :</label>
+        <textarea id="complement"></textarea><br>
 
-          <label for="complement">Complément d'information :</label>
-          <textarea id="complement"></textarea>
-
-          <button type="submit" id="addEquipmentSubmitButton">Ajouter</button>
-        </form>
-      </div>
+        <input type="submit" value="Ajouter">
+      </form>
     </div>
-  </main>
+  </div>
 
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Modifier un équipement</h2>
+      <form id="editForm">
+        <label for="editDeliveryDate">Date de livraison :</label>
+        <input type="date" id="editDeliveryDate" required><br>
+
+        <label for="editSupplierClient">Fournisseur / Client :</label>
+        <input type="text" id="editSupplierClient" required><br>
+
+        <label for="editBrand">Marque :</label>
+        <input type="text" id="editBrand" required><br>
+
+        <label for="editType">Type :</label>
+        <input type="text" id="editType" required><br>
+
+        <label for="editReference">Référence :</label>
+        <input type="text" id="editReference" required><br>
+
+        <label for="editSerialNumber">Numéro de série :</label>
+        <input type="text" id="editSerialNumber" required><br>
+
+        <label for="editValue">Valeur HT :</label>
+        <input type="number" id="editValue" required><br>
+
+        <label for="editPurchaseInvoice">Facture d'achat :</label>
+        <input type="text" id="editPurchaseInvoice" required><br>
+
+        <label for="editInvoiceDate">Date de facture :</label>
+        <input type="date" id="editInvoiceDate" required><br>
+
+        <label for="editComplement">Informations complémentaires :</label>
+        <textarea id="editComplement"></textarea><br>
+
+        <input type="hidden" id="editIndex">
+        <input type="submit" value="Modifier">
+      </form>
+    </div>
+  </div>
+
+  <script src="modal.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
