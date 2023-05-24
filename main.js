@@ -37,29 +37,30 @@ function addEquipment(event) {
   const complement = addEquipmentForm.complement.value;
 
   // Ajouter les données à Firestore
-  db.collection('equipments').add({
-    categorie,
-    dateLivraison,
-    marque,
-    type,
-    reference,
-    numeroSerie,
-    numeroInterne,
-    quantite,
-    valeurHT,
-    factureAchat,
-    dateFacture,
-    complement
-  })
-  .then(() => {
-    // Réinitialiser le formulaire
-    addEquipmentForm.reset();
-    // Fermer le modal
-    hideModal();
-  })
-  .catch((error) => {
-    console.error("Erreur lors de l'ajout de l'équipement : ", error);
-  });
+  db.collection('equipments')
+    .add({
+      categorie,
+      dateLivraison,
+      marque,
+      type,
+      reference,
+      numeroSerie,
+      numeroInterne,
+      quantite,
+      valeurHT,
+      factureAchat,
+      dateFacture,
+      complement
+    })
+    .then(() => {
+      // Réinitialiser le formulaire
+      addEquipmentForm.reset();
+      // Fermer le modal
+      hideModal();
+    })
+    .catch((error) => {
+      console.error("Erreur lors de l'ajout de l'équipement : ", error);
+    });
 }
 
 // Fonction pour afficher les équipements depuis Firestore
