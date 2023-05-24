@@ -9,87 +9,127 @@ const firebaseConfig = {
   appId: "1:92935528444:web:57786855ed9cc7ef129c79"
 };
 
-
 // Initialisation de Firebase
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
 
-// Référence à la collection "equipments" dans la base de données
-const equipmentRef = db.ref("equipments");
+// Référence à la collection "equipments" dans Firestore
+const equipmentCollection = firebase.firestore().collection("equipments");
 
 // Fonction pour ajouter un nouvel équipement
-function addEquipment(equipment) {
-  equipmentRef.push(equipment);
+function addEquipment(event) {
+  event.preventDefault();
+
+  // Récupération des valeurs du formulaire
+  const nom = document.getElementById("nom").value;
+  const categorie = document.getElementById("categorie").value;
+  const dateLivraison = document.getElementById("dateLivraison").value;
+  const marque = document.getElementById("marque").value;
+  const type = document.getElementById("type").value;
+  const reference = document.getElementById("reference").value;
+  const numeroSerie = document.getElementById("numeroSerie").value;
+  const numeroInterne = document.getElementById("numeroInterne").value;
+  const quantite = document.getElementById("quantite").value;
+  const valeurHT = document.getElementById("valeurHT").value;
+  const factureAchat = document.getElementById("factureAchat").files[0];
+  const dateFacture = document.getElementById("dateFacture").value;
+  const complementInformation = document.getElementById("complementInformation").value;
+
+  // Création d'un objet représentant l'équipement à ajouter
+  const newEquipment = {
+    nom,
+    categorie,
+    dateLivraison,
+    marque,
+    type,
+    reference,
+    numeroSerie,
+    numeroInterne,
+    quantite,
+    valeurHT,
+    dateFacture,
+    complementInformation
+  };
+
+  // Ajout de l'équipement à la base de données
+  equipmentCollection.add(newEquipment)
+    .then(() => {
+      // Réinitialisation du formulaire
+      document.getElementById("addEquipmentForm").reset();
+      // Fermeture du modal
+      hideModal();
+    })
+    .catch((error) => {
+      console.error("Erreur lors de l'ajout de l'équipement :", error);
+    });
+}
+
+// Fonction pour afficher les équipements en stock
+function displayEquipment() {
+  equipmentCollection.get()
+    .then((querySnapshot) => {
+      // Effacement des données précédentes
+      document.getElementById("equipmentTableBody").innerHTML = "";
+
+      querySnapshot.forEach((doc) => {
+        const equipment = doc.data();
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${equipment.nom}</td>
+          <td>${equipment.categorie}</td>
+          <td>${equipment.dateLivraison}</td>
+          <td>${equipment.marque}</td>
+          <td>${equipment.type}</td>
+          <td>${equipment.reference}</td>
+          <td>${equipment.numeroSerie}</td>
+          <td>${equipment.numeroInterne}</td>
+          <td>${equipment.quantite}</td>
+          <td>${equipment.valeurHT}</td>
+          <td>${equipment.factureAchat}</td>
+          <td>${equipment.dateFacture}</td>
+          <td>${equipment.complementInformation}</td>
+          <td>
+            <button onclick="editEquipment('${doc.id}')">Modifier</button>
+            <button onclick="deleteEquipment('${doc.id}')">Supprimer</button>
+          </td>
+        `;
+        document.getElementById("equipmentTableBody").appendChild(row);
+      });
+    })
+    .catch((error) => {
+      console.error("Erreur lors de la récupération des équipements :", error);
+    });
 }
 
 // Fonction pour supprimer un équipement
 function deleteEquipment(equipmentId) {
-  const equipmentToDeleteRef = db.ref(`equipments/${equipmentId}`);
-  equipmentToDeleteRef.remove();
+  equipmentCollection.doc(equipmentId).delete()
+    .then(() => {
+      console.log("Équipement supprimé avec succès !");
+    })
+    .catch((error) => {
+      console.error("Erreur lors de la suppression de l'équipement :", error);
+    });
 }
 
-// Fonction de rappel pour mettre à jour la liste des équipements
-function updateEquipmentList(snapshot) {
-  const equipmentTableBody = document.getElementById("equipmentTableBody");
-  equipmentTableBody.innerHTML = "";
-
-  snapshot.forEach((childSnapshot) => {
-    const equipment = childSnapshot.val();
-    const equipmentId = childSnapshot.key;
-
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${equipment.nom}</td>
-      <td>${equipment.description}</td>
-      <td>${equipment.quantite}</td>
-      <td>
-        <button onclick="deleteEquipment('${equipmentId}')">Supprimer</button>
-      </td>
-    `;
-
-    equipmentTableBody.appendChild(row);
-  });
+// Fonction pour afficher le modal d'ajout d'un équipement
+function showAddEquipmentModal() {
+  document.getElementById("addEquipmentModal").style.display = "block";
 }
-
-// Écouter les modifications dans la base de données
-equipmentRef.on("value", updateEquipmentList);
 
 // Fonction pour masquer le modal
 function hideModal() {
-  const addEquipmentModal = document.getElementById("addEquipmentModal");
-  addEquipmentModal.style.display = "none";
+  document.getElementById("addEquipmentModal").style.display = "none";
 }
 
-// Gérer la soumission du formulaire d'ajout d'équipement
-const addEquipmentForm = document.getElementById("addEquipmentForm");
-addEquipmentForm.addEventListener("submit", (e) => {
-  e.preventDefault();
+// Événement au chargement de la page
+window.onload = function() {
+  // Récupération des équipements et affichage initial
+  displayEquipment();
 
-  const nomInput = document.getElementById("nom");
-  const descriptionInput = document.getElementById("description");
-  const quantiteInput = document.getElementById("quantite");
+  // Écouteur d'événement pour le formulaire d'ajout d'un équipement
+  document.getElementById("addEquipmentForm").addEventListener("submit", addEquipment);
 
-  const equipment = {
-    nom: nomInput.value,
-    description: descriptionInput.value,
-    quantite: quantiteInput.value
-  };
+  // Écouteur d'événement pour le bouton "Ajouter un équipement"
+  document.getElementById("addEquipmentButton").addEventListener("click", showAddEquipmentModal);
+};
 
-  addEquipment(equipment);
-
-  nomInput.value = "";
-  descriptionInput.value = "";
-  quantiteInput.value = "";
-
-  hideModal();
-});
-
-// Fonction pour afficher le modal
-function showModal() {
-  const addEquipmentModal = document.getElementById("addEquipmentModal");
-  addEquipmentModal.style.display = "block";
-}
-
-// Gérer le clic sur le bouton "Ajouter un équipement"
-const addEquipmentButton = document.getElementById("addEquipmentButton");
-addEquipmentButton.addEventListener("click", showModal);
