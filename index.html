@@ -3,12 +3,79 @@
 <head>
   <meta charset="utf-8">
   <title>Gestion de stock d'équipements</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="modal.css">
   <style>
-    /* Vos styles CSS actuels ici */
+    /* Styles pour le header */
+    header {
+      display: flex;
+      align-items: center;
+      background-color: #005cbf;
+      color: #fff;
+      padding: 16px;
+    }
 
-    /* Ajout de styles pour le modal */
+    header img {
+      height: 64px;
+      margin-right: 16px;
+    }
+
+    header h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    /* Styles pour le tableau */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f5f5f5;
+      font-weight: bold;
+    }
+
+    /* Styles pour le formulaire d'ajout d'équipement */
+    form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    input, select, textarea {
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Styles pour les boutons */
+    .full-width-button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #005cbf;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    /* Styles pour le modal */
     .modal {
       display: none;
       position: fixed;
@@ -18,11 +85,11 @@
       width: 100%;
       height: 100%;
       overflow: auto;
-      background-color: rgba(0,0,0,0.4);
+      background-color: rgba(0, 0, 0, 0.4);
     }
 
     .modal-content {
-      background-color: #fefefe;
+      background-color: #fff;
       margin: 10% auto;
       padding: 20px;
       border: 1px solid #888;
@@ -39,84 +106,95 @@
 
     .close:hover,
     .close:focus {
-      color: black;
+      color: #000;
       text-decoration: none;
       cursor: pointer;
     }
+
+    /* Styles pour les boutons Modifier et Supprimer */
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .edit-button,
+    .delete-button {
+      padding: 6px 12px;
+      background-color: #e36200;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .edit-button:hover,
+    .delete-button:hover {
+      background-color: #d95400;
+    }
+
+    .edit-button {
+      background-color: #007bff;
+    }
+
+    .edit-button:hover,
+    .delete-button:hover {
+      opacity: 0.8;
+    }
   </style>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
   <header>
-    <img src="logo.jpg" alt="Logo de l'entreprise" style="height: 96px;">
+    <img src="logo.png" alt="Logo">
     <h1>Gestion de stock d'équipements</h1>
   </header>
-  <main>
-    <table>
-      <thead>
-        <tr>
-          <th>Catégorie</th>
-          <th>Date de livraison</th>
-          <th>Marque</th>
-          <th>Type</th>
-          <th>Référence</th>
-          <th>N° de série</th>
-          <th>N° interne</th>
-          <th>Quantité</th>
-          <th>Valeur HT</th>
-          <th>Facture d'achat</th>
-          <th>Date de facture</th>
-          <th>Complément d'information</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="equipmentTableBody">
-        <!-- Les données seront générées dynamiquement ici -->
-      </tbody>
-    </table>
 
-    <!-- Ajout d'un bouton "Ajouter un équipement" -->
-    <button id="addEquipmentButton" class="full-width-button" onclick="showModal()">Ajouter un équipement</button>
+  <table>
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Quantité</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Afficher les équipements existants ici -->
+    </tbody>
+  </table>
 
-    <!-- Code HTML pour le modal -->
-    <div id="modal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="hideModal()">&times;</span>
-        <h2>Ajouter un équipement</h2>
-        <form id="addEquipmentForm">
-          <label for="categorie">Catégorie</label>
-          <input type="text" id="categorie" name="categorie" required>
-          <label for="dateLivraison">Date de livraison</label>
-          <input type="date" id="dateLivraison" name="dateLivraison" required>
-          <label for="marque">Marque</label>
-          <input type="text" id="marque" name="marque" required>
-          <label for="type">Type</label>
-          <input type="text" id="type" name="type" required>
-          <label for="reference">Référence</label>
-          <input type="text" id="reference" name="reference" required>
-          <label for="numeroSerie">N° de série</label>
-          <input type="text" id="numeroSerie" name="numeroSerie" required>
-          <label for="numeroInterne">N° interne</label>
-          <input type="text" id="numeroInterne" name="numeroInterne" required>
-          <label for="quantite">Quantité</label>
-          <input type="number" id="quantite" name="quantite" required>
-          <label for="valeurHT">Valeur HT</label>
-          <input type="number" step="0.01" id="valeurHT" name="valeurHT" required>
-          <label for="factureAchat">Facture d'achat</label>
-          <input type="text" id="factureAchat" name="factureAchat" required>
-          <label for="dateFacture">Date de facture</label>
-          <input type="date" id="dateFacture" name="dateFacture" required>
-          <label for="complementInfo">Complément d'information</label>
-          <textarea id="complementInfo" name="complementInfo"></textarea>
-          <button type="submit" class="full-width-button">Ajouter</button>
-        </form>
-      </div>
+  <form id="add-equipment-form">
+    <label for="name">Nom :</label>
+    <input type="text" id="name" required>
+
+    <label for="quantity">Quantité :</label>
+    <input type="number" id="quantity" required>
+
+    <button type="submit" class="full-width-button">Ajouter</button>
+  </form>
+
+  <div id="edit-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Modifier l'équipement</h2>
+      <form id="edit-form">
+        <input type="hidden" id="edit-id">
+        <label for="edit-name">Nom :</label>
+        <input type="text" id="edit-name" required>
+
+        <label for="edit-quantity">Quantité :</label>
+        <input type="number" id="edit-quantity" required>
+
+        <div class="action-buttons">
+          <button type="submit" class="edit-button">Modifier</button>
+          <button type="button" class="delete-button">Supprimer</button>
+        </div>
+      </form>
     </div>
+  </div>
 
-  </main>
-
-  <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-firestore.js"></script>
-  <script src="main.js"></script>
+  <script>
+    // Code JavaScript pour gérer les actions et la logique de l'application
+  </script>
 </body>
 </html>
+
