@@ -60,15 +60,16 @@ input, select, textarea {
 
 /* Styles pour les boutons */
 .full-width-button {
-  display: block;
+  display: flex;
   width: 100%;
   padding: 10px;
   background-color: #337ab7;
-  color: #fff;
+  color: white;
   border: none;
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
+  font-weight: bold;
 }
 
 /* Nouveaux styles ajoutés */
