@@ -33,3 +33,15 @@
   text-decoration: none;
   cursor: pointer;
 }
+
+/* Modifications */
+
+/* Utiliser la couleur Pantone 1655 C pour le fond du modal */
+.modal-content {
+  background-color: #FF6037;
+}
+
+/* Utiliser du noir pour la couleur de fermeture du modal */
+.close {
+  color: #000;
+}
