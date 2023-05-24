@@ -75,9 +75,9 @@ function displayEquipment() {
     dateFactureCell.textContent = equipment.dateFacture;
     row.appendChild(dateFactureCell);
 
-    const complementInformationCell = document.createElement("td");
-    complementInformationCell.textContent = equipment.complementInformation;
-    row.appendChild(complementInformationCell);
+    const complementCell = document.createElement("td");
+    complementCell.textContent = equipment.complement;
+    row.appendChild(complementCell);
 
     const actionsCell = document.createElement("td");
     const deleteButton = document.createElement("button");
@@ -154,7 +154,7 @@ addEquipmentForm.addEventListener("submit", function (event) {
   const valeurHT = document.getElementById("valeurHT").value;
   const factureAchat = document.getElementById("factureAchat").value;
   const dateFacture = document.getElementById("dateFacture").value;
-  const complementInformation = document.getElementById("complementInformation").value;
+  const complement = document.getElementById("complement").value;
 
   const newEquipment = {
     categorie: categorie,
@@ -168,7 +168,7 @@ addEquipmentForm.addEventListener("submit", function (event) {
     valeurHT: valeurHT,
     factureAchat: factureAchat,
     dateFacture: dateFacture,
-    complementInformation: complementInformation,
+    complement: complement,
   };
 
   addEquipment(newEquipment);
