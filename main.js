@@ -47,7 +47,7 @@ function addEquipment(event) {
   const factureAchat = addEquipmentForm.factureAchat.value;
   const dateFacture = addEquipmentForm.dateFacture.value;
   const complement = addEquipmentForm.complement.value;
-  
+
   // Masquer le modal
   hideModal();
 
