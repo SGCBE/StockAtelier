@@ -46,7 +46,7 @@ function addEquipment(event) {
   const valeurHT = addEquipmentForm.valeurHT.value;
   const factureAchat = addEquipmentForm.factureAchat.value;
   const dateFacture = addEquipmentForm.dateFacture.value;
-  const complement = addEquipmentForm.complement.value;
+  const complementInfo = addEquipmentForm.complementInfo.value;
 
   // Masquer le modal
   hideModal();
@@ -65,7 +65,7 @@ function addEquipment(event) {
       valeurHT,
       factureAchat,
       dateFacture,
-      complement
+      complementInfo
     })
     .then(() => {
       // Réinitialiser le formulaire
@@ -97,7 +97,7 @@ function displayEquipments() {
         <td>${equipment.valeurHT}</td>
         <td>${equipment.factureAchat}</td>
         <td>${equipment.dateFacture}</td>
-        <td>${equipment.complement}</td>
+        <td>${equipment.complementInfo}</td>
       `;
       equipmentTableBody.appendChild(tr);
     });
