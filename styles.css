@@ -70,3 +70,15 @@ input, select, textarea {
   font-size: 16px;
   cursor: pointer;
 }
+
+/* Modifications */
+
+/* Utiliser la couleur Pantone 1655 C pour les bordures des inputs et des selects */
+input, select, textarea {
+  border: 1px solid #FF6037;
+}
+
+/* Utiliser la couleur Pantone 1655 C pour le texte des boutons */
+.full-width-button {
+  color: #FF6037;
+}
