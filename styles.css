@@ -63,13 +63,14 @@ input, select, textarea {
   display: flex;
   width: 100%;
   padding: 10px;
-  background-color: #337ab7;
+  background-color: #0085C7;
   color: white;
   border: none;
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
   font-weight: bold;
+  text-align: center;
 }
 
 /* Nouveaux styles ajoutés */
