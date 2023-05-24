@@ -43,10 +43,6 @@ function displayEquipment() {
     const row = document.createElement('tr');
 
     const deliveryDateCell = document.createElement('td');
-    deliveryDateCell.textContent = equipment.category;
-    row.appendChild(categoryCell);
-    
-    const deliveryDateCell = document.createElement('td');
     deliveryDateCell.textContent = equipment.deliveryDate;
     row.appendChild(deliveryDateCell);
 
@@ -105,7 +101,7 @@ function openEditModal(index) {
   editDeliveryDateInput.value = equipment.deliveryDate;
 
   const editSupplierClientInput = document.getElementById('editSupplierClient');
-  editSupplierClientInput.value = equipment.supplierClient;
+    editSupplierClientInput.value = equipment.supplierClient;
 
   const editBrandInput = document.getElementById('editBrand');
   editBrandInput.value = equipment.brand;
@@ -132,111 +128,46 @@ function openEditModal(index) {
   editComplementInput.value = equipment.complement;
 
   // Ouvrir le modal
-  showModal('editModal');
+  const modal = document.getElementById('editModal');
+  modal.style.display = 'block';
+
+  // Gérer la soumission du formulaire de modification
+  const editForm = document.getElementById('editForm');
+  editForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Mettre à jour les valeurs de l'équipement
+    equipment.deliveryDate = editDeliveryDateInput.value;
+    equipment.supplierClient = editSupplierClientInput.value;
+    equipment.brand = editBrandInput.value;
+    equipment.type = editTypeInput.value;
+    equipment.reference = editReferenceInput.value;
+    equipment.serialNumber = editSerialNumberInput.value;
+    equipment.value = editValueInput.value;
+    equipment.purchaseInvoice = editPurchaseInvoiceInput.value;
+    equipment.invoiceDate = editInvoiceDateInput.value;
+    equipment.complement = editComplementInput.value;
+
+    // Fermer le modal
+    modal.style.display = 'none';
+
+    // Actualiser l'affichage du tableau
+    displayEquipment();
+  });
 }
 
-// Fonction pour fermer le modal
-function closeModal(modalId) {
-  const modal = document.getElementById(modalId);
+// Fonction pour fermer le modal de modification
+function closeEditModal() {
+  const modal = document.getElementById('editModal');
   modal.style.display = 'none';
 }
 
-// Fonction pour filtrer les équipements
-function filterEquipment() {
-  const filterValue = document.getElementById('filterInput').value.toLowerCase();
+// Gérer la soumission du formulaire d'ajout
+const addForm = document.getElementById('addForm');
+addForm.addEventListener('submit', (e) => {
+  e.preventDefault();
 
-  const filteredEquipment = equipmentList.filter(equipment => {
-    // Vérifier si le filtre correspond à la marque, au type ou à la référence de l'équipement
-    const { brand, type, reference } = equipment;
-    return brand.toLowerCase().includes(filterValue) || type.toLowerCase().includes(filterValue) || reference.toLowerCase().includes(filterValue);
-  });
-
-  // Afficher les équipements filtrés
-  displayFilteredEquipment(filteredEquipment);
-}
-
-// Fonction pour afficher les équipements filtrés dans le tableau
-function displayFilteredEquipment(filteredEquipment) {
-  const table = document.getElementById('equipmentTable');
-
-  // Réinitialiser le contenu du tableau
-  table.innerHTML = '';
-
-  // Ajouter l'en-tête du tableau
-  const headerRow = document.createElement('tr');
-  const headers = ['Date de livraison', 'Fournisseur / Client', 'Marque', 'Type', 'Référence', 'Numéro de série', 'Valeur HT', 'Facture d\'achat', 'Date de facture', 'Informations complémentaires', 'Actions'];
-
-  headers.forEach(headerText => {
-    const header = document.createElement('th');
-    header.textContent = headerText;
-    headerRow.appendChild(header);
-  });
-
-  table.appendChild(headerRow);
-
-  // Ajouter chaque équipement filtré dans le tableau
-  filteredEquipment.forEach((equipment, index) => {
-    const row = document.createElement('tr');
-
-    const deliveryDateCell = document.createElement('td');
-    deliveryDateCell.textContent = equipment.deliveryDate;
-    row.appendChild(deliveryDateCell);
-
-    const supplierClientCell = document.createElement('td');
-    supplierClientCell.textContent = equipment.supplierClient;
-    row.appendChild(supplierClientCell);
-
-    const brandCell = document.createElement('td');
-    brandCell.textContent = equipment.brand;
-    row.appendChild(brandCell);
-
-    const typeCell = document.createElement('td');
-    typeCell.textContent = equipment.type;
-    row.appendChild(typeCell);
-
-    const referenceCell = document.createElement('td');
-    referenceCell.textContent = equipment.reference;
-    row.appendChild(referenceCell);
-
-    const serialNumberCell = document.createElement('td');
-    serialNumberCell.textContent = equipment.serialNumber;
-    row.appendChild(serialNumberCell);
-
-    const valueCell = document.createElement('td');
-    valueCell.textContent = equipment.value;
-    row.appendChild(valueCell);
-
-    const purchaseInvoiceCell = document.createElement('td');
-    purchaseInvoiceCell.textContent = equipment.purchaseInvoice;
-    row.appendChild(purchaseInvoiceCell);
-
-    const invoiceDateCell = document.createElement('td');
-    invoiceDateCell.textContent = equipment.invoiceDate;
-    row.appendChild(invoiceDateCell);
-
-    const complementCell = document.createElement('td');
-    complementCell.textContent = equipment.complement;
-    row.appendChild(complementCell);
-
-    const actionsCell = document.createElement('td');
-    const editButton = document.createElement('button');
-    editButton.textContent = 'Modifier';
-    editButton.addEventListener('click', () => openEditModal(index));
-    actionsCell.appendChild(editButton);
-    row.appendChild(actionsCell);
-
-    table.appendChild(row);
-  });
-}
-
-// Fonction pour afficher le modal
-function showModal(modalId) {
-  const modal = document.getElementById(modalId);
-  modal.style.display = 'block';
-}
-
-// Fonction pour ajouter un nouvel équipement
-function addNewEquipment() {
+  // Récupérer les valeurs du formulaire
   const deliveryDateInput = document.getElementById('deliveryDate');
   const supplierClientInput = document.getElementById('supplierClient');
   const brandInput = document.getElementById('brand');
@@ -248,21 +179,21 @@ function addNewEquipment() {
   const invoiceDateInput = document.getElementById('invoiceDate');
   const complementInput = document.getElementById('complement');
 
-  const deliveryDate = deliveryDateInput.value;
-  const supplierClient = supplierClientInput.value;
-  const brand = brandInput.value;
-  const type = typeInput.value;
-  const reference = referenceInput.value;
-  const serialNumber = serialNumberInput.value;
-  const value = valueInput.value;
-  const purchaseInvoice = purchaseInvoiceInput.value;
-  const invoiceDate = invoiceDateInput.value;
-  const complement = complementInput.value;
+  // Ajouter l'équipement
+  addEquipment(
+    deliveryDateInput.value,
+    supplierClientInput.value,
+    brandInput.value,
+    typeInput.value,
+    referenceInput.value,
+    serialNumberInput.value,
+    valueInput.value,
+    purchaseInvoiceInput.value,
+    invoiceDateInput.value,
+    complementInput.value
+  );
 
-  // Ajouter l'équipement à la liste
-  addEquipment(deliveryDate, supplierClient, brand, type, reference, serialNumber, value, purchaseInvoice, invoiceDate, complement);
-
-  // Réinitialiser les valeurs des champs
+  // Réinitialiser les valeurs du formulaire
   deliveryDateInput.value = '';
   supplierClientInput.value = '';
   brandInput.value = '';
@@ -274,12 +205,10 @@ function addNewEquipment() {
   invoiceDateInput.value = '';
   complementInput.value = '';
 
-  // Fermer le modal
-  closeModal('addModal');
-
-  // Mettre à jour l'affichage du tableau des équipements
+  // Actualiser l'affichage du tableau
   displayEquipment();
-}
+});
 
-// Mettre à jour l'affichage initial du tableau des équipements
+// Actualiser l'affichage du tableau
 displayEquipment();
+
