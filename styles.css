@@ -71,14 +71,37 @@ input, select, textarea {
   cursor: pointer;
 }
 
-/* Modifications */
-
-/* Utiliser la couleur Pantone 1655 C pour les bordures des inputs et des selects */
-input, select, textarea {
-  border: 1px solid #FF6037;
+/* Nouveaux styles ajoutés */
+body {
+  font-family: Arial, sans-serif;
+  color: #000;
 }
 
-/* Utiliser la couleur Pantone 1655 C pour le texte des boutons */
+/* Couleurs spécifiques */
+th {
+  background-color: #308C8C;
+  color: #fff;
+}
+
+header {
+  background-color: #308C8C;
+}
+
 .full-width-button {
-  color: #FF6037;
+  background-color: #1655B7;
+}
+
+/* Taille des polices en fonction de l'écran */
+@media screen and (max-width: 768px) {
+  header h1 {
+    font-size: 32px;
+  }
+
+  th, td, label {
+    font-size: 14px;
+  }
+
+  .full-width-button {
+    font-size: 14px;
+  }
 }
