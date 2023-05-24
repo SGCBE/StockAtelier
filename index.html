@@ -3,79 +3,12 @@
 <head>
   <meta charset="utf-8">
   <title>Gestion de stock d'équipements</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="modal.css">
   <style>
-    /* Styles pour le header */
-    header {
-      display: flex;
-      align-items: center;
-      background-color: #005cbf;
-      color: #fff;
-      padding: 16px;
-    }
+    /* Vos styles CSS actuels ici */
 
-    header img {
-      height: 64px;
-      margin-right: 16px;
-    }
-
-    header h1 {
-      font-size: 24px;
-      margin: 0;
-    }
-
-    /* Styles pour le tableau */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 16px;
-    }
-
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-
-    th {
-      background-color: #f5f5f5;
-      font-weight: bold;
-    }
-
-    /* Styles pour le formulaire d'ajout d'équipement */
-    form {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-
-    label {
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-
-    input, select, textarea {
-      padding: 8px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    /* Styles pour les boutons */
-    .full-width-button {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      background-color: #005cbf;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    /* Styles pour le modal */
+    /* Ajout de styles pour le modal */
     .modal {
       display: none;
       position: fixed;
@@ -85,11 +18,11 @@
       width: 100%;
       height: 100%;
       overflow: auto;
-      background-color: rgba(0, 0, 0, 0.4);
+      background-color: rgba(0,0,0,0.4);
     }
 
     .modal-content {
-      background-color: #fff;
+      background-color: #fefefe;
       margin: 10% auto;
       padding: 20px;
       border: 1px solid #888;
@@ -106,42 +39,12 @@
 
     .close:hover,
     .close:focus {
-      color: #000;
+      color: black;
       text-decoration: none;
       cursor: pointer;
     }
-
-    /* Styles pour les boutons Modifier et Supprimer */
-    .action-buttons {
-      display: flex;
-      gap: 8px;
-    }
-
-    .edit-button,
-    .delete-button {
-      padding: 6px 12px;
-      background-color: #e36200;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    .edit-button:hover,
-    .delete-button:hover {
-      background-color: #d95400;
-    }
-
-    .edit-button {
-      background-color: #007bff;
-    }
-
-    .edit-button:hover,
-    .delete-button:hover {
-      opacity: 0.8;
-    }
   </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
   <header>
@@ -212,9 +115,8 @@
 
   </main>
 
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-firestore.js"></script>
   <script src="main.js"></script>
 </body>
 </html>
-
