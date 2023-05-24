@@ -81,23 +81,24 @@
           <label for="quantite">Quantité</label>
           <input type="number" id="quantite" name="quantite" required>
           <label for="valeurHT">Valeur HT</label>
-          <input type="number" id="valeurHT" name="valeurHT" step="0.01" required>
+          <input type="number" id="valeurHT" name="valeurHT" required>
           <label for="factureAchat">Facture d'achat</label>
-          <input type="file" id="factureAchat" name="factureAchat" required>
+          <input type="text" id="factureAchat" name="factureAchat" required>
           <label for="dateFacture">Date de facture</label>
           <input type="date" id="dateFacture" name="dateFacture" required>
-          <label for="complementInformation">Complément d'information</label>
-          <textarea id="complementInformation" name="complementInformation"></textarea>
-          <button type="submit">Ajouter</button>
+          <label for="complementInfo">Complément d'information</label>
+          <textarea id="complementInfo" name="complementInfo"></textarea>
+          <button type="submit" class="full-width-button">Ajouter</button>
         </form>
       </div>
     </div>
+
   </main>
-
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
-
-  <script src="main.js"></script>
+  <footer>
+    <p>&copy; 2023 Gestion de stock d'équipements</p>
+  </footer>
+  
+  <script src="script.js"></script>
 </body>
 </html>
+
