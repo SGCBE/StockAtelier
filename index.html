@@ -1,137 +1,80 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestion des équipements</title>
-  <link rel="stylesheet" href="modal.css">
+  <meta charset="utf-8">
+  <title>Gestion de stock d'équipements</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="modal.css">
   <style>
-    /* Votre style CSS ici */
+    .full-width-button {
+      width: 100%;
+    }
+    
+    .capture-button {
+      width: 100%;
+      font-size: 1.5em;
+      padding: 10px;
+    }
+    
+    table {
+      width: 100%;
+    }
+    
+    td {
+      word-break: break-word;
+    }
   </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-  <h1>Gestion des équipements</h1>
+  <header>
+    <img src="P:\BUREAU ETUDES\Sites internet\logo_schnell_coul.jpg" alt="Logo de l'entreprise" style="height: 96px;">
+    <h1>Gestion de stock d'équipements</h1>
+  </header>
+  <main>
+    <table>
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Description</th>
+          <th>Quantité</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="equipmentTableBody">
+        <!-- Les données seront générées dynamiquement ici -->
+      </tbody>
+    </table>
 
-  <button id="addButton">Ajouter un équipement</button>
+    <!-- Ajout d'un bouton "Ajouter un équipement" -->
+    <button id="addEquipmentButton" class="full-width-button">Ajouter un équipement</button>
 
-  <table id="equipmentTable">
-    <tr>
-      <th>Date de livraison</th>
-      <th>Fournisseur / Client</th>
-      <th>Marque</th>
-      <th>Type</th>
-      <th>Référence</th>
-      <th>Numéro de série</th>
-      <th>Valeur HT</th>
-      <th>Facture d'achat</th>
-      <th>Date de facture</th>
-      <th>Informations complémentaires</th>
-      <th>Actions</th>
-    </tr>
-  </table>
-
-  <div id="addModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2>Ajouter un équipement</h2>
-      <form id="addForm">
-        <label for="deliveryDate">Date de livraison :</label>
-        <input type="date" id="deliveryDate" required><br>
-
-        <label for="supplierClient">Fournisseur / Client :</label>
-        <input type="text" id="supplierClient" required><br>
-
-        <label for="brand">Marque :</label>
-        <input type="text" id="brand" required><br>
-
-        <label for="type">Type :</label>
-        <input type="text" id="type" required><br>
-
-        <label for="category">Catégorie :</label>
-        <select id="category" required>
-          <option value="Inox">Inox</option>
-          <option value="Laverie">Laverie</option>
-          <option value="Equipement chaud">Equipement chaud</option>
-          <option value="Equipement froid">Equipement froid</option>
-          <option value="Equipement de préparation">Equipement de préparation</option>
-          <option value="Stockage">Stockage</option>
-        </select><br>
-
-        <label for="reference">Référence :</label>
-        <input type="text" id="reference" required><br>
-
-        <label for="serialNumber">Numéro de série :</label>
-        <input type="text" id="serialNumber" required><br>
-
-        <label for="value">Valeur HT :</label>
-        <input type="number" id="value" required><br>
-
-        <label for="purchaseInvoice">Facture d'achat :</label>
-        <input type="text" id="purchaseInvoice" required><br>
-
-        <label for="invoiceDate">Date de facture :</label>
-        <input type="date" id="invoiceDate" required><br>
-
-        <label for="complement">Informations complémentaires :</label>
-        <textarea id="complement"></textarea><br>
-
-        <input type="submit" value="Ajouter">
-      </form>
+    <!-- Code HTML pour le modal -->
+    <div id="addEquipmentModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="hideModal()">&times;</span>
+        <h2>Ajouter un équipement</h2>
+        <form id="addEquipmentForm">
+          <label for="nom">Nom</label>
+          <input type="text" id="nom" name="nom" required>
+          <label for="description">Description</label>
+          <textarea id="description" name="description" required></textarea>
+          <label for="quantite">Quantité</label>
+          <input type="number" id="quantite" name="quantite" required>
+          <video id="cameraPreview" autoplay playsinline></video>
+          <button id="captureButton" class="capture-button" type="button">Capturer la photo</button>
+          <input type="submit" value="Ajouter">
+        </form>
+        <!-- Ajouter le bouton de fermeture du modal -->
+        <button id="closeModalButton" onclick="hideModal()">Fermer</button>
+      </div>
     </div>
-  </div>
 
-  <div id="editModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2>Modifier un équipement</h2>
-      <form id="editForm">
-        <label for="editDeliveryDate">Date de livraison :</label>
-        <input type="date" id="editDeliveryDate" required><br>
-
-        <label for="editSupplierClient">Fournisseur / Client :</label>
-        <input type="text" id="editSupplierClient" required><br>
-
-        <label for="editBrand">Marque :</label>
-        <input type="text" id="editBrand" required><br>
-
-        <label for="editType">Type :</label>
-        <input type="text" id="editType" required><br>
-
-        <label for="editCategory">Catégorie :</label>
-        <select id="editCategory" required>
-          <option value="Inox">Inox</option>
-          <option value="Laverie">Laverie</option>
-          <option value="Equipement chaud">Equipement chaud</option>
-          <option value="Equipement froid">Equipement froid</option>
-          <option value="Equipement de préparation">Equipement de préparation</option>
-          <option value="Stockage">Stockage</option>
-        </select><br>
-
-        <label for="editReference">Référence :</label>
-        <input type="text" id="editReference" required><br>
-
-        <label for="editSerialNumber">Numéro de série :</label>
-        <input type="text" id="editSerialNumber" required><br>
-
-        <label for="editValue">Valeur HT :</label>
-        <input type="number" id="editValue" required><br>
-
-        <label for="editPurchaseInvoice">Facture d'achat :</label>
-        <input type="text" id="editPurchaseInvoice" required><br>
-
-        <label for="editInvoiceDate">Date de facture :</label>
-        <input type="date" id="editInvoiceDate" required><br>
-
-        <label for="editComplement">Informations complémentaires :</label>
-        <textarea id="editComplement"></textarea><br>
-
-        <input type="hidden" id="editIndex">
-        <input type="submit" value="Modifier">
-      </form>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+    <!-- Chargement du fichier main.js -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script src="main.js"></script>
+  </main>
 </body>
 </html>
