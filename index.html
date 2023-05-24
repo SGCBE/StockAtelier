@@ -28,7 +28,7 @@
 </head>
 <body>
   <header>
-    <img src="P:\BUREAU ETUDES\Sites internet\logo_schnell_coul.jpg" alt="Logo de l'entreprise" style="height: 96px;">
+    <img src="logo.jpg" alt="Logo de l'entreprise" style="height: 96px;">
     <h1>Gestion de stock d'équipements</h1>
   </header>
   <main>
@@ -36,8 +36,18 @@
       <thead>
         <tr>
           <th>Nom</th>
-          <th>Description</th>
+          <th>Catégorie</th>
+          <th>Date de livraison</th>
+          <th>Marque</th>
+          <th>Type</th>
+          <th>Référence</th>
+          <th>N° de série</th>
+          <th>N° interne</th>
           <th>Quantité</th>
+          <th>Valeur HT</th>
+          <th>Facture d'achat</th>
+          <th>Date de facture</th>
+          <th>Complément d'information</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -55,26 +65,38 @@
         <span class="close" onclick="hideModal()">&times;</span>
         <h2>Ajouter un équipement</h2>
         <form id="addEquipmentForm">
-          <label for="nom">Nom</label>
-          <input type="text" id="nom" name="nom" required>
-          <label for="description">Description</label>
-          <textarea id="description" name="description" required></textarea>
+          <label for="categorie">Catégorie</label>
+          <input type="text" id="categorie" name="categorie" required>
+          <label for="dateLivraison">Date de livraison</label>
+          <input type="date" id="dateLivraison" name="dateLivraison" required>
+          <label for="marque">Marque</label>
+          <input type="text" id="marque" name="marque" required>
+          <label for="type">Type</label>
+          <input type="text" id="type" name="type" required>
+          <label for="reference">Référence</label>
+          <input type="text" id="reference" name="reference" required>
+          <label for="numeroSerie">N° de série</label>
+          <input type="text" id="numeroSerie" name="numeroSerie" required>
+          <label for="numeroInterne">N° interne</label>
+          <input type="text" id="numeroInterne" name="numeroInterne" required>
           <label for="quantite">Quantité</label>
           <input type="number" id="quantite" name="quantite" required>
-          <video id="cameraPreview" autoplay playsinline></video>
-          <button id="captureButton" class="capture-button" type="button">Capturer la photo</button>
-          <input type="submit" value="Ajouter">
+          <label for="valeurHT">Valeur HT</label>
+          <input type="number" id="valeurHT" name="valeurHT" step="0.01" required>
+          <label for="factureAchat">Facture d'achat</label>
+          <input type="file" id="factureAchat" name="factureAchat" required>
+          <label for="dateFacture">Date de facture</label>
+          <input type="date" id="dateFacture" name="dateFacture" required>
+          <label for="complementInformation">Complément d'information</label>
+          <textarea id="complementInformation" name="complementInformation"></textarea>
+          <button type="submit">Ajouter</button>
         </form>
-        <!-- Ajouter le bouton de fermeture du modal -->
-        <button id="closeModalButton" onclick="hideModal()">Fermer</button>
       </div>
     </div>
-
-    <!-- Chargement du fichier main.js -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-    <script src="main.js"></script>
   </main>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
