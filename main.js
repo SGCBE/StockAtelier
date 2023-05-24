@@ -9,168 +9,87 @@ const firebaseConfig = {
   appId: "1:92935528444:web:57786855ed9cc7ef129c79"
 };
 
-// Initialisation de Firestore
+
+// Initialisation de l'application Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// Variable globale pour stocker les équipements
-let equipments = [];
+// Référence au formulaire et à la table
+const addEquipmentForm = document.getElementById('addEquipmentForm');
+const equipmentTableBody = document.getElementById('equipmentTableBody');
 
-// Récupérer les références des éléments HTML
-const equipmentTableBody = document.getElementById("equipmentTableBody");
-const addEquipmentButton = document.getElementById("addEquipmentButton");
-const addEquipmentForm = document.getElementById("addEquipmentForm");
-const addEquipmentModal = document.getElementById("addEquipmentModal");
+// Fonction pour ajouter un équipement à Firestore
+function addEquipment(event) {
+  event.preventDefault();
 
-// Fonction pour afficher les équipements
-function displayEquipment() {
-  // Réinitialiser le contenu du tableau
-  equipmentTableBody.innerHTML = "";
+  // Récupérer les valeurs du formulaire
+  const categorie = addEquipmentForm.categorie.value;
+  const dateLivraison = addEquipmentForm.dateLivraison.value;
+  const marque = addEquipmentForm.marque.value;
+  const type = addEquipmentForm.type.value;
+  const reference = addEquipmentForm.reference.value;
+  const numeroSerie = addEquipmentForm.numeroSerie.value;
+  const numeroInterne = addEquipmentForm.numeroInterne.value;
+  const quantite = addEquipmentForm.quantite.value;
+  const valeurHT = addEquipmentForm.valeurHT.value;
+  const factureAchat = addEquipmentForm.factureAchat.value;
+  const dateFacture = addEquipmentForm.dateFacture.value;
+  const complement = addEquipmentForm.complement.value;
 
-  // Générer les lignes du tableau pour chaque équipement
-  equipments.forEach(function (equipment) {
-    const row = document.createElement("tr");
-
-    const categorieCell = document.createElement("td");
-    categorieCell.textContent = equipment.categorie;
-    row.appendChild(categorieCell);
-
-    const dateLivraisonCell = document.createElement("td");
-    dateLivraisonCell.textContent = equipment.dateLivraison;
-    row.appendChild(dateLivraisonCell);
-
-    const marqueCell = document.createElement("td");
-    marqueCell.textContent = equipment.marque;
-    row.appendChild(marqueCell);
-
-    const typeCell = document.createElement("td");
-    typeCell.textContent = equipment.type;
-    row.appendChild(typeCell);
-
-    const referenceCell = document.createElement("td");
-    referenceCell.textContent = equipment.reference;
-    row.appendChild(referenceCell);
-
-    const numeroSerieCell = document.createElement("td");
-    numeroSerieCell.textContent = equipment.numeroSerie;
-    row.appendChild(numeroSerieCell);
-
-    const numeroInterneCell = document.createElement("td");
-    numeroInterneCell.textContent = equipment.numeroInterne;
-    row.appendChild(numeroInterneCell);
-
-    const quantiteCell = document.createElement("td");
-    quantiteCell.textContent = equipment.quantite;
-    row.appendChild(quantiteCell);
-
-    const valeurHTCell = document.createElement("td");
-    valeurHTCell.textContent = equipment.valeurHT;
-    row.appendChild(valeurHTCell);
-
-    const factureAchatCell = document.createElement("td");
-    factureAchatCell.textContent = equipment.factureAchat;
-    row.appendChild(factureAchatCell);
-
-    const dateFactureCell = document.createElement("td");
-    dateFactureCell.textContent = equipment.dateFacture;
-    row.appendChild(dateFactureCell);
-
-    const complementCell = document.createElement("td");
-    complementCell.textContent = equipment.complement;
-    row.appendChild(complementCell);
-
-    const actionsCell = document.createElement("td");
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Supprimer";
-    deleteButton.addEventListener("click", function () {
-      deleteEquipment(equipment);
-    });
-    actionsCell.appendChild(deleteButton);
-    row.appendChild(actionsCell);
-
-    equipmentTableBody.appendChild(row);
+  // Ajouter les données à Firestore
+  db.collection('equipments').add({
+    categorie,
+    dateLivraison,
+    marque,
+    type,
+    reference,
+    numeroSerie,
+    numeroInterne,
+    quantite,
+    valeurHT,
+    factureAchat,
+    dateFacture,
+    complement
+  })
+  .then(() => {
+    // Réinitialiser le formulaire
+    addEquipmentForm.reset();
+    // Fermer le modal
+    hideModal();
+  })
+  .catch((error) => {
+    console.error("Erreur lors de l'ajout de l'équipement : ", error);
   });
 }
 
-// Fonction pour ajouter un équipement
-function addEquipment(equipment) {
-  // Ajouter l'équipement à Firestore
-  db.collection("equipments")
-    .add(equipment)
-    .then(function (docRef) {
-      equipment.id = docRef.id;
-      equipments.push(equipment);
-      displayEquipment();
-      hideModal();
-    })
-    .catch(function (error) {
-      console.error("Erreur lors de l'ajout de l'équipement :", error);
+// Fonction pour afficher les équipements depuis Firestore
+function displayEquipments() {
+  db.collection('equipments').onSnapshot((snapshot) => {
+    equipmentTableBody.innerHTML = '';
+    snapshot.forEach((doc) => {
+      const equipment = doc.data();
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${equipment.categorie}</td>
+        <td>${equipment.dateLivraison}</td>
+        <td>${equipment.marque}</td>
+        <td>${equipment.type}</td>
+        <td>${equipment.reference}</td>
+        <td>${equipment.numeroSerie}</td>
+        <td>${equipment.numeroInterne}</td>
+        <td>${equipment.quantite}</td>
+        <td>${equipment.valeurHT}</td>
+        <td>${equipment.factureAchat}</td>
+        <td>${equipment.dateFacture}</td>
+        <td>${equipment.complement}</td>
+      `;
+      equipmentTableBody.appendChild(tr);
     });
+  });
 }
 
-// Fonction pour supprimer un équipement
-function deleteEquipment(equipment) {
-  // Supprimer l'équipement de Firestore
-  db.collection("equipments")
-    .doc(equipment.id)
-    .delete()
-    .then(function () {
-      const index = equipments.indexOf(equipment);
-      if (index > -1) {
-        equipments.splice(index, 1);
-        displayEquipment();
-      }
-    })
-    .catch(function (error) {
-      console.error("Erreur lors de la suppression de l'équipement :", error);
-    });
-}
+// Exécution de la fonction pour afficher les équipements
+displayEquipments();
 
-// Fonction pour afficher le modal
-function showModal() {
-  addEquipmentModal.style.display = "block";
-}
-
-// Fonction pour masquer le modal
-function hideModal() {
-  addEquipmentModal.style.display = "none";
-}
-
-// Écouter l'événement de clic sur le bouton "Ajouter un équipement"
-addEquipmentButton.addEventListener("click", showModal);
-
-// Écouter l'événement de soumission du formulaire d'ajout d'équipement
-addEquipmentForm.addEventListener("submit", function (event) {
-  event.preventDefault();
-
-  const categorie = document.getElementById("categorie").value;
-  const dateLivraison = document.getElementById("dateLivraison").value;
-  const marque = document.getElementById("marque").value;
-  const type = document.getElementById("type").value;
-  const reference = document.getElementById("reference").value;
-  const numeroSerie = document.getElementById("numeroSerie").value;
-  const numeroInterne = document.getElementById("numeroInterne").value;
-  const quantite = document.getElementById("quantite").value;
-  const valeurHT = document.getElementById("valeurHT").value;
-  const factureAchat = document.getElementById("factureAchat").value;
-  const dateFacture = document.getElementById("dateFacture").value;
-  const complement = document.getElementById("complement").value;
-
-  const newEquipment = {
-    categorie: categorie,
-    dateLivraison: dateLivraison,
-    marque: marque,
-    type: type,
-    reference: reference,
-    numeroSerie: numeroSerie,
-    numeroInterne: numeroInterne,
-    quantite: quantite,
-    valeurHT: valeurHT,
-    factureAchat: factureAchat,
-    dateFacture: dateFacture,
-    complement: complement,
-  };
-
-  addEquipment(newEquipment);
-  addEquipmentForm.reset();
-});
+// Écouter l'événement de soumission du formulaire
+addEquipmentForm.addEventListener('submit', addEquipment);
