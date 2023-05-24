@@ -9,9 +9,6 @@ const firebaseConfig = {
   appId: "1:92935528444:web:57786855ed9cc7ef129c79"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
 // Initialisation de Firebase
 firebase.initializeApp(firebaseConfig);
 
@@ -51,8 +48,11 @@ function addEquipment(event) {
     complementInformation
   };
 
-  // Ajout de l'équipement à la base de données
-  equipmentCollection.add(newEquipment)
+  // Génération d'un identifiant personnalisé pour l'équipement
+  const equipmentId = generateEquipmentId();
+
+  // Ajout de l'équipement à la base de données avec l'identifiant personnalisé
+  equipmentCollection.doc(equipmentId).set(newEquipment)
     .then(() => {
       // Réinitialisation du formulaire
       document.getElementById("addEquipmentForm").reset();
@@ -64,41 +64,49 @@ function addEquipment(event) {
     });
 }
 
+// Fonction pour générer un identifiant personnalisé pour l'équipement
+function generateEquipmentId() {
+  // Générez un identifiant unique ici, par exemple en utilisant la date actuelle ou une logique spécifique à votre application
+  return 'equipment-' + Date.now();
+}
+
 // Fonction pour afficher les équipements en stock
 function displayEquipment() {
   equipmentCollection.get()
     .then((querySnapshot) => {
       // Effacement des données précédentes
-      document.getElementById("equipmentTableBody").innerHTML = "";
+      const equipmentList = document.getElementById("equipmentList");
+      equipmentList.innerHTML = "";
 
+      // Parcours des documents de la collection
       querySnapshot.forEach((doc) => {
-        const equipment = doc.data();
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${equipment.categorie}</td>
-          <td>${equipment.dateLivraison}</td>
-          <td>${equipment.marque}</td>
-          <td>${equipment.type}</td>
-          <td>${equipment.reference}</td>
-          <td>${equipment.numeroSerie}</td>
-          <td>${equipment.numeroInterne}</td>
-          <td>${equipment.quantite}</td>
-          <td>${equipment.valeurHT}</td>
-          <td>${equipment.factureAchat}</td>
-          <td>${equipment.dateFacture}</td>
-          <td>${equipment.complementInformation}</td>
-          <td>
-            <button onclick="editEquipment('${doc.id}')">Modifier</button>
-            <button onclick="deleteEquipment('${doc.id}')">Supprimer</button>
-          </td>
+        const equipmentData = doc.data();
+
+        // Création d'un élément HTML pour afficher les données de l'équipement
+        const equipmentItem = document.createElement("div");
+        equipmentItem.classList.add("equipment-item");
+        equipmentItem.innerHTML = `
+          <h3>${equipmentData.marque} ${equipmentData.type}</h3>
+          <p>Catégorie: ${equipmentData.categorie}</p>
+          <p>Référence: ${equipmentData.reference}</p>
+          <p>Numéro de série: ${equipmentData.numeroSerie}</p>
+          <p>Numéro interne: ${equipmentData.numeroInterne}</p>
+          <p>Quantité: ${equipmentData.quantite}</p>
+          <p>Valeur HT: ${equipmentData.valeurHT}</p>
+          <p>Date de livraison: ${equipmentData.dateLivraison}</p>
+          <p>Date de facture: ${equipmentData.dateFacture}</p>
+          <p>Informations complémentaires: ${equipmentData.complementInformation}</p>
         `;
-        document.getElementById("equipmentTableBody").appendChild(row);
+
+        // Ajout de l'élément à la liste
+        equipmentList.appendChild(equipmentItem);
       });
     })
     .catch((error) => {
       console.error("Erreur lors de la récupération des équipements :", error);
     });
 }
+
 
 // Fonction pour supprimer un équipement
 function deleteEquipment(equipmentId) {
