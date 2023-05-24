@@ -20,7 +20,6 @@ function addEquipment(event) {
   event.preventDefault();
 
   // Récupération des valeurs du formulaire
-  const nom = document.getElementById("nom").value;
   const categorie = document.getElementById("categorie").value;
   const dateLivraison = document.getElementById("dateLivraison").value;
   const marque = document.getElementById("marque").value;
@@ -36,7 +35,6 @@ function addEquipment(event) {
 
   // Création d'un objet représentant l'équipement à ajouter
   const newEquipment = {
-    nom,
     categorie,
     dateLivraison,
     marque,
@@ -74,7 +72,6 @@ function displayEquipment() {
         const equipment = doc.data();
         const row = document.createElement("tr");
         row.innerHTML = `
-          <td>${equipment.nom}</td>
           <td>${equipment.categorie}</td>
           <td>${equipment.dateLivraison}</td>
           <td>${equipment.marque}</td>
