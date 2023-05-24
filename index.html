@@ -6,29 +6,120 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="modal.css">
   <style>
-    .full-width-button {
-      width: 100%;
+    /* Vos styles CSS actuels ici */
+
+    /* Styles pour le header */
+    header {
+      display: flex;
+      align-items: center;
+      background-color: #333;
+      color: #fff;
+      padding: 16px;
     }
-    
-    .capture-button {
-      width: 100%;
-      font-size: 1.5em;
-      padding: 10px;
+
+    header img {
+      height: 64px;
+      margin-right: 16px;
     }
-    
+
+    header h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    /* Styles pour le tableau */
     table {
       width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
     }
-    
-    td {
-      word-break: break-word;
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f5f5f5;
+      font-weight: bold;
+    }
+
+    /* Styles pour le formulaire d'ajout d'équipement */
+    form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    input, select, textarea {
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Styles pour les boutons */
+    .full-width-button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #337ab7;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    /* Styles pour le modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
     }
   </style>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
   <header>
-    <img src="logo.jpg" alt="Logo de l'entreprise" style="height: 96px;">
+    <img src="logo.jpg" alt="Logo de l'entreprise">
     <h1>Gestion de stock d'équipements</h1>
   </header>
   <main>
@@ -64,30 +155,54 @@
         <span class="close" onclick="hideModal()">&times;</span>
         <h2>Ajouter un équipement</h2>
         <form id="addEquipmentForm">
-          <label for="categorie">Catégorie</label>
-          <input type="text" id="categorie" name="categorie" required>
-          <label for="dateLivraison">Date de livraison</label>
-          <input type="date" id="dateLivraison" name="dateLivraison" required>
-          <label for="marque">Marque</label>
-          <input type="text" id="marque" name="marque" required>
-          <label for="type">Type</label>
-          <input type="text" id="type" name="type" required>
-          <label for="reference">Référence</label>
-          <input type="text" id="reference" name="reference" required>
-          <label for="numeroSerie">N° de série</label>
-          <input type="text" id="numeroSerie" name="numeroSerie" required>
-          <label for="numeroInterne">N° interne</label>
-          <input type="text" id="numeroInterne" name="numeroInterne" required>
-          <label for="quantite">Quantité</label>
-           <input type="number" id="quantite" name="quantite" required>
-          <label for="valeurHT">Valeur HT</label>
-          <input type="number" id="valeurHT" name="valeurHT" required>
-          <label for="factureAchat">Facture d'achat</label>
-          <input type="text" id="factureAchat" name="factureAchat" required>
-          <label for="dateFacture">Date de facture</label>
-          <input type="date" id="dateFacture" name="dateFacture" required>
-          <label for="complement">Complément d'information</label>
-          <textarea id="complement" name="complement"></textarea>
+          <div>
+            <label for="categorie">Catégorie</label>
+            <input type="text" id="categorie" name="categorie" required>
+          </div>
+          <div>
+            <label for="dateLivraison">Date de livraison</label>
+            <input type="date" id="dateLivraison" name="dateLivraison" required>
+          </div>
+          <div>
+            <label for="marque">Marque</label>
+            <input type="text" id="marque" name="marque" required>
+          </div>
+          <div>
+            <label for="type">Type</label>
+            <input type="text" id="type" name="type" required>
+          </div>
+          <div>
+            <label for="reference">Référence</label>
+            <input type="text" id="reference" name="reference" required>
+          </div>
+          <div>
+            <label for="numeroSerie">N° de série</label>
+            <input type="text" id="numeroSerie" name="numeroSerie" required>
+          </div>
+          <div>
+            <label for="numeroInterne">N° interne</label>
+            <input type="text" id="numeroInterne" name="numeroInterne" required>
+          </div>
+          <div>
+            <label for="quantite">Quantité</label>
+            <input type="number" id="quantite" name="quantite" required>
+          </div>
+          <div>
+            <label for="valeurHT">Valeur HT</label>
+            <input type="number" id="valeurHT" name="valeurHT" required>
+          </div>
+          <div>
+            <label for="factureAchat">Facture d'achat</label>
+            <input type="text" id="factureAchat" name="factureAchat" required>
+          </div>
+          <div>
+            <label for="dateFacture">Date de facture</label>
+            <input type="date" id="dateFacture" name="dateFacture" required>
+          </div>
+          <div>
+            <label for="complement">Complément d'information</label>
+            <textarea id="complement" name="complement"></textarea>
+          </div>
           <button type="submit" class="full-width-button">Ajouter</button>
         </form>
       </div>
