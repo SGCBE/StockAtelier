@@ -18,6 +18,18 @@ const db = firebase.firestore();
 const addEquipmentForm = document.getElementById('addEquipmentForm');
 const equipmentTableBody = document.getElementById('equipmentTableBody');
 
+// Fonction pour afficher le modal
+function showModal() {
+  const modal = document.getElementById('modal');
+  modal.style.display = 'block';
+}
+
+// Fonction pour masquer le modal
+function hideModal() {
+  const modal = document.getElementById('modal');
+  modal.style.display = 'none';
+}
+
 // Fonction pour ajouter un équipement à Firestore
 function addEquipment(event) {
   event.preventDefault();
