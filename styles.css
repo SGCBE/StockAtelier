@@ -61,6 +61,8 @@ input, select, textarea {
 /* Styles pour les boutons */
 .full-width-button {
   display: flex;
+  align-items: center; /* Ajout de l'alignement vertical */
+  justify-content: center; /* Ajout de l'alignement horizontal */
   width: 100%;
   padding: 10px;
   background-color: #0085C7;
