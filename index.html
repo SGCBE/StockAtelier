@@ -7,58 +7,57 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      font-size: 16px;
+      background-color: #f5f5f5;
     }
 
-    header {
-      background-color: white;
-      padding: 20px;
+    .header {
+      background-color: #fff;
+      padding: 16px;
       display: flex;
       align-items: center;
     }
 
-    header h1 {
-      color: #FF3B3F;
-      margin: 0;
-      padding-left: 10px;
-      text-align: center;
-      font-size: 24px;
-    }
-
-    header img {
-      height: 50px;
-      width: 50px;
+    .header-logo {
       margin-right: 16px;
     }
 
-    #add-equipment-btn {
-      margin: 20px;
-      background-color: #FF3B3F;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      cursor: pointer;
-      width: 100%;
-      font-size: 16px;
+    .header-title {
+      font-size: 24px;
+      color: #333;
+      margin: 0;
+      flex-grow: 1;
+      text-align: center;
     }
 
-    table {
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .filter {
+      margin-bottom: 16px;
+    }
+
+    .equipment-list {
       width: 100%;
       border-collapse: collapse;
     }
 
-    th, td {
-      padding: 10px;
+    .equipment-list th,
+    .equipment-list td {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
       text-align: left;
     }
 
-    th {
-      background-color: #FF3B3F;
-      color: white;
+    .equipment-list th {
+      font-weight: bold;
     }
 
-    tr:nth-child(even) {
-      background-color: #f2f2f2;
+    .equipment-list tr:hover {
+      background-color: #f9f9f9;
+      cursor: pointer;
     }
 
     .modal {
@@ -74,76 +73,112 @@
     }
 
     .modal-content {
-      background-color: #fefefe;
+      background-color: #fff;
       margin: 10% auto;
-      padding: 20px;
+      padding: 16px;
       border: 1px solid #888;
       width: 80%;
+      max-width: 600px;
+      position: relative;
     }
 
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
+    .modal-content h2 {
+      font-size: 20px;
+      margin-top: 0;
     }
 
-    .close:hover,
-    .close:focus {
-      color: black;
-      text-decoration: none;
-      cursor: pointer;
+    .modal-content p {
+      margin-bottom: 8px;
+    }
+
+    .modal-buttons {
+      text-align: right;
+      margin-top: 20px;
+    }
+
+    .modal-buttons button {
+      margin-left: 10px;
     }
   </style>
 </head>
 <body>
-  <header>
-    <img src="logo.jpg" alt="Logo">
-    <h1>Gestion des équipements</h1>
-  </header>
+  <div class="header">
+    <img class="header-logo" src="logo.jpg" alt="Logo">
+    <h1 class="header-title">Gestion des équipements</h1>
+  </div>
 
-  <button id="add-equipment-btn">Ajouter un équipement</button>
+  <div class="container">
+    <div class="filter">
+      <label for="category-filter">Catégorie :</label>
+      <select id="category-filter">
+        <option value="">Toutes</option>
+        <option value="Cuisson">Cuisson</option>
+        <option value="Froid">Froid</option>
+        <option value="Inox">Inox</option>
+        <option value="Laverie">Laverie</option>
+        <option value="Préparation">Préparation</option>
+      </select>
+    </div>
+
+    <table id="equipment-list" class="equipment-list">
+      <thead>
+        <tr>
+          <th>Désignation</th>
+          <th>Marque</th>
+          <th>Quantité</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
   <div id="add-equipment-modal" class="modal">
     <div class="modal-content">
-      <span class="close" id="cancel-add-equipment-btn">&times;</span>
+      <span class="close">&times;</span>
       <h2>Ajouter un équipement</h2>
-      <label for="category-input">Catégorie :</label>
-      <input type="text" id="category-input">
-      <br><br>
-      <label for="designation-input">Désignation :</label>
-      <input type="text" id="designation-input">
-      <br><br>
-      <label for="quantity-input">Quantité :</label>
-      <input type="number" id="quantity-input">
-      <br><br>
-      <label for="brand-input">Marque :</label>
-      <input type="text" id="brand-input">
-      <br><br>
-      <label for="model-input">Modèle :</label>
-      <input type="text" id="model-input">
-      <br><br>
-      <label for="dimensions-input">Dimensions :</label>
-      <input type="text" id="dimensions-input">
-      <br><br>
-      <label for="price-input">Prix d'achat HT unitaire :</label>
-      <input type="number" step="0.01" id="price-input">
-      <br><br>
-      <button id="save-equipment-btn">Enregistrer</button>
+      <div>
+        <label for="category-input">Catégorie :</label>
+        <input type="text" id="category-input" required>
+      </div>
+      <div>
+        <label for="designation-input">Désignation :</label>
+        <input type="text" id="designation-input" required>
+      </div>
+      <div>
+        <label for="quantity-input">Quantité :</label>
+        <input type="number" id="quantity-input" required>
+      </div>
+      <div>
+        <label for="brand-input">Marque :</label>
+        <input type="text" id="brand-input" required>
+      </div>
+      <div>
+        <label for="model-input">Modèle :</label>
+        <input type="text" id="model-input">
+      </div>
+      <div>
+        <label for="dimensions-input">Dimensions :</label>
+        <input type="text" id="dimensions-input">
+      </div>
+      <div>
+        <label for="price-input">Prix d'achat HT unitaire :</label>
+        <input type="number" id="price-input" step="0.01" required>
+      </div>
+      <button id="save-equipment-btn">Ajouter</button>
     </div>
   </div>
 
-  <table id="equipment-list">
-    <thead>
-      <tr>
-        <th>Désignation</th>
-        <th>Marque</th>
-        <th>Quantité</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <div id="equipment-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Détails de l'équipement</h2>
+      <div id="equipment-details"></div>
+      <div class="modal-buttons">
+        <button id="edit-equipment-btn">Modifier</button>
+        <button id="delete-equipment-btn">Supprimer</button>
+      </div>
+    </div>
+  </div>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -159,62 +194,25 @@ const firebaseConfig = {
 };
 
     firebase.initializeApp(firebaseConfig);
-
     const db = firebase.firestore();
     const equipmentsRef = db.collection("equipments");
 
     const equipmentList = document.querySelector("#equipment-list tbody");
-    const addEquipmentModal = document.getElementById("add-equipment-modal");
-    const cancelAddEquipmentBtn = document.getElementById("cancel-add-equipment-btn");
-    const saveEquipmentBtn = document.getElementById("save-equipment-btn");
     const categoryFilter = document.getElementById("category-filter");
-
-    cancelAddEquipmentBtn.addEventListener("click", () => {
-      addEquipmentModal.style.display = "none";
-    });
-
-    document.getElementById("add-equipment-btn").addEventListener("click", () => {
-      addEquipmentModal.style.display = "block";
-    });
-
-    const showEquipmentDetails = (equipment) => {
-      const modalContent = document.createElement("div");
-      modalContent.classList.add("modal-content");
-
-      const closeBtn = document.createElement("span");
-      closeBtn.classList.add("close");
-      closeBtn.textContent = "×";
-      closeBtn.addEventListener("click", () => {
-        modalContent.style.display = "none";
-      });
-
-      const detailsContainer = document.createElement("div");
-      detailsContainer.innerHTML = `
-        <h2>Détails de l'équipement</h2>
-        <p><strong>Catégorie:</strong> ${equipment.categorie}</p>
-        <p><strong>Désignation:</strong> ${equipment.designation}</p>
-        <p><strong>Quantité:</strong> ${equipment.quantite}</p>
-        <p><strong>Marque:</strong> ${equipment.marque}</p>
-        <p><strong>Modèle:</strong> ${equipment.modele}</p>
-        <p><strong>Dimensions:</strong> ${equipment.dimensions}</p>
-        <p><strong>Prix d'achat HT unitaire:</strong> ${equipment.prixHT}</p>
-      `;
-
-      modalContent.appendChild(closeBtn);
-      modalContent.appendChild(detailsContainer);
-      modalContent.style.display = "block";
-    };
+    const addEquipmentModal = document.getElementById("add-equipment-modal");
+    const saveEquipmentBtn = document.getElementById("save-equipment-btn");
+    const equipmentModal = document.getElementById("equipment-modal");
+    const editEquipmentBtn = document.getElementById("edit-equipment-btn");
+    const deleteEquipmentBtn = document.getElementById("delete-equipment-btn");
 
     const renderEquipmentList = (querySnapshot) => {
       equipmentList.innerHTML = "";
 
       querySnapshot.forEach((doc) => {
         const equipment = doc.data();
+        equipment.id = doc.id;
 
         const row = document.createElement("tr");
-        row.addEventListener("click", () => {
-          showEquipmentDetails(equipment);
-        });
 
         const designationCell = document.createElement("td");
         designationCell.textContent = equipment.designation;
@@ -229,25 +227,82 @@ const firebaseConfig = {
         row.appendChild(brandCell);
         row.appendChild(quantityCell);
 
+        row.addEventListener("click", () => {
+          displayEquipmentModal(equipment);
+        });
+
         equipmentList.appendChild(row);
       });
     };
 
-    const filterByCategory = (category) => {
-      let query = equipmentsRef;
+    const displayEquipmentModal = (equipment) => {
+      const detailsContainer = document.getElementById("equipment-details");
+      detailsContainer.innerHTML = "";
 
-      if (category !== "") {
-        query = query.where("categorie", "==", category);
-      }
+      const category = document.createElement("p");
+      category.textContent = `Catégorie: ${equipment.categorie}`;
+      detailsContainer.appendChild(category);
 
-      query.get().then((querySnapshot) => {
-        renderEquipmentList(querySnapshot);
+      const designation = document.createElement("p");
+      designation.textContent = `Désignation: ${equipment.designation}`;
+      detailsContainer.appendChild(designation);
+
+      const quantity = document.createElement("p");
+      quantity.textContent = `Quantité: ${equipment.quantite}`;
+      detailsContainer.appendChild(quantity);
+
+      const brand = document.createElement("p");
+      brand.textContent = `Marque: ${equipment.marque}`;
+      detailsContainer.appendChild(brand);
+
+      const model = document.createElement("p");
+      model.textContent = `Modèle: ${equipment.modele}`;
+      detailsContainer.appendChild(model);
+
+      const dimensions = document.createElement("p");
+      dimensions.textContent = `Dimensions: ${equipment.dimensions}`;
+      detailsContainer.appendChild(dimensions);
+
+      const price = document.createElement("p");
+      price.textContent = `Prix d'achat HT unitaire: ${equipment.prix_achat_ht}`;
+      detailsContainer.appendChild(price);
+
+      equipmentModal.style.display = "block";
+
+      editEquipmentBtn.addEventListener("click", () => {
+        editEquipment(equipment);
+      });
+
+      deleteEquipmentBtn.addEventListener("click", () => {
+        deleteEquipment(equipment);
       });
     };
 
+    const editEquipment = (equipment) => {
+      // TODO: Implement logic for editing equipment
+    };
+
+    const deleteEquipment = (equipment) => {
+      const confirmDelete = confirm("Êtes-vous sûr de vouloir supprimer cet équipement ?");
+      if (confirmDelete) {
+        equipmentsRef.doc(equipment.id).delete();
+      }
+    };
+
     categoryFilter.addEventListener("change", () => {
-      const selectedCategory = categoryFilter.value;
-      filterByCategory(selectedCategory);
+      const category = categoryFilter.value;
+
+      if (category === "") {
+        equipmentsRef.onSnapshot((querySnapshot) => {
+          renderEquipmentList(querySnapshot);
+        });
+      } else {
+        equipmentsRef
+          .where("categorie", "==", category)
+          .onSnapshot((querySnapshot) => {
+            renderEquipmentList(querySnapshot);
+          });
+      }
     });
 
     saveEquipmentBtn.addEventListener("click", () => {
@@ -259,27 +314,49 @@ const firebaseConfig = {
       const dimensionsInput = document.getElementById("dimensions-input");
       const priceInput = document.getElementById("price-input");
 
-      const equipment = {
+      const newEquipment = {
         categorie: categoryInput.value,
         designation: designationInput.value,
         quantite: parseInt(quantityInput.value),
         marque: brandInput.value,
         modele: modelInput.value,
         dimensions: dimensionsInput.value,
-        prixHT: parseFloat(priceInput.value)
+        prix_achat_ht: parseFloat(priceInput.value)
       };
 
-      equipmentsRef.add(equipment).then(() => {
-        categoryInput.value = "";
-        designationInput.value = "";
-        quantityInput.value = "";
-        brandInput.value = "";
-        modelInput.value = "";
-        dimensionsInput.value = "";
-        priceInput.value = "";
+      equipmentsRef.add(newEquipment);
+
+      addEquipmentModal.style.display = "none";
+      categoryInput.value = "";
+      designationInput.value = "";
+      quantityInput.value = "";
+      brandInput.value = "";
+      modelInput.value = "";
+      dimensionsInput.value = "";
+      priceInput.value = "";
+    });
+
+    const closeButtons = document.querySelectorAll(".close");
+
+    closeButtons.forEach((button) => {
+      button.addEventListener("click", () => {
         addEquipmentModal.style.display = "none";
+        equipmentModal.style.display = "none";
       });
     });
+
+    const openAddEquipmentModal = () => {
+      addEquipmentModal.style.display = "block";
+    };
+
+    window.addEventListener("click", (event) => {
+      if (event.target === addEquipmentModal || event.target === equipmentModal) {
+        addEquipmentModal.style.display = "none";
+        equipmentModal.style.display = "none";
+      }
+    });
+
+    document.getElementById("add-equipment-btn").addEventListener("click", openAddEquipmentModal);
 
     equipmentsRef.onSnapshot((querySnapshot) => {
       renderEquipmentList(querySnapshot);
