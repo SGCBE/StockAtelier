@@ -13,17 +13,6 @@ firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
 
-// Configuration Firestore
-const firebaseConfig = {
-  apiKey: "AIzaSyCRxjJPOHEBAbnXQariFN6funIWPpsIe28",
-  authDomain: "atelier---gestion-de-stock.firebaseapp.com",
-  databaseURL: "https://atelier---gestion-de-stock-default-rtdb.firebaseio.com",
-  projectId: "atelier---gestion-de-stock",
-  storageBucket: "atelier---gestion-de-stock.appspot.com",
-  messagingSenderId: "92935528444",
-  appId: "1:92935528444:web:57786855ed9cc7ef129c79"
-};
-
 // Fonction pour afficher les équipements
 function displayEquipmentList(equipmentList) {
   const equipmentListDiv = document.getElementById('equipment-list');
@@ -107,6 +96,42 @@ categoryFilter.addEventListener('change', (event) => {
   }
 });
 
+// Fonction pour ajouter un équipement
+function addEquipment() {
+  const newEquipment = {
+    categorie: "Nouvelle catégorie",
+    designation: "Nouvelle désignation",
+    quantite: 0,
+    marque: "Nouvelle marque",
+    modele: "Nouveau modèle",
+    dimensions: "Nouvelles dimensions",
+    prixHT: 0
+  };
+
+  db.collection("equipments")
+    .add(newEquipment)
+    .then((docRef) => {
+      console.log("Nouvel équipement ajouté avec ID :", docRef.id);
+      // Actualiser la liste des équipements
+      db.collection('equipments')
+        .get()
+        .then((querySnapshot) => {
+          const equipmentList = [];
+          querySnapshot.forEach((doc) => {
+            const equipment = doc.data();
+            equipmentList.push(equipment);
+          });
+          displayEquipmentList(equipmentList);
+        })
+        .catch((error) => {
+          console.log('Erreur lors du chargement des équipements :', error);
+        });
+    })
+    .catch((error) => {
+      console.error("Erreur lors de l'ajout de l'équipement :", error);
+    });
+}
+
 // Charger tous les équipements lors du chargement initial de la page
 db.collection('equipments')
   .get()
@@ -121,4 +146,3 @@ db.collection('equipments')
   .catch((error) => {
     console.log('Erreur lors du chargement des équipements :', error);
   });
-
