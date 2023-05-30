@@ -14,32 +14,32 @@
     <h1>Gestion des équipements</h1>
   </header>
 
-  <main>
-    <div class="container">
-      <div class="filter-container">
-        <label for="category-filter">Filtrer par catégorie :</label>
-        <select id="category-filter">
-          <option value="">Toutes</option>
-          <option value="Cuisson">Cuisson</option>
-          <option value="Froid">Froid</option>
-          <option value="Inox">Inox</option>
-          <option value="Laverie">Laverie</option>
-          <option value="Préparation">Préparation</option>
-        </select>
-      </div>
-
-      <table id="equipment-table">
-        <thead>
-          <tr>
-            <th>Désignation</th>
-            <th>Marque</th>
-            <th>Quantité</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+  <div class="container">
+    <div class="filter-container">
+      <label for="category-filter">Catégorie :</label>
+      <select id="category-filter">
+        <option value="">Toutes</option>
+        <option value="Cuisson">Cuisson</option>
+        <option value="Froid">Froid</option>
+        <option value="Inox">Inox</option>
+        <option value="Laverie">Laverie</option>
+        <option value="Préparation">Préparation</option>
+      </select>
     </div>
-  </main>
+
+    <table id="equipment-table">
+      <thead>
+        <tr>
+          <th>Désignation</th>
+          <th>Marque</th>
+          <th>Quantité</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <button id="add-equipment-btn">Ajouter un équipement</button>
+  </div>
 
   <div id="equipment-details-modal" class="modal">
     <div class="modal-content">
@@ -47,8 +47,8 @@
       <h2>Détails de l'équipement</h2>
       <div id="equipment-details"></div>
       <div class="modal-actions">
-        <button id="edit-equipment-btn" disabled>Modifier</button>
-        <button id="delete-equipment-btn" disabled>Supprimer</button>
+        <button id="edit-equipment-btn">Modifier</button>
+        <button id="delete-equipment-btn">Supprimer</button>
       </div>
     </div>
   </div>
@@ -59,4 +59,7 @@
 </body>
 </html>
 
-     
+
+
+
+
