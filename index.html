@@ -2,25 +2,131 @@
 <html>
 <head>
   <title>Gestion des équipements</title>
-  <link rel="stylesheet" type="text/css" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: white;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    header h1 {
+      color: #FF3B3F;
+      margin: 0;
+      padding-left: 10px;
+    }
+
+    header img {
+      height: 50px;
+      width: 50px;
+    }
+
+    #add-equipment-btn {
+      margin: 20px;
+      background-color: #FF3B3F;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #FF3B3F;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <header style="background-color: white; color: #308C;">
-    <img src="logo.jpg" alt="Logo" style="width: 50px; height: 50px; vertical-align: middle;">
-    <h1 style="display: inline-block; margin-left: 10px; vertical-align: middle; text-align: center;">Gestion des équipements</h1>
+  <header>
+    <img src="logo.jpg" alt="Logo">
+    <h1>Gestion des équipements</h1>
   </header>
-  
-  <div id="filters">
-    <label for="category-filter">Filtrer par catégorie:</label>
-    <select id="category-filter">
-      <option value="Toutes">Toutes</option>
-      <option value="Inox">Inox</option>
-      <option value="Catégorie 2">Catégorie 2</option>
-      <option value="Catégorie 3">Catégorie 3</option>
-    </select>
+
+  <div id="add-equipment-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="cancel-add-equipment-btn">&times;</span>
+      <h2>Ajouter un équipement</h2>
+      <label for="category-input">Catégorie :</label>
+      <input type="text" id="category-input">
+      <br><br>
+      <label for="designation-input">Désignation :</label>
+      <input type="text" id="designation-input">
+      <br><br>
+      <label for="quantity-input">Quantité :</label>
+      <input type="number" id="quantity-input">
+      <br><br>
+      <label for="brand-input">Marque :</label>
+      <input type="text" id="brand-input">
+      <br><br>
+      <label for="model-input">Modèle :</label>
+      <input type="text" id="model-input">
+      <br><br>
+      <label for="dimensions-input">Dimensions :</label>
+      <input type="text" id="dimensions-input">
+      <br><br>
+      <label for="price-input">Prix d'achat HT unitaire :</label>
+      <input type="number" step="0.01" id="price-input">
+      <br><br>
+      <button id="save-equipment-btn">Enregistrer</button>
+    </div>
   </div>
 
-  <table id="equipment-table">
+  <table id="equipment-list">
     <thead>
       <tr>
         <th>Désignation</th>
@@ -28,46 +134,148 @@
         <th>Quantité</th>
       </tr>
     </thead>
-    <tbody id="equipment-list"></tbody>
+    <tbody></tbody>
   </table>
-
-  <!-- Modal d'affichage des détails de l'équipement -->
-  <div id="equipment-modal" class="modal"></div>
-
-  <!-- Modal d'ajout d'équipement -->
-  <div id="add-equipment-modal" class="modal">
-    <div class="modal-content">
-      <span class="close" id="cancel-add-equipment-btn">&times;</span>
-      <h2>Ajouter un équipement</h2>
-      <label for="categorie-input">Catégorie :</label>
-      <input type="text" id="categorie-input">
-      <br><br>
-      <label for="designation-input">Désignation :</label>
-      <input type="text" id="designation-input">
-      <br><br>
-      <label for="quantite-input">Quantité :</label>
-      <input type="number" id="quantite-input">
-      <br><br>
-      <label for="marque-input">Marque :</label>
-      <input type="text" id="marque-input">
-      <br><br>
-      <label for="modele-input">Modèle :</label>
-      <input type="text" id="modele-input">
-      <br><br>
-      <label for="dimensions-input">Dimensions :</label>
-      <input type="text" id="dimensions-input">
-      <br><br>
-      <label for="prixHT-input">Prix d'achat HT unitaire :</label>
-      <input type="number" id="prixHT-input">
-      <br><br>
-      <button id="save-equipment-btn">Enregistrer</button>
-    </div>
-  </div>
-
-  <button id="add-equipment-btn" style="position: fixed; bottom: 20px; right: 20px;">Ajouter un équipement</button>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-  <script src="app.js"></script>
+  <script>
+    const firebaseConfig = {
+  apiKey: "AIzaSyCRxjJPOHEBAbnXQariFN6funIWPpsIe28",
+  authDomain: "atelier---gestion-de-stock.firebaseapp.com",
+  databaseURL: "https://atelier---gestion-de-stock-default-rtdb.firebaseio.com",
+  projectId: "atelier---gestion-de-stock",
+  storageBucket: "atelier---gestion-de-stock.appspot.com",
+  messagingSenderId: "92935528444",
+  appId: "1:92935528444:web:57786855ed9cc7ef129c79"
+};
+
+    firebase.initializeApp(firebaseConfig);
+
+    const db = firebase.firestore();
+    const equipmentsRef = db.collection("equipments");
+
+    const equipmentList = document.querySelector("#equipment-list tbody");
+    const addEquipmentModal = document.getElementById("add-equipment-modal");
+    const cancelAddEquipmentBtn = document.getElementById("cancel-add-equipment-btn");
+    const saveEquipmentBtn = document.getElementById("save-equipment-btn");
+    const categoryFilter = document.getElementById("category-filter");
+
+    cancelAddEquipmentBtn.addEventListener("click", () => {
+      addEquipmentModal.style.display = "none";
+    });
+
+    document.getElementById("add-equipment-btn").addEventListener("click", () => {
+      addEquipmentModal.style.display = "block";
+    });
+
+    const showEquipmentDetails = (equipment) => {
+      const modalContent = document.createElement("div");
+      modalContent.classList.add("modal-content");
+
+      const closeBtn = document.createElement("span");
+      closeBtn.classList.add("close");
+      closeBtn.textContent = "×";
+      closeBtn.addEventListener("click", () => {
+        modalContent.style.display = "none";
+      });
+
+      const detailsContainer = document.createElement("div");
+      detailsContainer.innerHTML = `
+        <h2>Détails de l'équipement</h2>
+        <p><strong>Catégorie:</strong> ${equipment.categorie}</p>
+        <p><strong>Désignation:</strong> ${equipment.designation}</p>
+        <p><strong>Quantité:</strong> ${equipment.quantite}</p>
+        <p><strong>Marque:</strong> ${equipment.marque}</p>
+        <p><strong>Modèle:</strong> ${equipment.modele}</p>
+        <p><strong>Dimensions:</strong> ${equipment.dimensions}</p>
+        <p><strong>Prix d'achat HT unitaire:</strong> ${equipment.prixHT}</p>
+      `;
+
+      modalContent.appendChild(closeBtn);
+      modalContent.appendChild(detailsContainer);
+      modalContent.style.display = "block";
+    };
+
+    const renderEquipmentList = (querySnapshot) => {
+      equipmentList.innerHTML = "";
+
+      querySnapshot.forEach((doc) => {
+        const equipment = doc.data();
+
+        const row = document.createElement("tr");
+        row.addEventListener("click", () => {
+          showEquipmentDetails(equipment);
+        });
+
+        const designationCell = document.createElement("td");
+        designationCell.textContent = equipment.designation;
+
+        const brandCell = document.createElement("td");
+        brandCell.textContent = equipment.marque;
+
+        const quantityCell = document.createElement("td");
+        quantityCell.textContent = equipment.quantite;
+
+        row.appendChild(designationCell);
+        row.appendChild(brandCell);
+        row.appendChild(quantityCell);
+
+        equipmentList.appendChild(row);
+      });
+    };
+
+    const filterByCategory = (category) => {
+      let query = equipmentsRef;
+
+      if (category !== "") {
+        query = query.where("categorie", "==", category);
+      }
+
+      query.get().then((querySnapshot) => {
+        renderEquipmentList(querySnapshot);
+      });
+    };
+
+    categoryFilter.addEventListener("change", () => {
+      const selectedCategory = categoryFilter.value;
+      filterByCategory(selectedCategory);
+    });
+
+    saveEquipmentBtn.addEventListener("click", () => {
+      const categoryInput = document.getElementById("category-input");
+      const designationInput = document.getElementById("designation-input");
+      const quantityInput = document.getElementById("quantity-input");
+      const brandInput = document.getElementById("brand-input");
+      const modelInput = document.getElementById("model-input");
+      const dimensionsInput = document.getElementById("dimensions-input");
+      const priceInput = document.getElementById("price-input");
+
+      const equipment = {
+        categorie: categoryInput.value,
+        designation: designationInput.value,
+        quantite: parseInt(quantityInput.value),
+        marque: brandInput.value,
+        modele: modelInput.value,
+        dimensions: dimensionsInput.value,
+        prixHT: parseFloat(priceInput.value)
+      };
+
+      equipmentsRef.add(equipment).then(() => {
+        categoryInput.value = "";
+        designationInput.value = "";
+        quantityInput.value = "";
+        brandInput.value = "";
+        modelInput.value = "";
+        dimensionsInput.value = "";
+        priceInput.value = "";
+        addEquipmentModal.style.display = "none";
+      });
+    });
+
+    equipmentsRef.onSnapshot((querySnapshot) => {
+      renderEquipmentList(querySnapshot);
+    });
+  </script>
 </body>
 </html>
