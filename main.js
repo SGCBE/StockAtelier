@@ -10,102 +10,96 @@ const firebaseConfig = {
 };
 
 
-// Initialisation de l'application Firebase
+// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+
 const db = firebase.firestore();
+const equipmentCollection = db.collection("equipments");
 
-// Référence au formulaire et à la table
-const addEquipmentForm = document.getElementById('addEquipmentForm');
-const equipmentTableBody = document.getElementById('equipmentTableBody');
+const equipmentTable = document.getElementById("equipment-table");
+const equipmentDetailsModal = document.getElementById("equipment-details-modal");
+const equipmentDetails = document.getElementById("equipment-details");
+const editEquipmentBtn = document.getElementById("edit-equipment-btn");
+const deleteEquipmentBtn = document.getElementById("delete-equipment-btn");
 
-// Fonction pour afficher le modal
-function showModal() {
-  const modal = document.getElementById('modal');
-  modal.style.display = 'block';
-}
-
-// Fonction pour masquer le modal
-function hideModal() {
-  const modal = document.getElementById('modal');
-  modal.style.display = 'none';
-}
-
-// Fonction pour ajouter un équipement à Firestore
-function addEquipment(event) {
-  event.preventDefault();
-
-  // Récupérer les valeurs du formulaire
-  const categorie = addEquipmentForm.categorie.value;
-  const dateLivraison = addEquipmentForm.dateLivraison.value;
-  const marque = addEquipmentForm.marque.value;
-  const type = addEquipmentForm.type.value;
-  const reference = addEquipmentForm.reference.value;
-  const numeroSerie = addEquipmentForm.numeroSerie.value;
-  const numeroInterne = addEquipmentForm.numeroInterne.value;
-  const quantite = addEquipmentForm.quantite.value;
-  const valeurHT = addEquipmentForm.valeurHT.value;
-  const factureAchat = addEquipmentForm.factureAchat.value;
-  const dateFacture = addEquipmentForm.dateFacture.value;
-  const complementInfo = addEquipmentForm.complementInfo.value;
-
-  // Masquer le modal
-  hideModal();
-
-  // Ajouter les données à Firestore
-  db.collection('equipments')
-    .add({
-      categorie,
-      dateLivraison,
-      marque,
-      type,
-      reference,
-      numeroSerie,
-      numeroInterne,
-      quantite,
-      valeurHT,
-      factureAchat,
-      dateFacture,
-      complementInfo
-    })
-    .then(() => {
-      // Réinitialiser le formulaire
-      addEquipmentForm.reset();
-      // Fermer le modal
-      hideModal();
+// Afficher les détails de l'équipement dans le modal
+function showEquipmentDetails(equipmentId) {
+  equipmentCollection.doc(equipmentId).get()
+    .then((doc) => {
+      if (doc.exists) {
+        const equipmentData = doc.data();
+        let detailsHTML = "";
+        for (const [key, value] of Object.entries(equipmentData)) {
+          detailsHTML += `<p><strong>${key}:</strong> ${value}</p>`;
+        }
+        equipmentDetails.innerHTML = detailsHTML;
+        editEquipmentBtn.disabled = false;
+        deleteEquipmentBtn.disabled = false;
+        equipmentDetailsModal.style.display = "block";
+      } else {
+        console.log("L'équipement n'existe pas.");
+      }
     })
     .catch((error) => {
-      console.error("Erreur lors de l'ajout de l'équipement : ", error);
+      console.error("Erreur lors de la récupération des détails de l'équipement :", error);
     });
 }
 
-// Fonction pour afficher les équipements depuis Firestore
-function displayEquipments() {
-  db.collection('equipments').onSnapshot((snapshot) => {
-    equipmentTableBody.innerHTML = '';
-    snapshot.forEach((doc) => {
-      const equipment = doc.data();
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${equipment.categorie}</td>
-        <td>${equipment.dateLivraison}</td>
-        <td>${equipment.marque}</td>
-        <td>${equipment.type}</td>
-        <td>${equipment.reference}</td>
-        <td>${equipment.numeroSerie}</td>
-        <td>${equipment.numeroInterne}</td>
-        <td>${equipment.quantite}</td>
-        <td>${equipment.valeurHT}</td>
-        <td>${equipment.factureAchat}</td>
-        <td>${equipment.dateFacture}</td>
-        <td>${equipment.complementInfo}</td>
-      `;
-      equipmentTableBody.appendChild(tr);
-    });
-  });
+// Fermer le modal des détails de l'équipement
+function closeEquipmentDetailsModal() {
+  equipmentDetailsModal.style.display = "none";
 }
 
-// Exécution de la fonction pour afficher les équipements
-displayEquipments();
+// Charger la liste des équipements
+function loadEquipmentList(categoryFilter = "") {
+  let query = equipmentCollection;
+  if (categoryFilter) {
+    query = query.where("category", "==", categoryFilter);
+  }
+  query.get()
+    .then((querySnapshot) => {
+      let tableHTML = "";
+      querySnapshot.forEach((doc) => {
+        const equipmentData = doc.data();
+        const { designation, marque, quantite } = equipmentData;
+        tableHTML += `
+          <tr data-equipment-id="${doc.id}">
+            <td>${designation}</td>
+            <td>${marque}</td>
+            <td>${quantite}</td>
+          </tr>
+        `;
+      });
+      const tableBody = equipmentTable.querySelector("tbody");
+      tableBody.innerHTML = tableHTML;
+    })
+    .catch((error) => {
+      console.error("Erreur lors du chargement de la liste des équipements :", error);
+    });
+}
 
-// Écouter l'événement de soumission du formulaire
-addEquipmentForm.addEventListener('submit', addEquipment);
+// Filtrer la liste des équipements par catégorie
+const categoryFilterSelect = document.getElementById("category-filter");
+categoryFilterSelect.addEventListener("change", (event) => {
+  const categoryFilter = event.target.value;
+  loadEquipmentList(categoryFilter);
+});
+
+// Gérer les clics sur les lignes de la table
+equipmentTable.addEventListener("click", (event) => {
+  const target = event.target;
+  if (target.tagName === "TD") {
+    const tr = target.closest("tr");
+    const equipmentId = tr.getAttribute("data-equipment-id");
+    showEquipmentDetails(equipmentId);
+  }
+});
+
+// Gérer la fermeture du modal des détails de l'équipement
+const closeModalBtn = document.getElementsByClassName("close")[0];
+closeModalBtn.addEventListener("click", closeEquipmentDetailsModal);
+
+// Chargement initial de la liste des équipements
+loadEquipmentList();
+
+
