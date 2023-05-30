@@ -13,88 +13,31 @@ firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
 
-// Fonction pour afficher les équipements
+// Fonction pour afficher la liste des équipements dans le tableau
 function displayEquipmentList(equipmentList) {
-  const equipmentListDiv = document.getElementById('equipment-list');
-  equipmentListDiv.innerHTML = '';
+  const tableBody = document.getElementById('equipment-list');
+  tableBody.innerHTML = '';
 
   equipmentList.forEach((equipment) => {
-    const equipmentItem = document.createElement('div');
-    equipmentItem.classList.add('equipment-item');
-    equipmentItem.textContent = equipment.designation;
-    equipmentItem.addEventListener('click', () => openEquipmentModal(equipment));
-    equipmentListDiv.appendChild(equipmentItem);
+    const row = document.createElement('tr');
+    const designationCell = document.createElement('td');
+    const marqueCell = document.createElement('td');
+    const quantiteCell = document.createElement('td');
+
+    designationCell.textContent = equipment.designation;
+    marqueCell.textContent = equipment.marque;
+    quantiteCell.textContent = equipment.quantite;
+
+    row.appendChild(designationCell);
+    row.appendChild(marqueCell);
+    row.appendChild(quantiteCell);
+
+    // Ajouter un écouteur d'événement pour afficher les détails de l'équipement lors du clic sur une ligne du tableau
+    row.addEventListener('click', () => openEquipmentModal(equipment));
+
+    tableBody.appendChild(row);
   });
 }
-
-// Fonction pour afficher la fenêtre modale avec les détails de l'équipement
-function openEquipmentModal(equipment) {
-  const modal = document.getElementById('equipment-modal');
-  modal.innerHTML = `
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2>${equipment.designation}</h2>
-      <p>Catégorie: ${equipment.categorie}</p>
-      <p>Quantité: ${equipment.quantite}</p>
-      <p>Marque: ${equipment.marque}</p>
-      <p>Modèle: ${equipment.modele}</p>
-      <p>Dimensions: ${equipment.dimensions}</p>
-      <p>Prix d'achat HT unitaire: ${equipment.prixHT}</p>
-    </div>
-  `;
-
-  const closeBtn = modal.querySelector('.close');
-  closeBtn.addEventListener('click', () => closeEquipmentModal());
-
-  modal.style.display = 'block';
-}
-
-// Fonction pour fermer la fenêtre modale
-function closeEquipmentModal() {
-  const modal = document.getElementById('equipment-modal');
-  modal.style.display = 'none';
-}
-
-// Fonction pour filtrer les équipements par catégorie
-function filterByCategory(category) {
-  db.collection('equipments')
-    .where('categorie', '==', category)
-    .get()
-    .then((querySnapshot) => {
-      const equipmentList = [];
-      querySnapshot.forEach((doc) => {
-        const equipment = doc.data();
-        equipmentList.push(equipment);
-      });
-      displayEquipmentList(equipmentList);
-    })
-    .catch((error) => {
-      console.log('Erreur lors du filtrage par catégorie :', error);
-    });
-}
-
-// Écouteur d'événement pour le changement de filtre de catégorie
-const categoryFilter = document.getElementById('category-filter');
-categoryFilter.addEventListener('change', (event) => {
-  const selectedCategory = event.target.value;
-  if (selectedCategory === 'Toutes') {
-    db.collection('equipments')
-      .get()
-      .then((querySnapshot) => {
-        const equipmentList = [];
-        querySnapshot.forEach((doc) => {
-          const equipment = doc.data();
-          equipmentList.push(equipment);
-        });
-        displayEquipmentList(equipmentList);
-      })
-      .catch((error) => {
-        console.log('Erreur lors du chargement des équipements :', error);
-      });
-  } else {
-    filterByCategory(selectedCategory);
-  }
-});
 
 // Fonction pour ouvrir le modal d'ajout d'équipement
 function openAddEquipmentModal() {
@@ -157,7 +100,7 @@ saveEquipmentBtn.addEventListener('click', () => {
           displayEquipmentList(equipmentList);
         })
         .catch((error) => {
-          console.log('Erreur lors du chargement des équipements :', error);
+          console.log('Erreur lors de la récupération des équipements :', error);
         });
     })
     .catch((error) => {
@@ -165,7 +108,32 @@ saveEquipmentBtn.addEventListener('click', () => {
     });
 });
 
-// Charger tous les équipements lors du chargement initial de la page
+// Écouteur d'événement pour le changement de la sélection de la catégorie de filtre
+const categoryFilter = document.getElementById('category-filter');
+categoryFilter.addEventListener('change', () => {
+  const selectedCategory = categoryFilter.value;
+  let query = db.collection('equipments');
+
+  if (selectedCategory !== 'Toutes') {
+    query = query.where('categorie', '==', selectedCategory);
+  }
+
+  // Récupérer les équipements filtrés
+  query.get()
+    .then((querySnapshot) => {
+      const equipmentList = [];
+      querySnapshot.forEach((doc) => {
+        const equipment = doc.data();
+        equipmentList.push(equipment);
+      });
+      displayEquipmentList(equipmentList);
+    })
+    .catch((error) => {
+      console.log('Erreur lors de la récupération des équipements :', error);
+    });
+});
+
+// Récupérer tous les équipements de la base de données Firestore
 db.collection('equipments')
   .get()
   .then((querySnapshot) => {
@@ -177,5 +145,6 @@ db.collection('equipments')
     displayEquipmentList(equipmentList);
   })
   .catch((error) => {
-    console.log('Erreur lors du chargement des équipements :', error);
+    console.log('Erreur lors de la récupération des équipements :', error);
   });
+
