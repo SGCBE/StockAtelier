@@ -1,322 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestion des équipements</title>
-  <style>
-    /* Styles CSS */
-
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    header {
-      background-color: #FFFFFF;
-      padding: 16px;
-      display: flex;
-      align-items: center;
-    }
-
-    h1 {
-      color: #308CBA;
-      font-size: 24px;
-      margin-left: 16px;
-    }
-
-    #equipment-list {
-      width: 100%;
-      margin-top: 24px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #CCCCCC;
-    }
-
-    th {
-      background-color: #308CBA;
-      color: #FFFFFF;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.4);
-    }
-
-    .modal-content {
-      background-color: #FFFFFF;
-      margin: 10% auto;
-      padding: 16px;
-      border: 1px solid #888;
-      width: 80%;
-      max-width: 600px;
-    }
-
-    .close {
-      color: #888;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .close:hover,
-    .close:focus {
-      color: #000;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 16px;
-    }
-
-    #add-equipment-btn {
-      width: 100%;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header>
-    <img src="logo.jpg" alt="Logo" height="40">
+    <div class="logo-container">
+      <img src="logo.jpg" alt="Logo">
+    </div>
     <h1>Gestion des équipements</h1>
   </header>
 
-  <div id="equipment-list">
-    <table>
-      <thead>
-        <tr>
-          <th>Désignation</th>
-          <th>Marque</th>
-          <th>Quantité</th>
-        </tr>
-      </thead>
-      <tbody id="equipment-table-body"></tbody>
-    </table>
-  </div>
+  <main>
+    <div class="container">
+      <div class="filter-container">
+        <label for="category-filter">Filtrer par catégorie :</label>
+        <select id="category-filter">
+          <option value="">Toutes</option>
+          <option value="Cuisson">Cuisson</option>
+          <option value="Froid">Froid</option>
+          <option value="Inox">Inox</option>
+          <option value="Laverie">Laverie</option>
+          <option value="Préparation">Préparation</option>
+        </select>
+      </div>
 
-  <div id="add-equipment-modal" class="modal">
+      <table id="equipment-table">
+        <thead>
+          <tr>
+            <th>Désignation</th>
+            <th>Marque</th>
+            <th>Quantité</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+
+  <div id="equipment-details-modal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <h2>Ajouter un équipement</h2>
-      <div class="form-group">
-        <label for="category-input">Catégorie</label>
-        <input type="text" id="category-input" required>
+      <h2>Détails de l'équipement</h2>
+      <div id="equipment-details"></div>
+      <div class="modal-actions">
+        <button id="edit-equipment-btn" disabled>Modifier</button>
+        <button id="delete-equipment-btn" disabled>Supprimer</button>
       </div>
-      <div class="form-group">
-        <label for="designation-input">Désignation</label>
-        <input type="text" id="designation-input" required>
-      </div>
-      <div class="form-group">
-        <label for="quantity-input">Quantité</label>
-        <input type="number" id="quantity-input" required>
-      </div>
-      <div class="form-group">
-        <label for="brand-input">Marque</label>
-        <input type="text" id="brand-input" required>
-      </div>
-      <div class="form-group">
-        <label for="model-input">Modèle</label>
-        <input type="text" id="model-input" required>
-      </div>
-      <div class="form-group">
-        <label for="dimensions-input">Dimensions</label>
-        <input type="text" id="dimensions-input" required>
-      </div>
-      <div class="form-group">
-        <label for="price-input">Prix d'achat HT unitaire</label>
-        <input type="number" id="price-input" required>
-      </div>
-      <button id="save-equipment-btn">Enregistrer</button>
     </div>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-  <script>
-    // Configuration de Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyCRxjJPOHEBAbnXQariFN6funIWPpsIe28",
-  authDomain: "atelier---gestion-de-stock.firebaseapp.com",
-  databaseURL: "https://atelier---gestion-de-stock-default-rtdb.firebaseio.com",
-  projectId: "atelier---gestion-de-stock",
-  storageBucket: "atelier---gestion-de-stock.appspot.com",
-  messagingSenderId: "92935528444",
-  appId: "1:92935528444:web:57786855ed9cc7ef129c79"
-};
-
-    // Initialisation de Firebase
-    firebase.initializeApp(firebaseConfig);
-
-    // Référence à la collection "equipments" dans Firestore
-    const db = firebase.firestore();
-    const equipmentsRef = db.collection("equipments");
-
-    // Référence aux éléments du DOM
-    const equipmentTableBody = document.getElementById("equipment-table-body");
-    const addEquipmentModal = document.getElementById("add-equipment-modal");
-
-    // Fonction pour afficher la liste des équipements
-    const renderEquipmentList = (querySnapshot) => {
-      equipmentTableBody.innerHTML = "";
-      querySnapshot.forEach((doc) => {
-        const equipment = doc.data();
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${equipment.designation}</td>
-          <td>${equipment.brand}</td>
-          <td>${equipment.quantity}</td>
-        `;
-        row.addEventListener("click", () => openEquipmentModal(equipment));
-        equipmentTableBody.appendChild(row);
-      });
-    };
-
-    // Fonction pour ouvrir le modal d'un équipement
-    const openEquipmentModal = (equipment) => {
-      const equipmentModal = document.createElement("div");
-      equipmentModal.classList.add("modal");
-      equipmentModal.innerHTML = `
-        <div class="modal-content">
-          <span class="close">&times;</span>
-          <h2>${equipment.designation}</h2>
-          <div class="form-group">
-            <label for="category-modal-input">Catégorie</label>
-            <input type="text" id="category-modal-input" value="${equipment.category}" readonly>
-          </div>
-          <div class="form-group">
-            <label for="designation-modal-input">Désignation</label>
-            <input type="text" id="designation-modal-input" value="${equipment.designation}" readonly>
-          </div>
-          <div class="form-group">
-            <label for="quantity-modal-input">Quantité</label>
-            <input type="number" id="quantity-modal-input" value="${equipment.quantity}" readonly>
-          </div>
-          <div class="form-group">
-            <label for="brand-modal-input">Marque</label>
-            <input type="text" id="brand-modal-input" value="${equipment.brand}" readonly>
-          </div>
-          <div class="form-group">
-            <label for="model-modal-input">Modèle</label>
-            <input type="text" id="model-modal-input" value="${equipment.model}" readonly>
-          </div>
-          <div class="form-group">
-            <label for="dimensions-modal-input">Dimensions</label>
-            <input type="text" id="dimensions-modal-input" value="${equipment.dimensions}" readonly>
-          </div>
-          <div class="form-group">
-            <label for="price-modal-input">Prix d'achat HT unitaire</label>
-            <input type="number" id="price-modal-input" value="${equipment.price}" readonly>
-          </div>
-          <button id="edit-equipment-btn">Modifier</button>
-          <button id="delete-equipment-btn">Supprimer</button>
-        </div>
-      `;
-
-      const closeBtn = equipmentModal.querySelector(".close");
-      closeBtn.addEventListener("click", () => {
-        equipmentModal.remove();
-      });
-
-      const deleteBtn = equipmentModal.querySelector("#delete-equipment-btn");
-      deleteBtn.addEventListener("click", () => {
-        deleteEquipment(equipment.id);
-        equipmentModal.remove();
-      });
-
-      document.body.appendChild(equipmentModal);
-    };
-
-    // Fonction pour ajouter un équipement dans Firestore
-    const addEquipment = () => {
-      const categoryInput = document.getElementById("category-input");
-      const designationInput = document.getElementById("designation-input");
-      const quantityInput = document.getElementById("quantity-input");
-      const brandInput = document.getElementById("brand-input");
-      const modelInput = document.getElementById("model-input");
-      const dimensionsInput = document.getElementById("dimensions-input");
-      const priceInput = document.getElementById("price-input");
-
-      const equipment = {
-        category: categoryInput.value,
-        designation: designationInput.value,
-        quantity: parseInt(quantityInput.value),
-        brand: brandInput.value,
-        model: modelInput.value,
-        dimensions: dimensionsInput.value,
-        price: parseFloat(priceInput.value)
-      };
-
-      equipmentsRef.add(equipment)
-        .then(() => {
-          categoryInput.value = "";
-          designationInput.value = "";
-          quantityInput.value = "";
-          brandInput.value = "";
-          modelInput.value = "";
-          dimensionsInput.value = "";
-          priceInput.value = "";
-          addEquipmentModal.style.display = "none";
-        })
-        .catch((error) => {
-          console.error("Error adding equipment: ", error);
-        });
-    };
-
-    // Fonction pour supprimer un équipement de Firestore
-    const deleteEquipment = (equipmentId) => {
-      equipmentsRef.doc(equipmentId).delete()
-        .then(() => {
-          console.log("Equipment deleted successfully.");
-        })
-        .catch((error) => {
-          console.error("Error deleting equipment: ", error);
-        });
-    };
-
-    // Fonction pour initialiser l'application
-    const initApp = () => {
-      // Afficher la liste des équipements au chargement de la page
-      equipmentsRef.onSnapshot((snapshot) => {
-        renderEquipmentList(snapshot);
-      });
-
-      // Ouvrir le modal "Ajouter un équipement" au clic sur le bouton correspondant
-      const addEquipmentBtn = document.getElementById("add-equipment-btn");
-      addEquipmentBtn.addEventListener("click", () => {
-        addEquipmentModal.style.display = "block";
-      });
-
-      // Fermer le modal "Ajouter un équipement" au clic sur la croix
-      const closeBtn = addEquipmentModal.querySelector(".close");
-      closeBtn.addEventListener("click", () => {
-        addEquipmentModal.style.display = "none";
-      });
-
-      // Ajouter un équipement lors de la soumission du formulaire
-      const saveEquipmentBtn = addEquipmentModal.querySelector("#save-equipment-btn");
-      saveEquipmentBtn.addEventListener("click", addEquipment);
-    };
-
-    // Initialiser l'application
-    initApp();
-  </script>
+  <script src="main.js"></script>
 </body>
 </html>
+
+     
