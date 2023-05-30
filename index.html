@@ -14,13 +14,24 @@
     <label for="category-filter">Filtrer par catégorie:</label>
     <select id="category-filter">
       <option value="Toutes">Toutes</option>
-      <option value="Catégorie 1">Catégorie 1</option>
-      <option value="Catégorie 2">Catégorie 2</option>
-      <option value="Catégorie 3">Catégorie 3</option>
+      <option value="Inox">Inox</option>
+      <option value="Laverie">Laverie</option>
+      <option value="Préparation">Préparation</option>
+      <option value="Cuisson">Cuisson</option>
+      <option value="Froid">Froid</option>
     </select>
   </div>
 
-  <div id="equipment-list"></div>
+  <table id="equipment-table">
+    <thead>
+      <tr>
+        <th>Désignation</th>
+        <th>Marque</th>
+        <th>Quantité</th>
+      </tr>
+    </thead>
+    <tbody id="equipment-list"></tbody>
+  </table>
 
   <!-- Modal d'affichage des détails de l'équipement -->
   <div id="equipment-modal" class="modal"></div>
@@ -55,8 +66,8 @@
     </div>
   </div>
 
-  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
