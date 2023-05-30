@@ -7,6 +7,7 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
+      font-size: 16px;
     }
 
     header {
@@ -20,11 +21,14 @@
       color: #FF3B3F;
       margin: 0;
       padding-left: 10px;
+      text-align: center;
+      font-size: 24px;
     }
 
     header img {
       height: 50px;
       width: 50px;
+      margin-right: 16px;
     }
 
     #add-equipment-btn {
@@ -34,6 +38,8 @@
       border: none;
       padding: 10px 20px;
       cursor: pointer;
+      width: 100%;
+      font-size: 16px;
     }
 
     table {
@@ -97,6 +103,8 @@
     <h1>Gestion des équipements</h1>
   </header>
 
+  <button id="add-equipment-btn">Ajouter un équipement</button>
+
   <div id="add-equipment-modal" class="modal">
     <div class="modal-content">
       <span class="close" id="cancel-add-equipment-btn">&times;</span>
@@ -141,14 +149,13 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script>
     const firebaseConfig = {
-  apiKey: "AIzaSyCRxjJPOHEBAbnXQariFN6funIWPpsIe28",
-  authDomain: "atelier---gestion-de-stock.firebaseapp.com",
-  databaseURL: "https://atelier---gestion-de-stock-default-rtdb.firebaseio.com",
-  projectId: "atelier---gestion-de-stock",
-  storageBucket: "atelier---gestion-de-stock.appspot.com",
-  messagingSenderId: "92935528444",
-  appId: "1:92935528444:web:57786855ed9cc7ef129c79"
-};
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
 
     firebase.initializeApp(firebaseConfig);
 
