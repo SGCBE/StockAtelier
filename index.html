@@ -7,33 +7,56 @@
 <body>
   <header>
     <h1>Gestion des équipements</h1>
+    <button id="add-equipment-btn">Ajouter un équipement</button>
   </header>
   
   <div id="filters">
     <label for="category-filter">Filtrer par catégorie:</label>
     <select id="category-filter">
       <option value="Toutes">Toutes</option>
-      <option value="Inox">Inox</option>
-      <option value="Préparation">Préparation</option>
-      <option value="Laverie">Laverie</option>
-      <option value="Froid">Froid</option>
-      <option value="Cuisson">Cuisson</option>
-      <!-- Ajoutez d'autres options de catégorie si nécessaire -->
+      <option value="Catégorie 1">Catégorie 1</option>
+      <option value="Catégorie 2">Catégorie 2</option>
+      <option value="Catégorie 3">Catégorie 3</option>
     </select>
   </div>
 
-  <div id="equipment-list">
-    <!-- La liste des équipements sera générée dynamiquement ici -->
+  <div id="equipment-list"></div>
+
+  <!-- Modal d'affichage des détails de l'équipement -->
+  <div id="equipment-modal" class="modal"></div>
+
+  <!-- Modal d'ajout d'équipement -->
+  <div id="add-equipment-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="cancel-add-equipment-btn">&times;</span>
+      <h2>Ajouter un équipement</h2>
+      <label for="categorie-input">Catégorie :</label>
+      <input type="text" id="categorie-input">
+      <br><br>
+      <label for="designation-input">Désignation :</label>
+      <input type="text" id="designation-input">
+      <br><br>
+      <label for="quantite-input">Quantité :</label>
+      <input type="number" id="quantite-input">
+      <br><br>
+      <label for="marque-input">Marque :</label>
+      <input type="text" id="marque-input">
+      <br><br>
+      <label for="modele-input">Modèle :</label>
+      <input type="text" id="modele-input">
+      <br><br>
+      <label for="dimensions-input">Dimensions :</label>
+      <input type="text" id="dimensions-input">
+      <br><br>
+      <label for="prixHT-input">Prix d'achat HT unitaire :</label>
+      <input type="number" id="prixHT-input">
+      <br><br>
+      <button id="save-equipment-btn">Enregistrer</button>
+    </div>
   </div>
 
-  <div id="equipment-modal" class="modal">
-    <!-- Le contenu de la fenêtre modale sera généré dynamiquement ici -->
-  </div>
-
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore.js"></script>
   <script src="app.js"></script>
-
-  <button onclick="addEquipment()">Ajouter un équipement</button>
 </body>
 </html>
