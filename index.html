@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"> <!-- Définition de l'encodage des caractères -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Configuration de la vue sur les appareils mobiles -->
+  <title>Stock équipements</title> <!-- Titre de la page -->
+  <link rel="stylesheet" href="styles.css"> <!-- Lien vers la feuille de styles CSS -->
+</head>
+<body>
+  <header class="header"> <!-- Balise d'en-tête -->
+    <div class="header__logo"> <!-- Balise de la section du logo -->
+      <img src="logo.jpg" alt="Logo" class="logo"> <!-- Balise de l'image du logo -->
+    </div>
+    <div class="header__title"> <!-- Balise de la section du titre -->
+      <h1 class="title">Gestion des équipements en stock</h1> <!-- Balise du titre principal -->
+    </div>
+  </header>
+
+  <main class="main"> <!-- Balise principale du contenu -->
+    <div class="container"> <!-- Balise de la section principale -->
+      <h2 class="subtitle">Liste des équipements</h2> <!-- Balise du sous-titre -->
+      <div class="filter"> <!-- Balise de la section du filtre -->
+        <label for="categorie-filter">Catégorie :</label> <!-- Balise du libellé du filtre -->
+        <select id="categorie-filter"> <!-- Balise de la liste déroulante -->
+          <option value="all">Tous</option> <!-- Balise d'une option de la liste déroulante -->
+          <option value="inox">Inox</option>
+          <option value="preparation">Préparation</option>
+          <option value="laverie">Laverie</option>
+          <option value="cuisson">Cuisson</option>
+          <option value="froid">Froid</option>
+        </select>
+      </div>
+      <table id="equipment-list" class="equipment-list"> <!-- Balise du tableau des équipements -->
+        <thead> <!-- Balise de l'en-tête du tableau -->
+          <tr> <!-- Balise d'une ligne de l'en-tête du tableau -->
+            <th>Désignation</th> <!-- Balise de l'en-tête de colonne pour la désignation -->
+            <th>Quantité</th> <!-- Balise de l'en-tête de colonne pour la quantité -->
+            <th>Marque</th> <!-- Balise de l'en-tête de colonne pour la marque -->
+            <th>Modèle</th> <!-- Balise de l'en-tête de colonne pour le modèle -->
+            <th>Dimensions</th> <!-- Balise de l'en-tête de colonne pour les dimensions -->
+            <th>Prix d'achat HT</th> <!-- Balise de l'en-tête de colonne pour le prix d'achat HT -->
+          </tr>
+        </thead>
+        <tbody></tbody> <!-- Balise du corps du tableau (sera rempli dynamiquement) -->
+      </table>
+      <div class="add-equipment"> <!-- Balise de la section pour ajouter un équipement -->
+        <button id="add-equipment-button" class="button">Ajouter un équipement</button> <!-- Balise du bouton d'ajout d'équipement -->
+      </div>
+    </div>
+  </main>
+
+  <div id="add-equipment-modal" class="modal"> <!-- Balise du modal pour ajouter un équipement -->
+    <div class="modal-content"> <!-- Balise du contenu du modal -->
+    <span class="close-modal">&times;</span> <!-- Balise du bouton de fermeture du modal -->
+      <h2 class="modal-title">Ajouter un équipement</h2> <!-- Balise du titre du modal -->
+      <form id="add-equipment-form" class="add-equipment-form"> <!-- Balise du formulaire pour ajouter un équipement -->
+        <div class="form-group"> <!-- Balise du groupe de formulaire -->
+          <label for="categorie-input">Catégorie :</label> <!-- Balise du libellé du champ de catégorie -->
+          <select id="categorie-input" style="width: 95%" class="input-field"> <!-- Balise de la liste déroulante de catégorie -->
+            <option value="inox">Inox</option> <!-- Balise d'une option de la liste déroulante -->
+            <option value="preparation">Préparation</option>
+            <option value="laverie">Laverie</option>
+            <option value="cuisson">Cuisson</option>
+            <option value="froid">Froid</option>
+          </select>
+        </div>
+        <div class="form-group"> <!-- Balise du groupe de formulaire -->
+          <label for="designation-input">Désignation :</label> <!-- Balise du libellé du champ de désignation -->
+          <input type="text" id="designation-input" class="input-field" required> <!-- Balise du champ de saisie de désignation -->
+        </div>
+        <div class="form-group"> <!-- Balise du groupe de formulaire -->
+          <label for="quantite-input">Quantité :</label> <!-- Balise du libellé du champ de quantité -->
+          <input type="number" id="quantite-input" class="input-field" required> <!-- Balise du champ de saisie de quantité -->
+        </div>
+        <div class="form-group"> <!-- Balise du groupe de formulaire -->
+          <label for="marque-input">Marque :</label> <!-- Balise du libellé du champ de marque -->
+          <input type="text" id="marque-input" class="input-field" required> <!-- Balise du champ de saisie de marque -->
+        </div>
+        <div class="form-group"> <!-- Balise du groupe de formulaire -->
+          <label for="modele-input">Modèle :</label> <!-- Balise du libellé du champ de modèle -->
+          <input type="text" id="modele-input" class="input-field" required> <!-- Balise du champ de saisie de modèle -->
+        </div>
+        <div class="form-group"> <!-- Balise du groupe de formulaire -->
+          <label for="dimensions-input">Dimensions :</label> <!-- Balise du libellé du champ de dimensions -->
+          <input type="text" id="dimensions-input" class="input-field" required> <!-- Balise du champ de saisie de dimensions -->
+        </div>
+        <div class="form-group"> <!-- Balise du groupe de formulaire -->
+          <label for="prixAchatHT-input">Prix d'achat HT :</label> <!-- Balise du libellé du champ de prix d'achat HT -->
+          <input type="number" id="prixAchatHT-input" class="input-field" required> <!-- Balise du champ de saisie de prix d'achat HT -->
+        </div>
+        <div class="form-actions"> <!-- Balise du groupe d'actions du formulaire -->
+          <button type="submit" class="button">Ajouter</button> <!-- Balise du bouton d'ajout d'équipement -->
+        </div>
+      </form>
+    </div>
+  </div>
+
+<div id="equipment-detail-modal" class="modal"> <!-- Balise du modal pour le détail de l'équipement -->
+  <div class="modal-content"> <!-- Balise du contenu du modal -->
+    <span class="close-modal">&times;</span> <!-- Balise du bouton de fermeture du modal -->
+    <h2 class="modal-title equipment">Détail de l'équipement</h2> <!-- Balise du titre du modal -->
+    <form id="equipment-detail-form" class="add-equipment-form"> <!-- Balise du formulaire pour le détail de l'équipement -->
+    <div class="form-group"> <!-- Balise du groupe de formulaire -->
+    <div>
+      <p>Catégorie: <span id="equipment-detail-categorie"></span></p> <!-- Balise d'un paragraphe pour afficher la catégorie -->
+      <p>Designation: <span id="equipment-detail-designation"></span></p> <!-- Balise d'un paragraphe pour afficher la désignation -->
+      <p>Quantité: <span id="equipment-detail-quantite"></span></p> <!-- Balise d'un paragraphe pour afficher la quantité -->
+      <p>Marque: <span id="equipment-detail-marque"></span></p> <!-- Balise d'un paragraphe pour afficher la marque -->
+      <p>Modèle: <span id="equipment-detail-modele"></span></p> <!-- Balise d'un paragraphe pour afficher le modèle -->
+      <p>Dimensions: <span id="equipment-detail-dimensions"></span></p> <!-- Balise d'un paragraphe pour afficher les dimensions -->
+      <p>Prix d'achat HT: <span id="equipment-detail-prixAchatHT"></span></p> <!-- Balise d'un paragraphe pour afficher le prix d'achat HT -->
+    </div>
+    <div class="modal-buttons"> <!-- Balise du groupe de boutons du modal -->
+      <button id="edit-equipment-button" class="button">Modifier</button> <!-- Balise du bouton de modification de l'équipement -->
+      <button id="delete-equipment-button" class="button">Supprimer</button> <!-- Balise du bouton de suppression de l'équipement -->
+    </div>
+  </div>
+</div>
+
+<div id="edit-equipment-modal" class="modal"> <!-- Balise du modal pour modifier l'équipement -->
+  <div class="modal-content"> <!-- Balise du contenu du modal -->
+    <span class="close-modal">&times;</span> <!-- Balise du bouton de fermeture du modal -->
+    <h2>Modifier l'équipement</h2> <!-- Balise du titre du modal -->
+    <form id="edit-equipment-form"> <!-- Balise du formulaire pour modifier l'équipement -->
+      <div class="form-group"> <!-- Balise du groupe de formulaire -->
+        <label for="edit-categorie-input">Catégorie :</label> <!-- Balise du libellé du champ de catégorie -->
+        <input type="text" id="edit-categorie-input" required> <!-- Balise du champ de saisie de catégorie -->
+      </div>
+      <div class="form-group"> <!-- Balise du groupe de formulaire -->
+        <label for="edit-designation-input">Désignation :</label> <!-- Balise du libellé du champ de désignation -->
+        <input type="text" id="edit-designation-input" required> <!-- Balise du champ de saisie de désignation -->
+      </div>
+      <div class="form-group"> <!-- Balise du groupe de formulaire -->
+        <label for="edit-quantite-input">Quantité :</label> <!-- Balise du libellé du champ de quantité -->
+        <input type="number" id="edit-quantite-input" required> <!-- Balise du champ de saisie de quantité -->
+      </div>
+      <div class="form-group"> <!-- Balise du groupe de formulaire -->
+        <label for="edit-marque-input">Marque :</label> <!-- Balise du libellé du champ de marque -->
+        <input type="text" id="edit-marque-input" required> <!-- Balise du champ de saisie de marque -->
+      </div>
+      <div class="form-group"> <!-- Balise du groupe de formulaire -->
+        <label for="edit-modele-input">Modèle :</label> <!-- Balise du libellé du champ de modèle -->
+        <input type="text" id="edit-modele-input" required> <!-- Balise du champ de saisie de modèle -->
+      </div>
+      <div class="form-group"> <!-- Balise du groupe de formulaire -->
+        <label for="edit-dimensions-input">Dimensions :</label> <!-- Balise du libellé du champ de dimensions -->
+        <input type="text" id="edit-dimensions-input" required> <!-- Balise du champ de saisie de dimensions -->
+      </div>
+      <div class="form-group"> <!-- Balise du groupe de formulaire -->
+        <label for="edit-prixAchatHT-input">Prix d'achat HT :</label> <!-- Balise du libellé du champ de prix d'achat HT -->
+        <input type="number" id="edit-prixAchatHT-input" required> <!-- Balise du champ de saisie de prix d'achat HT -->
+      </div>
+      <div class="form-actions"> <!-- Balise du groupe d'actions du formulaire -->
+        <button type="submit" class="button">Modifier</button> <!-- Balise du bouton de modification d'équipement -->
+      </div>
+    </form>
+  </div>
+</div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script src="main.js"></script> <!-- Lien vers le fichier JavaScript -->
+</body>
+</html>
