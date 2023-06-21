@@ -118,7 +118,7 @@ body {
   font-weight: bold;
   text-decoration: underline;
   background-color: lightblue;
-  font-size: 40px;
+  font-size: 30px;
   margin: -20px -20px;
   padding: 20px;
   display: block; /* Permettre au fond bleu de s'étendre */
@@ -181,4 +181,16 @@ body {
 /* Alignement des boutons dans le modal */
 .form-group .button {
   margin-top: 10px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.modal-buttons .button {
+  flex-basis: 48%;
+  margin-right: 1%;
+  margin-left: 1%;
 }

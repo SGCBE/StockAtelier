@@ -95,42 +95,28 @@
     </div>
   </div>
 
-<div id="equipment-detail-modal" class="modal">
-  <div class="modal-content">
-    <span class="close-modal">&times;</span>
-    <h2 class="modal-title">Détails de l'équipement</h2>
-    <div id="equipment-detail" class="equipment-detail">
-      <div class="form-group">
-        <label>Catégorie :</label><br>
-        <span class="item-value">...</span><br><br>
-      </div>
-      <div class="form-group">
-        <label>Quantité :</label><br>
-        <span class="item-value">...</span><br><br>
-      </div>
-      <div class="form-group">
-        <label>Marque :</label><br>
-        <span class="item-value">...</span><br><br>
-      </div>
-      <div class="form-group">
-        <label>Modèle :</label><br>
-        <span class="item-value">...</span><br><br>
-      </div>
-      <div class="form-group">
-        <label>Dimensions :</label><br>
-        <span class="item-value">...</span><br><br>
-      </div>
-      <div class="form-group">
-        <label>Prix d'achat HT :</label><br>
-        <span class="item-value">...</span><br><br>
-      </div>
-      <div class="form-group">
-        <button id="btnModifier" class="button">Modifier</button>
-        <button id="btnSupprimer" class="button">Supprimer</button>
+  <div id="equipment-detail-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <div class="modal-body">
+        <h2 class="modal-title">Détail de l'équipement</h2>
+        <div class="equipment-info">
+	  <p><br></p>
+          <p>Catégorie: <span id="equipment-detail-categorie"></span></p>
+          <p>Designation: <span id="equipment-detail-designation"></span></p>
+          <p>Quantité: <span id="equipment-detail-quantite"></span></p>
+          <p>Marque: <span id="equipment-detail-marque"></span></p>
+          <p>Modèle: <span id="equipment-detail-modele"></span></p>
+          <p>Dimensions: <span id="equipment-detail-dimensions"></span></p>
+          <p>Prix d'achat HT: <span id="equipment-detail-prixAchatHT"></span>€</p>
+        </div>
+        <div class="modal-buttons">
+          <button id="btnModifier" class="button">Modifier</button>
+          <button id="btnSupprimer" class="button">Supprimer</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>

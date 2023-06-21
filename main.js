@@ -17,12 +17,13 @@ document.addEventListener("DOMContentLoaded", function() {
     appId: "1:92935528444:web:57786855ed9cc7ef129c79"
   };
 
+
   firebase.initializeApp(firebaseConfig);
   const database = firebase.database();
   const equipmentRef = database.ref("equipments");
 
   function addEquipmentToDatabase(newEquipment) {
-    const newEquipmentRef = database.ref("equipments").push();
+    const newEquipmentRef = equipmentRef.push();
     const equipmentKey = newEquipmentRef.key;
     newEquipment.key = equipmentKey;
     newEquipmentRef.set(newEquipment);
@@ -123,9 +124,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function openEditEquipmentModal(key) {
     const modal = document.getElementById("equipment-detail-modal");
-    const equipmentDetail = modal.querySelector(".equipment-detail");
-    const deleteButton = modal.querySelector(".btnSupprimer");
-    const editForm = modal.querySelector(".btnModifier");
+    const equipmentDetail = modal.querySelector(".modal-title.equipment");
+    const deleteButton = modal.querySelector("#btnSupprimer");
+    const editForm = modal.querySelector("#equipment-detail-form");
 
     if (equipmentDetail && selectedEquipment) {
       equipmentDetail.innerHTML = "";
@@ -164,6 +165,15 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     if (editForm) {
+      // Pré-remplir le formulaire avec les valeurs actuelles de l'équipement
+      editForm.categorie.value = selectedEquipment.categorie;
+      editForm.designation.value = selectedEquipment.designation;
+      editForm.quantite.value = selectedEquipment.quantite;
+      editForm.marque.value = selectedEquipment.marque;
+      editForm.modele.value = selectedEquipment.modele;
+      editForm.dimensions.value = selectedEquipment.dimensions;
+      editForm.prixAchatHT.value = selectedEquipment.prixAchatHT;
+
       editForm.addEventListener("submit", function(event) {
         event.preventDefault();
         updateEquipmentInDatabase(key, editForm);
