@@ -55,7 +55,7 @@ body {
   width: 100%;
   padding: 16px;
   background-color: #4caf50;
-  color: #fff;
+  color: vert;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -79,24 +79,40 @@ body {
 }
 
 .modal {
-  display: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 50%;
+}
+
+.overlay {
   position: fixed;
-  z-index: 1;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
   background-color: rgba(0, 0, 0, 0.5);
-  border: none;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-content {
-  background-color: #fefefe;
-  margin: 10% auto;
-  padding: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
   border: none;
+  border-radius: 5px;
+  padding: 20px;
+  max-width: 600px;
   width: 80%;
+  max-height: 90%;
+  overflow-y: auto;
+  z-index: 10000;
 }
 
 .close-modal {
@@ -119,10 +135,10 @@ body {
   text-decoration: underline;
   background-color: lightblue;
   font-size: 30px;
-  margin: -20px -20px;
+  margin: -20px -20px 20px -20px;
   padding: 20px;
-  display: block; /* Permettre au fond bleu de s'étendre */
-  box-shadow: 0 0 0 transparent; /* Supprimer la bordure */
+  display: block;
+  border-radius: 5px;
 }
 
 .add-equipment-form .form-group {
@@ -161,13 +177,16 @@ body {
   cursor: pointer;
   font-size: 18px;
   margin: 5px 0;
+  background-color: vert;
+  border-radius: 5px;
+  padding: 20px;
 }
 
 .button {
   display: inline-block;
   padding: 10px 20px;
   background-color: #428bca;
-  color: #fff;
+  color: vert;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -178,7 +197,6 @@ body {
   background-color: #3071a9;
 }
 
-/* Alignement des boutons dans le modal */
 .form-group .button {
   margin-top: 10px;
 }
@@ -186,11 +204,55 @@ body {
 .modal-buttons {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  position: sticky;
+  background-color: #fff;
+  border-radius: 5px;
+  border: none;
+  outline: none;
 }
 
 .modal-buttons .button {
-  flex-basis: 48%;
-  margin-right: 1%;
-  margin-left: 1%;
+  flex-basis: 47%;
+  margin: 0 3%;
+}
+
+.modal-buttons .button,
+.add-equipment-form .button {
+  margin: 1%;
+}
+
+.equipment-info p {
+  font-size: 20px;
+}
+
+.modal-close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-content-wrapper {
+  max-height: auto;
+  overflow-y: auto;
+}
+
+.modal-content-container {
+  height: 100%;
+}
+
+#add-equipment-modal,
+#equipment-detail-modal {
+  display: none;
+}
+#edit-equipment-modal {
+    display: none;
 }
