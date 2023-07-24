@@ -1,146 +1,186 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stock équipements</title>
+  <title>Gestion des équipements en stock à vendre</title>
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <header class="header">
-        <div class="header__logo">
-            <img src="logo.jpg" alt="Logo" class="logo">
-        </div>
-        <div class="header__title">
-            <h1 class="title">Gestion des équipements en stock</h1>
-        </div>
-    </header>
-
-    <main class="main">
-        <div class="container">
-            <h2 class="subtitle">Liste des équipements</h2>
-            <div class="filter">
-                <label for="categorie-filter">Catégorie :</label>
-                <select id="categorie-filter">
-                    <option value="Tout">Tous</option>
-                    <option value="Inox">Inox</option>
-                    <option value="Préparation">Préparation</option>
-                    <option value="Laverie">Laverie</option>
-                    <option value="Cuisson">Cuisson</option>
-                    <option value="Froid">Froid</option>
-                </select>
-            </div>
-            <table id="equipment-list" class="equipment-list">
-                <thead>
-                    <tr>
-                        <th>Désignation</th>
-                        <th>Quantité</th>
-                        <th>Marque</th>
-                        <th>Modèle</th>
-                        <th>Dimensions</th>
-                        <th>Prix d'achat HT</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-            <div class="add-equipment">
-                <button id="add-equipment-button" class="button">Ajouter un équipement</button>
-            </div>
-        </div>
-    </main>
-
-    <div id="add-equipment-modal" class="overlay">
-        <div class="modal-content">
-            <span id="add-equipment-modal-close" class="close-modal">&times;</span>
-            <h2 class="modal-title">Ajouter un équipement</h2>
-            <form id="add-equipment-form" class="add-equipment-form">
-                <div class="form-group">
-                    <label for="categorie-input">Catégorie :</label>
-                    <select id="categorie-input" style="width: 98%" class="input-field">
-                        <option value="inox">Inox</option>
-                        <option value="preparation">Préparation</option>
-                        <option value="laverie">Laverie</option>
-                        <option value="cuisson">Cuisson</option>
-                        <option value="froid">Froid</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="designation-input">Désignation :</label>
-                    <input type="text" id="equipment-designation" style="width: 95%" class="input-field" required>
-                </div>
-                <div class="form-group">
-                    <label for="quantite-input">Quantité :</label>
-                    <input type="number" id="equipment-quantite" style="width: 95%" class="input-field" required>
-                </div>
-                <div class="form-group">
-                    <label for="marque-input">Marque :</label>
-                    <input type="text" id="equipment-marque" style="width: 95%" class="input-field" required>
-                </div>
-                <div class="form-group">
-                    <label for="modele-input">Modèle :</label>
-                    <input type="text" id="equipment-modele" style="width: 95%" class="input-field" required>
-                </div>
-                <div class="form-group">
-                    <label for="dimensions-input">Dimensions :</label>
-                    <input type="text" id="equipment-dimensions" style="width: 95%" class="input-field" required>
-                </div>
-                <div class="form-group">
-                    <label for="prix-input">Prix d'achat HT :</label>
-                    <input type="number" id="equipment-prixAchatHT" style="width: 95%" class="input-field" required>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="button">Ajouter</button>
-                </div>
-            </form>
-        </div>
+  <header class="header">
+    <div class="header__logo">
+      <img src="logo.jpg" alt="Logo" class="logo">
     </div>
-
-    <div id="equipment-detail-modal" class="overlay">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-body">
-                <h2 class="modal-title">Détail de l'équipement</h2>
-                <div class="equipment-info">
-                    <p><b>Catégorie: </b><span id="equipment-detail-categorie"></span></p>
-                    <p><b>Designation: </b><span id="equipment-detail-designation"></span></p>
-                    <p><b>Quantité: </b><span id="equipment-detail-quantite"></span></p>
-                    <p><b>Marque: </b><span id="equipment-detail-marque"></span></p>
-                    <p><b>Modèle: </b><span id="equipment-detail-modele"></span></p>
-                    <p><b>Dimensions: </b><span id="equipment-detail-dimensions"></span></p>
-                    <p><b>Prix d'achat HT: </b><span id="equipment-detail-prixAchatHT"></span>€</p>
-                </div>
-                <div class="modal-buttons">
-                    <button id="btnModifier" class="button">Modifier</button>
-                    <button id="btnSupprimer" class="button">Supprimer</button>
-                </div>
-            </div>
-        </div>
+    <div class="header__title">
+      <h1 class="title">Gestion de stock</h1>
     </div>
+  </header>
 
-    <div id="edit-equipment-modal" class="overlay">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-body">
-                <h2 class="modal-title">Modification de l'équipement</h2>
-                <div class="equipment-info">
-                    <p><b>Catégorie: </b><input type="text" id="edit-equipment-categorie" name="edit-equipment-categorie"></p>
-                <p><b>Designation: </b><input type="text" id="edit-equipment-designation" name="edit-equipment-designation"></p>
-                <p><b>Quantité: </b><input type="text" id="edit-equipment-quantite" name="edit-equipment-quantite"></p>
-                <p><b>Marque: </b><input type="text" id="edit-equipment-marque" name="edit-equipment-marque"></p>
-                <p><b>Modèle: </b><input type="text" id="edit-equipment-modele" name="edit-equipment-modele"></p>
-                <p><b>Dimensions: </b><input type="text" id="edit-equipment-dimensions" name="edit-equipment-dimensions"></p>
-                <p><b>Prix d'achat HT: <input type="text" id="edit-equipment-prixAchatHT" name="edit-equipment-prixAchatHT">€</p>
-            </div>
-                <div class="modal-buttons">
-                    <button id="submit" class="button">Enregistrer les modifications</button>
-                    <button id="cancel-edit-button" class="button">Annuler</button>
-                </div>
-            </div>
-        </div>
+  <main class="main">
+    <div class="container">
+      <h2 class="subtitle">Liste des équipements</h2>
+      <div class="filter">
+        <label for="categorie-filter">Catégorie :</label>
+        <select id="categorie-filter">
+          <option value="All">Tous</option>
+          <option value="Inox">Inox</option>
+          <option value="Préparation">Préparation</option>
+          <option value="Laverie">Laverie</option>
+          <option value="Cuisson">Cuisson</option>
+          <option value="Froid">Froid</option>
+        </select>
+      </div>
+      <table id="equipment-list" class="equipment-list">
+        <thead>
+          <tr>
+            <th>Catégorie</th>
+            <th>Désignation</th>
+            <th>Quantité</th>
+            <th>Marque</th>
+            <th>Modèle</th>
+            <th>Dimensions</th>
+            <th>Prix d'achat HT</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="add-equipment">
+        <button id="add-equipment-button" class="button">Ajouter un équipement</button>
+      </div>
     </div>
+  </main>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script src="main.js"></script>
+  <div id="add-equipment-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2 class="modal-title">Ajouter un équipement</h2>
+      <form id="add-equipment-form" class="add-equipment-form">
+        <div class="form-group">
+          <label for="categorie-input">Catégorie :</label>
+          <select id="categorie-input" style="width: 96%" class="input-field">
+            <option value="Inox">Inox</option>
+            <option value="Préparation">Préparation</option>
+            <option value="Laverie">Laverie</option>
+            <option value="Cuisson">Cuisson</option>
+            <option value="Froid">Froid</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="designation-input">Désignation :</label>
+          <input type="text" id="designation-input" class="input-field" required>
+        </div>
+        <div class="form-group">
+          <label for="quantite-input">Quantité :</label>
+          <input type="number" id="quantite-input" class="input-field" required>
+        </div>
+        <div class="form-group">
+          <label for="marque-input">Marque :</label>
+          <input type="text" id="marque-input" class="input-field" required>
+        </div>
+        <div class="form-group">
+          <label for="modele-input">Modèle :</label>
+          <input type="text" id="modele-input" class="input-field" required>
+        </div>
+        <div class="form-group">
+          <label for="dimensions-input">Dimensions :</label>
+          <input type="text" id="dimensions-input" class="input-field" required>
+        </div>
+        <div class="form-group">
+          <label for="prix-input">Prix d'achat HT :</label>
+          <input type="number" id="prix-input" class="input-field" required>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="button" style="width: 47%">Ajouter</button>
+          <button type="button" class="button" style="width: 47%; margin-left: 2%">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="equipment-detail-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" id="close-equipment-detail-modal">&times;</span>
+      <h2 class="modal-title">Détail de l'équipement</h2>
+      <div class="equipment-detail-info">
+        <strong>Catégorie :</strong> <span id="equipment-detail-categorie"></span>
+      </div>
+      <div class="equipment-detail-info">
+        <strong>Désignation :</strong> <span id="equipment-detail-designation"></span>
+      </div>
+      <div class="equipment-detail-info">
+        <strong>Quantité :</strong> <span id="equipment-detail-quantite"></span>
+      </div>
+      <div class="equipment-detail-info">
+        <strong>Marque :</strong> <span id="equipment-detail-marque"></span>
+      </div>
+      <div class="equipment-detail-info">
+        <strong>Modèle :</strong> <span id="equipment-detail-modele"></span>
+      </div>
+      <div class="equipment-detail-info">
+        <strong>Dimensions :</strong> <span id="equipment-detail-dimensions"></span>
+      </div>
+      <div class="equipment-detail-info">
+        <strong>Prix d'achat HT :</strong> <span id="equipment-detail-prixAchatHT"></span>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="button" id="edit-equipment-button" data-key="">Modifier</button>
+        <button type="button" class="button btn-delete" id="delete-equipment-button">Supprimer</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="edit-equipment-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" id="close-edit-equipment-modal">&times;</span>
+      <h2 class="modal-title">Modifier un équipement</h2>
+      <form id="edit-equipment-form" class="edit-equipment-form">
+        <div class="form-group">
+          <label for="edit-equipment-categorie">Catégorie :</label>
+          <select id="edit-equipment-categorie" style="width: 100%" class="input-field">
+            <option value="Inox">Inox</option>
+            <option value="Préparation">Préparation</option>
+            <option value="Laverie">Laverie</option>
+            <option value="Cuisson">Cuisson</option>
+            <option value="Froid">Froid</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="designation-input">Désignation :</label>
+          <input type="text" id="edit-equipment-designation" class="input-field" required> <!-- Corrected ID -->
+        </div>
+        <div class="form-group">
+          <label for="quantite-input">Quantité :</label>
+          <input type="number" id="edit-equipment-quantite" class="input-field" required>
+        </div>
+        <div class="form-group">
+          <label for="marque-input">Marque :</label>
+          <input type="text" id="edit-equipment-marque" class="input-field" required>
+        </div>
+        <div class="form-group">
+          <label for="modele-input">Modèle :</label>
+          <input type="text" id="edit-equipment-modele" class="input-field" required>
+        </div>
+        <div class="form-group">
+          <label for="dimensions-input">Dimensions :</label>
+          <input type="text" id="edit-equipment-dimensions" class="input-field" required>
+        </div>
+        <div class="form-group">
+          <label for="prix-input">Prix d'achat HT :</label>
+          <input type="number" id="edit-equipment-prixAchatHT" class="input-field" required>
+        </div>
+      <div class="form-actions">
+        <button type="submit" class="button">Modifier</button>
+        <button id="close-edit-equipment-modal" class="button">Fermer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script src="main.js"></script>
 </body>
+
 </html>
