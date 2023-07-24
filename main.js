@@ -19,6 +19,102 @@ document.addEventListener("DOMContentLoaded", function() {
   // Référence à la table "equipments"
   var equipmentsRef = database.ref("equipments");
 
+  // Vérifiez si l'utilisateur est connecté avant d'afficher les fonctionnalités de l'application
+  function checkUserAuth() {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        // L'utilisateur est connecté, affichez les fonctionnalités de l'application
+        var elementsToShow = document.querySelectorAll(".user-authenticated");
+        for (var i = 0; i < elementsToShow.length; i++) {
+          elementsToShow[i].style.display = "block";
+        }
+
+        var elementsToHide = document.querySelectorAll(".user-not-authenticated");
+        for (var j = 0; j < elementsToHide.length; j++) {
+          elementsToHide[j].style.display = "none";
+        }
+      } else {
+        // L'utilisateur n'est pas connecté, masquez les fonctionnalités de l'application
+        var elementsToShow = document.querySelectorAll(".user-authenticated");
+        for (var i = 0; i < elementsToShow.length; i++) {
+          elementsToShow[i].style.display = "none";
+        }
+
+        var elementsToHide = document.querySelectorAll(".user-not-authenticated");
+        for (var j = 0; j < elementsToHide.length; j++) {
+          elementsToHide[j].style.display = "block";
+        }
+      }
+    });
+  }
+
+  // Appel de la fonction pour vérifier l'état de l'authentification
+  checkUserAuth();
+
+  // Affichage de la fenêtre modale d'authentification au chargement de la page
+  var authModal = document.getElementById("auth-modal");
+  authModal.style.display = "block";
+
+ // Gestion de la soumission du formulaire d'authentification
+  var authForm = document.getElementById("auth-form");
+  authForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    var email = authForm.elements["email-input"].value;
+    var password = authForm.elements["password-input"].value;
+
+    // Utilisation de Firebase Authentication pour se connecter avec l'email et le mot de passe
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(function () {
+        // Connexion réussie, fermer la fenêtre modale d'authentification
+        authModal.style.display = "none";
+
+        // Affichez les fonctionnalités de l'application maintenant que l'utilisateur est connecté
+        checkUserAuth();
+      })
+      .catch(function (error) {
+        // Gestion des erreurs de connexion
+        var errorMessage = error.message;
+        console.error(errorMessage);
+        // Afficher un message d'erreur à l'utilisateur, si nécessaire.
+      });
+  });
+
+  // Gestion du bouton "Mot de passe oublié"
+  var forgotPasswordButton = document.getElementById("forgot-password-button");
+  forgotPasswordButton.addEventListener("click", function () {
+    var email = prompt("Entrez votre adresse email pour réinitialiser votre mot de passe :");
+    if (email) {
+      firebase.auth().sendPasswordResetEmail(email)
+        .then(function () {
+          alert("Un email de réinitialisation de mot de passe a été envoyé à votre adresse email.");
+        })
+        .catch(function (error) {
+          var errorMessage = error.message;
+          console.error(errorMessage);
+        });
+    }
+  });
+
+  // Gestion du bouton "Créer un compte"
+  var createAccountButton = document.getElementById("create-account-button");
+  createAccountButton.addEventListener("click", function () {
+    var email = prompt("Entrez votre adresse email pour créer un compte :");
+    if (email) {
+      var password = prompt("Entrez un mot de passe pour votre compte :");
+      if (password) {
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+          .then(function () {
+            alert("Compte créé avec succès !");
+          })
+          .catch(function (error) {
+            var errorMessage = error.message;
+            console.error(errorMessage);
+            alert("Une erreur s'est produite lors de la création du compte.");
+          });
+      }
+    }
+  });
+
   // Fonction pour afficher les équipements dans le tableau
   function displayEquipments(equipments) {
     var tableBody = document.querySelector("#equipment-list tbody");
@@ -73,47 +169,48 @@ document.addEventListener("DOMContentLoaded", function() {
       modal.style.display = "none";
     });
 
-  // Fermer le modal "Détail de l'équipement" s'il est ouvert
-  var detailModal = document.getElementById("equipment-detail-modal");
-  detailModal.style.display = "none";
+    // Fermer le modal "Détail de l'équipement" s'il est ouvert
+    var detailModal = document.getElementById("equipment-detail-modal");
+    detailModal.style.display = "none";
 
-// Gestion de la soumission du formulaire de modification
-form.addEventListener("submit", function (event) {
-  event.preventDefault();
+    // Gestion de la soumission du formulaire de modification
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
 
-  var updatedEquipment = {
-    categorie: categorieInput.value,
-    designation: designationInput.value,
-    quantite: quantiteInput.value,
-    marque: marqueInput.value,
-    modele: modeleInput.value,
-    dimensions: dimensionsInput.value,
-    prix: prixAchatHTInput.value
-  };
+      var updatedEquipment = {
+        categorie: categorieInput.value,
+        designation: designationInput.value,
+        quantite: quantiteInput.value,
+        marque: marqueInput.value,
+        modele: modeleInput.value,
+        dimensions: dimensionsInput.value,
+        prix: prixAchatHTInput.value
+      };
 
-  // Mise à jour de l'équipement dans la base de données
-  var equipmentRef = database.ref("equipments/" + key);
-  equipmentRef.update(updatedEquipment);
+      // Mise à jour de l'équipement dans la base de données
+      var equipmentRef = database.ref("equipments/" + key);
+      equipmentRef.update(updatedEquipment);
 
-  // Fermeture de la fenêtre modale après la mise à jour
-  modal.style.display = "none";
+      // Fermeture de la fenêtre modale après la mise à jour
+      modal.style.display = "none";
 
-  // Mettre à jour le modal "Détail de l'équipement"
-  displayEquipmentDetail(key);
+      // Mettre à jour le modal "Détail de l'équipement"
+      displayEquipmentDetail(key);
 
-  // Mettre à jour le tableau des équipements
-  equipmentsRef.once("value", function (snapshot) {
-    var equipments = [];
-    snapshot.forEach(function (childSnapshot) {
-      var key = childSnapshot.key;
-      var equipment = childSnapshot.val();
-      equipment.key = key;
-      equipments.push(equipment);
+      // Mettre à jour le tableau des équipements
+      equipmentsRef.once("value", function (snapshot) {
+        var equipments = [];
+        snapshot.forEach(function (childSnapshot) {
+          var key = childSnapshot.key;
+          var equipment = childSnapshot.val();
+          equipment.key = key;
+          equipments.push(equipment);
+        });
+        displayEquipments(equipments);
+      });
     });
-    displayEquipments(equipments);
-  });
-});
-}
+  }
+
   // Fonction pour afficher le détail d'un équipement dans une fenêtre modale
   function displayEquipmentDetail(key) {
     var equipmentRef = database.ref("equipments/" + key);
