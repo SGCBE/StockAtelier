@@ -1,8 +1,22 @@
-/* styles.css */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+}
+
+label {
+  font-size: 18px;
+  margin: 2%;
+}
+
+select {
+  font-size: 18px;
+  width: 96%;
+  margin: 2%;
+}
+
+.modal-title {
+  margin-bottom: 20px;
 }
 
 .header {
@@ -24,10 +38,19 @@ body {
 .header__title {
   flex-grow: 1;
   text-align: center;
+  font-weight: bold;
+  font-size : 40px
 }
 
-.title {
+h2 {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 1%;
   font-weight: bold;
+  font-size: 30px;
+  background-color: #00587C;
+  color: white;
+  height: auto;
 }
 
 .main {
@@ -40,13 +63,32 @@ body {
 }
 
 .subtitle {
-  font-size: 18px;
+  font-size: 30px;
   font-weight: bold;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
+  text-align : center;
 }
 
 .filter {
+  font-family: Arial, sans-serif;
   margin-bottom: 16px;
+  font-size : 18px;
+}
+
+.filter label,
+.filter select {
+  font-size: 18px;
+  
+  width: auto;
+}
+
+.equipment-list th {
+  font-size : 20px;
+  font-weight: bold;
+}
+
+.equipment-list td {
+  font-size : 18px;
 }
 
 .add-equipment {
@@ -55,19 +97,20 @@ body {
 
 /* Styles pour les boutons */
 .button {
-  font-size: 16px;
+  font-size: 22px;
   font-weight: bold;
-  padding: 10px;
+  padding: 20px;
   border: none;
   background-color: #007BFF;
   color: #fff;
   cursor: pointer;
   width: 100%;
-  margin: 0;
+  margin: 2%;
 }
 
 .button:hover {
   background-color: #0056b3;
+  margin: 2%;
 }
 
 /* Styles pour les boutons du modal */
@@ -77,26 +120,22 @@ body {
 }
 
 .modal .form-actions button {
-  width: 47%;
-}
-
-.modal .form-actions button:nth-child(2) {
-  margin-left: 2%;
+  flex: 1;
+  margin: 1%; /* Espacement de 1% entre les boutons */
 }
 
 /* Styles pour les champs du modal */
 .modal input[type="text"],
-.modal input[type="number"] {
-  width: 96%;
-  padding: 10px;
-  margin-bottom: 10px;
+.modal input[type="number"],
+.modal select#categorie-input {
+  width: 92%;
+  margin: 2px;
 }
 
 /* Style spécifique pour le champ "Catégorie" */
 .modal select#categorie-input {
-  width: 96%;
-  padding: 10px;
-  margin-bottom: 10px;
+  width: 92%;
+  margin: 2px;
 }
 
 /* Ajout d'un saut de ligne entre chaque ligne dans le modal "Détail de l'équipement" */
@@ -104,25 +143,66 @@ body {
   margin-bottom: 10px;
 }
 
+.equipment-list td:last-child::after {
+  content: " €"; /* Ajouter le symbole € à la fin */
+}
+
 .equipment-list {
   width: 100%;
   border-collapse: collapse;
+  table-layout : auto;
 }
 
 .equipment-list th,
 .equipment-list td {
+  font-size: 18px;
   padding: 8px;
   border: 1px solid #ddd;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Largeur dynamique pour la colonne "Catégorie" */
+.equipment-list th:nth-child(1),
+.equipment-list td:nth-child(1) {
+  width: 10%;
+}
+
+/* Largeur dynamique pour la colonne "Quantité" */
+.equipment-list th:nth-child(3),
+.equipment-list td:nth-child(3) {
+  width: 5%;
+}
+
+/* Largeur dynamique pour la colonne "Marque" */
+.equipment-list th:nth-child(4),
+.equipment-list td:nth-child(4) {
+  width: 10%;
+}
+
+/* Largeur dynamique pour la colonne "Modèle" */
+.equipment-list th:nth-child(5),
+.equipment-list td:nth-child(5) {
+  width: 10%;
+}
+
+/* Largeur dynamique pour la colonne "Dimensions" */
+.equipment-list th:nth-child(6),
+.equipment-list td:nth-child(6) {
+  width: 10%;
+}
+
+/* Largeur dynamique pour la colonne "Prix d'achat HT" */
+.equipment-list th:nth-child(7),
+.equipment-list td:nth-child(7) {
+  width: 10%;
 }
 
 .equipment-list th {
   background-color: #f2f2f2;
   font-weight: bold;
-}
-
-.auth-modal-button {
-  width: 30%;
-  margin: 2.5%;
 }
 
 .modal {
@@ -139,17 +219,26 @@ body {
 
 .modal-content {
   background-color: #fff;
-  margin: 10% auto;
-  padding: 16px;
-  max-width: 500px;
-  border-radius: 4px;
+  padding: 0%;
+  margin: 0px; /* Marge de 2px */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); /* Centrer le modal */
+  width: 50%;
+}
+
+.equipment-detail-info {
+  margin: 2%;
+  font-size: 18px;
 }
 
 .close-modal {
   color: #aaa;
   float: right;
-  font-size: 28px;
+  font-size: 2rem; /* Taille de police relative */
   font-weight: bold;
+  margin: 1%;
 }
 
 .modal-title {
@@ -157,36 +246,41 @@ body {
 }
 
 .add-equipment-form .form-group {
-  margin-bottom: 16px;
+  margin-bottom: 2%;
 }
 
 .input-field {
   width: 95%;
-  padding: 8px;
+  padding: 1%;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
 
 .detail-equipment-content {
-  margin-bottom: 16px;
+  margin-bottom: 2%;
+}
+
+.form-group label {
+  margin: 2%,
+  font-size: 18px,
 }
 
 .modal-button {
   background-color: #4CAF50;
   color: #fff;
   border: none;
-  padding: 10px 20px;
+  padding: 1% 2%; /* Utilisation d'unités relatives pour le padding */
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
+  font-size: 1rem; /* Taille de police relative */
+  margin: 2%; /* Utilisation d'unités relatives pour la marge */
   cursor: pointer;
-  border-radius: 4px;
 }
 
 .modal-buttons .button {
   width: 48%;
+  margin: 2%;
 }
 
 .close-modal:hover,
@@ -203,11 +297,72 @@ form {
 }
 
 input {
-  margin-bottom: 10px;
-  padding: 8px;
+  margin-bottom: 2%;
+  margin : 2%;
+  width : 94%;
+  font-size : 18px;
 }
 
 .button-container {
   display: flex;
   justify-content: space-between;
+}
+
+/* Styles pour le modal d'authentification */
+.modal.auth-modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(255, 255, 255, 1); /* Fond blanc */
+}
+
+.modal.auth-modal .auth-modal-content {
+  background-color: #fff;
+  padding: 0; /* Ajuster le padding à 0 */
+  width: 500px;
+  border-radius: 4px;
+  margin: auto; /* Centrer le modal en utilisant les marges automatiques */
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%); /* Centrer le modal verticalement */
+  border : 2px solid #00587C;
+}
+
+.modal.auth-modal .auth-modal-button {
+  font-size : 18px;
+  width: 32%;
+  margin: 2%;
+}
+
+/* Media queries pour la mise en page sur les écrans de petite taille (smartphones) */
+@media screen and (max-width: 768px) {
+  /* ... (styles pour les écrans de petite taille) ... */
+
+  /* Styles spécifiques pour la fenêtre d'authentification sur les smartphones */
+  .auth-modal-button {
+    width: 90%;
+    margin: 2%; /* Plus d'espace entre les éléments */
+  }
+
+  .modal-content {
+    margin: 1% auto; /* Réduire la marge sur les bords du modal à 1% de la largeur du modal */
+    padding: 4%; /* Plus de padding pour les smartphones */
+  }
+
+  .modal .form-actions button {
+    width: 100%;
+    margin-top: 2%; /* Plus d'espace entre les boutons */
+  }
+
+  .modal input[type="text"],
+  .modal input[type="password"] {
+    width: 100%;
+  }
 }
