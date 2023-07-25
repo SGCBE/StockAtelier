@@ -14,7 +14,7 @@
       <img src="logo.jpg" alt="Logo" class="logo">
     </div>
     <div class="header__title">
-      <h1 class="title">Gestion de stock</h1>
+      <h1 class="title">Gestion des équipements en stock à vendre</h1>
     </div>
   </header>
 
@@ -52,21 +52,22 @@
     </div>
   </main>
 
-<div id="auth-modal" class="modal">
-  <div class="modal-content">
+<div id="auth-modal" class="modal auth-modal">
+  <div class="auth-modal-content">
     <h2>Authentification</h2>
     <form id="auth-form">
-      <input type="email" name="email-input" placeholder="Adresse email" required>
-      <input type="password" name="password-input" placeholder="Mot de passe" required>
+      <div class="input-container">
+        <input type="email" name="email-input" placeholder="Adresse email" required>
+        <input type="password" name="password-input" placeholder="Mot de passe" required>
+      </div>
       <div class="button-container">
-        <button type="submit" class="modal-button">Connexion</button>
-        <button type="button" id="forgot-password-button" class="modal-button">Mot de passe oublié</button>
-        <button type="button" id="create-account-button" class="modal-button">Créer un compte</button>
+        <button type="submit" class="auth-modal-button">Connexion</button>
+        <button type="button" id="forgot-password-button" class="auth-modal-button">Mot de passe oublié</button>
+        <button type="button" id="create-account-button" class="auth-modal-button">Créer un compte</button>
       </div>
     </form>
   </div>
 </div>
-
 
   <div id="add-equipment-modal" class="modal">
     <div class="modal-content">
@@ -164,7 +165,7 @@
         </div>
         <div class="form-group">
           <label for="designation-input">Désignation :</label>
-          <input type="text" id="edit-equipment-designation" class="input-field" required> <!-- Corrected ID -->
+          <input type="text" id="edit-equipment-designation" class="input-field" required> 
         </div>
         <div class="form-group">
           <label for="quantite-input">Quantité :</label>
