@@ -1,160 +1,94 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-label {
-  font-size: 18px;
-  margin: 2%;
-}
-
-select {
-  font-size: 18px;
-  width: 96%;
-  margin: 2%;
-}
-
-.modal-title {
-  margin-bottom: 20px;
-}
-
-.header {
+.class-entete {
   background-color: #fff;
   display: flex;
   align-items: center;
-  padding: 16px;
+  margin: 2px;
 }
-
-.header__logo {
-  margin-right: 16px;
-}
-
-.logo {
-  height: 60px;
+ 
+.class-entete-logo {
+  height: 100px;
   width: auto;
 }
 
-.header__title {
-  flex-grow: 1;
-  text-align: center;
-  font-weight: bold;
-  font-size : 40px
+.class-entete-titre {
+  font-family: Arial, sans-serif;
+  font-size: 50px;
+  margin: 2px;
 }
 
-h2 {
-  font-family: Arial, sans-serif;
+.class-pageprincipale {
+}
+
+.class-modal-authentification-container {
+  justify-content: space-between;
+  display: flex;
+}
+
+.class-pageprincipale-container {
   margin: 0;
-  padding: 1%;
-  font-weight: bold;
-  font-size: 30px;
-  background-color: #00587C;
-  color: white;
-  height: auto;
+  display: flex;
 }
 
-.main {
-  padding: 16px;
-}
-
-.container {
-  max-width: 100%;
-  margin: 0 auto;
-}
-
-.subtitle {
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 8px;
-  text-align : center;
-}
-
-.filter {
+.class-modal-detailequipement-container {
+  margin: 1%;
+  display: flex;
   font-family: Arial, sans-serif;
-  margin-bottom: 16px;
-  font-size : 18px;
-}
-
-.filter label,
-.filter select {
   font-size: 18px;
-  
-  width: auto;
 }
 
-.equipment-list th {
+.class-modal-ajouterequipement-container,
+.class-modal-modificationequipement-container {
+  margin: 0;
+  justify-content: space-between;
+  display: flex;
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+}
+
+.class-pageprincipale-soustitre {
+  max-width: 100%;
+}
+
+.class-pageprincipale-filtre {
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  margin: 10px ;
+}
+
+.class-modal-authentification-saisietexte {
+  margin: 1%;
+  padding: 10px;
+  flex: 1;
+  font-size: 18px;
+}
+
+.class-pageprincipale-saisieliste,
+.class-modal-authentification-saisietexte,
+.class-modal-ajouterequipement-saisieliste,
+.class-modal-ajouterequipement-saisietexte,
+.class-modal-modificationequipement-saisieliste,
+.class-modal-modificationequipement-saisietexte {
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  margin: 1%;
+  padding: 0;
+  flex: 1;
+}
+
+.class-pageprincipale-tableau th {
+  font-family: Arial, sans-serif;
   font-size : 20px;
   font-weight: bold;
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.equipment-list td {
-  font-size : 18px;
-}
-
-.add-equipment {
-  margin-top: 16px;
-}
-
-/* Styles pour les boutons */
-.button {
-  font-size: 22px;
-  font-weight: bold;
-  padding: 20px;
-  border: none;
-  background-color: #007BFF;
-  color: #fff;
-  cursor: pointer;
-  width: 100%;
-  margin: 2%;
-}
-
-.button:hover {
-  background-color: #0056b3;
-  margin: 2%;
-}
-
-/* Styles pour les boutons du modal */
-.modal .form-actions {
-  display: flex;
-  justify-content: space-between;
-}
-
-.modal .form-actions button {
-  flex: 1;
-  margin: 1%; /* Espacement de 1% entre les boutons */
-}
-
-/* Styles pour les champs du modal */
-.modal input[type="text"],
-.modal input[type="number"],
-.modal select#categorie-input {
-  width: 92%;
-  margin: 2px;
-}
-
-/* Style spécifique pour le champ "Catégorie" */
-.modal select#categorie-input {
-  width: 92%;
-  margin: 2px;
-}
-
-/* Ajout d'un saut de ligne entre chaque ligne dans le modal "Détail de l'équipement" */
-.modal .equipment-detail-info {
-  margin-bottom: 10px;
-}
-
-.equipment-list td:last-child::after {
-  content: " €"; /* Ajouter le symbole € à la fin */
-}
-
-.equipment-list {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout : auto;
-}
-
-.equipment-list th,
-.equipment-list td {
+.class-pageprincipale-tableau td {
+  font-family: Arial, sans-serif;
   font-size: 18px;
   padding: 8px;
   border: 1px solid #ddd;
@@ -164,48 +98,27 @@ h2 {
   white-space: nowrap;
 }
 
-/* Largeur dynamique pour la colonne "Catégorie" */
-.equipment-list th:nth-child(1),
-.equipment-list td:nth-child(1) {
-  width: 10%;
+.class-pageprincipale-bouton,
+.class-modal-authentification-bouton,
+.class-modal-ajouterequipement-bouton,
+.class-modal-detailequipement-bouton,
+.class-modal-modificationequipement-bouton {
+  background-color: #00587C; /* Couleur de fond du bouton */
+  color: #fff; /* Couleur du texte */
+  font-size: 18px; /* Taille de la police */
+  font-weight: bold; /* Gras */
+  padding: 10px 20px; /* Rembourrage (haut/bas gauche/droite) */
+  border: none; /* Supprimer la bordure */
+  border-radius: 4px; /* Bordure arrondie */
+  cursor: pointer; /* Curseur de la souris */
+  width: 98%;
+  margin: 1%;
 }
 
-/* Largeur dynamique pour la colonne "Quantité" */
-.equipment-list th:nth-child(3),
-.equipment-list td:nth-child(3) {
-  width: 5%;
-}
-
-/* Largeur dynamique pour la colonne "Marque" */
-.equipment-list th:nth-child(4),
-.equipment-list td:nth-child(4) {
-  width: 10%;
-}
-
-/* Largeur dynamique pour la colonne "Modèle" */
-.equipment-list th:nth-child(5),
-.equipment-list td:nth-child(5) {
-  width: 10%;
-}
-
-/* Largeur dynamique pour la colonne "Dimensions" */
-.equipment-list th:nth-child(6),
-.equipment-list td:nth-child(6) {
-  width: 10%;
-}
-
-/* Largeur dynamique pour la colonne "Prix d'achat HT" */
-.equipment-list th:nth-child(7),
-.equipment-list td:nth-child(7) {
-  width: 10%;
-}
-
-.equipment-list th {
-  background-color: #f2f2f2;
-  font-weight: bold;
-}
-
-.modal {
+.class-modal-authentification,
+.class-modal-ajouterequipement,
+.class-modal-detailequipement,
+.class-modal-modificationequipement {
   display: none;
   position: fixed;
   z-index: 1;
@@ -213,156 +126,110 @@ h2 {
   top: 0;
   width: 100%;
   height: 100%;
+  border: 2px solid #00587C;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(255, 255, 255, 1);
 }
 
-.modal-content {
+.class-modal-authentification-contenu,
+.class-modal-ajouterequipement-contenu,
+.class-modal-detailequipement-contenu,
+.class-modal-modificationequipement-contenu {
   background-color: #fff;
   padding: 0%;
-  margin: 0px; /* Marge de 2px */
+  margin: 1px;
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%); /* Centrer le modal */
+  border: 2px solid #00587C;
+  transform: translate(-50%, -50%);
   width: 50%;
+  height: auto;
 }
 
-.equipment-detail-info {
-  margin: 2%;
-  font-size: 18px;
-}
-
-.close-modal {
-  color: #aaa;
-  float: right;
-  font-size: 2rem; /* Taille de police relative */
-  font-weight: bold;
-  margin: 1%;
-}
-
-.modal-title {
-  margin-top: 0;
-}
-
-.add-equipment-form .form-group {
-  margin-bottom: 2%;
-}
-
-.input-field {
-  width: 95%;
-  padding: 1%;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.detail-equipment-content {
-  margin-bottom: 2%;
-}
-
-.form-group label {
-  margin: 2%,
-  font-size: 18px,
-}
-
-.modal-button {
-  background-color: #4CAF50;
-  color: #fff;
-  border: none;
-  padding: 1% 2%; /* Utilisation d'unités relatives pour le padding */
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 1rem; /* Taille de police relative */
-  margin: 2%; /* Utilisation d'unités relatives pour la marge */
-  cursor: pointer;
-}
-
-.modal-buttons .button {
-  width: 48%;
-  margin: 2%;
-}
-
-.close-modal:hover,
-.close-modal:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-/* Autres styles pour le formulaire (à ne pas modifier) */
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-input {
-  margin-bottom: 2%;
-  margin : 2%;
-  width : 94%;
-  font-size : 18px;
-}
-
-.button-container {
+.class-entete-containerbouton,
+.class-modal-authentification-containerbouton,
+.class-modal-ajouterequipement-containerbouton,
+.class-modal-detailequipement-containerbouton,
+.class-modal-modificationequipement-containerbouton {
   display: flex;
   justify-content: space-between;
 }
 
-/* Styles pour le modal d'authentification */
-.modal.auth-modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(255, 255, 255, 1); /* Fond blanc */
+h1 {
+  font-size: 50px;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  margin-left: 50px;
 }
 
-.modal.auth-modal .auth-modal-content {
-  background-color: #fff;
-  padding: 0; /* Ajuster le padding à 0 */
-  width: 500px;
-  border-radius: 4px;
-  margin: auto; /* Centrer le modal en utilisant les marges automatiques */
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%); /* Centrer le modal verticalement */
-  border : 2px solid #00587C;
+h2 {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  margin-bottom: 1%;
+  padding: 10px;
+  font-weight: bold;
+  font-size: 30px;
+  background-color: #00587C;
+  color: white;
 }
 
-.modal.auth-modal .auth-modal-button {
-  font-size : 18px;
-  width: 32%;
-  margin: 2%;
+.class-pageprincipale-tableau td:last-child::after {
+  content: " €"; /* Ajouter le symbole € à la fin */
 }
 
-/* Media queries pour la mise en page sur les écrans de petite taille (smartphones) */
-@media screen and (max-width: 768px) {
-  /* ... (styles pour les écrans de petite taille) ... */
+.class-pageprincipale-tableau {
+  width: 98%;
+  border-collapse: collapse;
+  table-layout : auto;
+  margin: 1%;
+}
 
-  /* Styles spécifiques pour la fenêtre d'authentification sur les smartphones */
-  .auth-modal-button {
-    width: 90%;
-    margin: 2%; /* Plus d'espace entre les éléments */
-  }
+/* Largeur dynamique pour la colonne "Catégorie" */
+.class-pageprincipale-tableau th:nth-child(1),
+.class-pageprincipale-tableau td:nth-child(1) {
+  width: auto;
+}
 
-  .modal-content {
-    margin: 1% auto; /* Réduire la marge sur les bords du modal à 1% de la largeur du modal */
-    padding: 4%; /* Plus de padding pour les smartphones */
-  }
+/* Largeur dynamique pour la colonne "Quantité" */
+.class-pageprincipale-tableau th:nth-child(3),
+.class-pageprincipale-tableau td:nth-child(3) {
+  width: auto;
+}
 
-  .modal .form-actions button {
-    width: 100%;
-    margin-top: 2%; /* Plus d'espace entre les boutons */
-  }
+/* Largeur dynamique pour la colonne "Marque" */
+.class-pageprincipale-tableau th:nth-child(4),
+.class-pageprincipale-tableau td:nth-child(4) {
+  width: auto;
+}
 
-  .modal input[type="text"],
-  .modal input[type="password"] {
-    width: 100%;
-  }
+/* Largeur dynamique pour la colonne "Modèle" */
+.class-pageprincipale-tableau th:nth-child(5),
+.class-pageprincipale-tableau td:nth-child(5) {
+  width: auto;
+}
+
+/* Largeur dynamique pour la colonne "Dimensions" */
+.class-pageprincipale-tableau th:nth-child(6),
+.class-pageprincipale-tableau td:nth-child(6) {
+  width: auto;
+}
+
+/* Largeur dynamique pour la colonne "Prix d'achat HT" */
+.class-pageprincipale-tableau th:nth-child(7),
+.class-pageprincipale-tableau td:nth-child(7) {
+  width: auto;
+}
+
+label {
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  margin: 1%;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  margin: 1%;
+  padding: 1%;
 }
