@@ -9,21 +9,16 @@
 </head>
 
 <body>
-  <header class="header">
-    <div class="header__logo">
-      <img src="logo.jpg" alt="Logo" class="logo">
-    </div>
-    <div class="header__title">
-      <h1 class="title">Gestion des équipements en stock à vendre</h1>
-    </div>
+  <header class="class-entete">
+      <img src="logo.jpg" alt="Logo" class="class-entete-logo">
+      <h1>Gestion des équipements en stock à vendre</h1>
   </header>
 
-  <main class="main">
-    <div class="container">
-      <h2 class="subtitle">Liste des équipements</h2>
-      <div class="filter">
-        <label for="categorie-filter">Catégorie :</label>
-        <select id="categorie-filter">
+  <main class="class-pageprincipale">
+      <h2>Liste des équipements</h2>
+      <div class="class-pageprincipale-filtre">
+        <label for="categorie-filter">Filtrer par catégorie :</label>
+        <select id="categorie-filter" class="class-pageprincipale-saisieliste">
           <option value="All">Tous</option>
           <option value="Inox">Inox</option>
           <option value="Préparation">Préparation</option>
@@ -32,7 +27,7 @@
           <option value="Froid">Froid</option>
         </select>
       </div>
-      <table id="equipment-list" class="equipment-list">
+      <table id="equipment-list" class="class-pageprincipale-tableau">
         <thead>
           <tr>
             <th>Catégorie</th>
@@ -46,153 +41,155 @@
         </thead>
         <tbody></tbody>
       </table>
-      <div class="add-equipment">
-        <button id="add-equipment-button" class="button">Ajouter un équipement</button>
+      <div class="class-pageprincipale-container">
+        <button id="bouton-pageprincipale-ajouterequipement" class="class-pageprincipale-bouton">Ajouter un équipement</button>
       </div>
-    </div>
   </main>
 
-<div id="auth-modal" class="modal auth-modal">
-  <div class="auth-modal-content">
+
+<div id="auth-modal" class="class-modal-authentification">
+  <div class="class-modal-authentification-contenu">
     <h2>Authentification</h2>
     <form id="auth-form">
-      <div class="input-container">
-        <input type="email" name="email-input" placeholder="Adresse email" required>
-        <input type="password" name="password-input" placeholder="Mot de passe" required>
-      </div>
-      <div class="button-container">
-        <button type="submit" class="auth-modal-button">Connexion</button>
-        <button type="button" id="forgot-password-button" class="auth-modal-button">Mot de passe oublié</button>
-        <button type="button" id="create-account-button" class="auth-modal-button">Créer un compte</button>
+       <div class="class-modal-authentification-container">
+        <input class="class-modal-authentification-saisietexte" type="email" name="email-input" placeholder="Adresse email" required>
+       </div>
+       <div class="class-modal-authentification-container">
+        <input class="class-modal-authentification-saisietexte" type="password" name="password-input" placeholder="Mot de passe" required>
+       </div>
+      <div class="class-modal-authentification-containerbouton">
+        <button type="submit" class="class-modal-authentification-bouton">Connexion</button>
+        <button type="button" id="forgot-password-button" class="class-modal-authentification-bouton">Mot de passe oublié</button>
+        <button type="button" id="create-account-button" class="class-modal-authentification-bouton">Créer un compte</button>
       </div>
     </form>
   </div>
 </div>
 
-  <div id="add-equipment-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-modal">&times;</span>
-      <h2 class="modal-title">Ajouter un équipement</h2>
-      <form id="add-equipment-form" class="add-equipment-form">
-        <div class="form-group">
-          <label for="categorie-input">Catégorie :</label>
-          <select id="categorie-input" style="width: 96%" class="input-field">
-            <option value="Inox">Inox</option>
-            <option value="Préparation">Préparation</option>
-            <option value="Laverie">Laverie</option>
-            <option value="Cuisson">Cuisson</option>
-            <option value="Froid">Froid</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="designation-input">Désignation :</label>
-          <input type="text" id="designation-input" class="input-field" required>
-        </div>
-        <div class="form-group">
-          <label for="quantite-input">Quantité :</label>
-          <input type="number" id="quantite-input" class="input-field" required>
-        </div>
-        <div class="form-group">
-          <label for="marque-input">Marque :</label>
-          <input type="text" id="marque-input" class="input-field" required>
-        </div>
-        <div class="form-group">
-          <label for="modele-input">Modèle :</label>
-          <input type="text" id="modele-input" class="input-field" required>
-        </div>
-        <div class="form-group">
-          <label for="dimensions-input">Dimensions :</label>
-          <input type="text" id="dimensions-input" class="input-field" required>
-        </div>
-        <div class="form-group">
-          <label for="prix-input">Prix d'achat HT :</label>
-          <input type="number" id="prix-input" class="input-field" required>
-        </div>
-        <div class="form-actions">
-          <button type="submit" class="button" style="width: 47%">Ajouter</button>
-          <button type="button" class="button" style="width: 47%; margin-left: 2%">Annuler</button>
-        </div>
-      </form>
-    </div>
-  </div>
 
-  <div id="equipment-detail-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-modal" id="close-equipment-detail-modal">&times;</span>
-      <h2 class="modal-title">Détail de l'équipement</h2>
-      <div class="equipment-detail-info">
-        <strong>Catégorie :</strong> <span id="equipment-detail-categorie"></span>
+<div id="add-equipment-modal" class="class-modal-ajouterequipement">
+  <div class="class-modal-ajouterequipement-contenu">
+    <h2>Ajouter un équipement</h2>
+    <form id="add-equipment-form">
+      <div class="class-modal-ajouterequipement-container">
+        <label for="categorie-input">Catégorie :</label>
+        <select id="categorie-input" class="class-modal-ajouterequipement-saisieliste">
+          <option value="Inox">Inox</option>
+          <option value="Préparation">Préparation</option>
+          <option value="Laverie">Laverie</option>
+          <option value="Cuisson">Cuisson</option>
+          <option value="Froid">Froid</option>
+        </select>
       </div>
-      <div class="equipment-detail-info">
-        <strong>Désignation :</strong> <span id="equipment-detail-designation"></span>
+      <div class="class-modal-ajouterequipement-container">
+        <label for="designation-input">Désignation :</label>
+        <input type="text" id="designation-input" class="class-modal-ajouterequipement-saisietexte" required>
       </div>
-      <div class="equipment-detail-info">
-        <strong>Quantité :</strong> <span id="equipment-detail-quantite"></span>
+      <div class="class-modal-ajouterequipement-container">
+        <label for="quantite-input">Quantité :</label>
+        <input type="number" id="quantite-input" class="class-modal-ajouterequipement-saisietexte" required>
       </div>
-      <div class="equipment-detail-info">
-        <strong>Marque :</strong> <span id="equipment-detail-marque"></span>
+      <div class="class-modal-ajouterequipement-container">
+        <label for="marque-input">Marque :</label>
+        <input type="text" id="marque-input" class="class-modal-ajouterequipement-saisietexte" required>
       </div>
-      <div class="equipment-detail-info">
-        <strong>Modèle :</strong> <span id="equipment-detail-modele"></span>
+      <div class="class-modal-ajouterequipement-container">
+        <label for="modele-input">Modèle :</label>
+        <input type="text" id="modele-input" class="class-modal-ajouterequipement-saisietexte" required>
       </div>
-      <div class="equipment-detail-info">
-        <strong>Dimensions :</strong> <span id="equipment-detail-dimensions"></span>
+      <div class="class-modal-ajouterequipement-container">
+        <label for="dimensions-input">Dimensions :</label>
+        <input type="text" id="dimensions-input" class="class-modal-ajouterequipement-saisietexte" required>
       </div>
-      <div class="equipment-detail-info">
-        <strong>Prix d'achat HT :</strong> <span id="equipment-detail-prixAchatHT"></span>
+      <div class="class-modal-ajouterequipement-container">
+        <label for="prix-input">Prix d'achat HT :</label>
+        <input type="number" id="prix-input" class="class-modal-ajouterequipement-saisietexte" required>
       </div>
-      <div class="form-actions">
-        <button type="button" class="button" id="edit-equipment-button" data-key="">Modifier</button>
-        <button type="button" class="button btn-delete" id="delete-equipment-button">Supprimer</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="edit-equipment-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-modal" id="close-edit-equipment-modal">&times;</span>
-      <h2 class="modal-title">Modifier un équipement</h2>
-      <form id="edit-equipment-form" class="edit-equipment-form">
-        <div class="form-group">
-          <label for="edit-equipment-categorie">Catégorie :</label>
-          <select id="edit-equipment-categorie" style="width: 100%" class="input-field">
-            <option value="Inox">Inox</option>
-            <option value="Préparation">Préparation</option>
-            <option value="Laverie">Laverie</option>
-            <option value="Cuisson">Cuisson</option>
-            <option value="Froid">Froid</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="designation-input">Désignation :</label>
-          <input type="text" id="edit-equipment-designation" class="input-field" required> 
-        </div>
-        <div class="form-group">
-          <label for="quantite-input">Quantité :</label>
-          <input type="number" id="edit-equipment-quantite" class="input-field" required>
-        </div>
-        <div class="form-group">
-          <label for="marque-input">Marque :</label>
-          <input type="text" id="edit-equipment-marque" class="input-field" required>
-        </div>
-        <div class="form-group">
-          <label for="modele-input">Modèle :</label>
-          <input type="text" id="edit-equipment-modele" class="input-field" required>
-        </div>
-        <div class="form-group">
-          <label for="dimensions-input">Dimensions :</label>
-          <input type="text" id="edit-equipment-dimensions" class="input-field" required>
-        </div>
-        <div class="form-group">
-          <label for="prix-input">Prix d'achat HT :</label>
-          <input type="number" id="edit-equipment-prixAchatHT" class="input-field" required>
-        </div>
-      <div class="form-actions">
-        <button type="submit" class="button">Modifier</button>
-        <button id="close-edit-equipment-modal" class="button">Fermer</button>
+      <div class="class-modal-ajouterequipement-containerbouton">
+        <button id="bouton-ajouterequipement-ajouter" class="class-modal-ajouterequipement-bouton">Ajouter</button>
+        <button id="bouton-fermer" class="class-modal-ajouterequipement-bouton">Annuler</button>
       </div>
     </form>
   </div>
+</div>
+
+<div id="equipment-detail-modal" class="class-modal-detailequipement">
+  <div class="class-modal-detailequipement-contenu">
+    <h2>Détail de l'équipement</h2>
+     <div class="class-modal-detailequipement-container">
+      <strong>Catégorie :</strong> <span id="equipment-detail-categorie" style="margin-left: 1%"></span>
+     </div>
+     <div class="class-modal-detailequipement-container">
+      <strong>Désignation :</strong> <span id="equipment-detail-designation" style="margin-left: 1%"></span>
+     </div>
+     <div class="class-modal-detailequipement-container">
+      <strong>Quantité :</strong> <span id="equipment-detail-quantite" style="margin-left: 1%"></span>
+     </div>
+     <div class="class-modal-detailequipement-container">
+      <strong>Marque :</strong> <span id="equipment-detail-marque" style="margin-left: 1%"></span>
+     </div>
+     <div class="class-modal-detailequipement-container">
+      <strong>Modèle :</strong> <span id="equipment-detail-modele" style="margin-left: 1%"></span>
+     </div>
+     <div class="class-modal-detailequipement-container">
+      <strong>Dimensions :</strong> <span id="equipment-detail-dimensions" style="margin-left: 1%"></span>
+     </div>
+     <div class="class-modal-detailequipement-container">
+      <strong>Prix d'achat HT :</strong> <span id="equipment-detail-prixAchatHT" style="margin-left: 1%"></span> €
+     </div>
+     <div class="class-modal-detailequipement-containerbouton">
+      <button id="bouton-detailequipement-modifier" class="class-modal-detailequipement-bouton" data-key="">Modifier</button>
+      <button id="bouton-detailequipement-supprimer" class="class-modal-detailequipement-bouton">Supprimer</button>
+      <button id="bouton-detailequipement-fermer" class="class-modal-detailequipement-bouton">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<div id="edit-equipment-modal" class="class-modal-modificationequipement">
+  <div class="class-modal-modificationequipement-contenu">
+    <span class="close-modal" id="close-edit-equipment-modal">&times;</span>
+    <h2>Modifier un équipement</h2>
+    <form id="edit-equipment-form">
+      <div class="class-modal-modificationequipement-container">
+        <label for="edit-equipment-categorie">Catégorie :</label>
+        <select id="edit-equipment-categorie" class="class-modal-modificationequipement-saisieliste" >
+          <option value="Inox">Inox</option>
+          <option value="Préparation">Préparation</option>
+          <option value="Laverie">Laverie</option>
+          <option value="Cuisson">Cuisson</option>
+          <option value="Froid">Froid</option>
+        </select>
+      </div>
+      <div class="class-modal-modificationequipement-container">
+        <label for="designation-input">Désignation :</label>
+        <input type="text" id="edit-equipment-designation" class="class-modal-modificationequipement-saisietexte" required> 
+      </div>
+      <div class="class-modal-modificationequipement-container">
+        <label for="quantite-input">Quantité :</label>
+        <input type="number" id="edit-equipment-quantite" class="class-modal-modificationequipement-saisietexte" required>
+      </div>
+      <div class="class-modal-modificationequipement-container">
+        <label for="marque-input">Marque :</label>
+        <input type="text" id="edit-equipment-marque" class="class-modal-modificationequipement-saisietexte" required>
+      </div>
+      <div class="class-modal-modificationequipement-container">
+        <label for="modele-input">Modèle :</label>
+        <input type="text" id="edit-equipment-modele" class="class-modal-modificationequipement-saisietexte" required>
+      </div>
+      <div class="class-modal-modificationequipement-container">
+        <label for="dimensions-input">Dimensions :</label>
+        <input type="text" id="edit-equipment-dimensions" class="class-modal-modificationequipement-saisietexte" required>
+      </div>
+      <div class="class-modal-modificationequipement-container">
+        <label for="prix-input">Prix d'achat HT :</label>
+        <input type="number" id="edit-equipment-prixAchatHT" class="class-modal-modificationequipement-saisietexte" required>
+      </div>
+    <div class="class-modal-modificationequipement-containerbouton">
+      <button id="bouton-modificationequipement-enregistrer" class="class-modal-modificationequipement-bouton">Enregistrer modification</button>
+      <button id="bouton-modificationequipement-fermer" class="class-modal-modificationequipement-bouton">Annuler</button>
+    </div>
+  </form>
+</div>
 </div>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
