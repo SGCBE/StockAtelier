@@ -115,6 +115,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 
+
   // Fonction pour afficher les équipements dans le tableau
   function displayEquipments(equipments) {
     var tableBody = document.querySelector("#equipment-list tbody");
@@ -143,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // Fonction pour afficher la fenêtre modale de modification d'équipement
   function displayEditEquipmentModal(key, equipment) {
     var modal = document.getElementById("edit-equipment-modal");
-    var closeButton = document.getElementById("close-edit-equipment-modal");
+    var closeButton = document.getElementById("bouton-modificationequipement-fermer");
     var form = document.getElementById("edit-equipment-form");
     var categorieInput = document.getElementById("edit-equipment-categorie");
     var designationInput = document.getElementById("edit-equipment-designation");
@@ -218,9 +219,9 @@ document.addEventListener("DOMContentLoaded", function() {
       var equipment = snapshot.val();
       if (equipment) {
         var modal = document.getElementById("equipment-detail-modal");
-        var closeButton = document.getElementById("close-equipment-detail-modal");
-        var editButton = document.getElementById("edit-equipment-button");
-        var deleteButton = document.getElementById("delete-equipment-button");
+        var closeButton = document.getElementById("bouton-detailequipement-fermer");
+        var editButton = document.getElementById("bouton-detailequipement-modifier");
+        var deleteButton = document.getElementById("bouton-detailequipement-supprimer");
 
         // Définir la clé de l'équipement dans l'attribut data-key du bouton "Modifier"
         editButton.setAttribute("data-key", key);
@@ -241,13 +242,6 @@ document.addEventListener("DOMContentLoaded", function() {
           modal.style.display = "none";
         });
 
-        // Fermeture de la fenêtre modale en cliquant en dehors de la fenêtre
-        window.addEventListener("click", function (event) {
-          if (event.target == modal) {
-            modal.style.display = "none";
-          }
-        });
-
         // Gestion du bouton de modification de l'équipement
         editButton.addEventListener("click", function () {
           // Récupérer la clé depuis l'attribut data-key
@@ -266,49 +260,73 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // Fonction pour ajouter un nouvel équipement
-  function addEquipment(event) {
-    event.preventDefault();
-    var form = document.getElementById("add-equipment-form");
-    var categorie = form.elements["categorie-input"].value;
-    var designation = form.elements["designation-input"].value;
-    var quantite = form.elements["quantite-input"].value;
-    var marque = form.elements["marque-input"].value;
-    var modele = form.elements["modele-input"].value;
-    var dimensions = form.elements["dimensions-input"].value;
-    var prixAchatHT = form.elements["prix-input"].value;
+function addEquipment(event) {
+  event.preventDefault();
+  var form = document.getElementById("add-equipment-form");
+  var categorie = form.elements["categorie-input"].value;
+  var designation = form.elements["designation-input"].value;
+  var quantite = form.elements["quantite-input"].value;
+  var marque = form.elements["marque-input"].value;
+  var modele = form.elements["modele-input"].value;
+  var dimensions = form.elements["dimensions-input"].value;
+  var prixAchatHT = form.elements["prix-input"].value;
 
-    var newEquipment = {
-      categorie: categorie,
-      designation: designation,
-      quantite: quantite,
-      marque: marque,
-      modele: modele,
-      dimensions: dimensions,
-      prix: prixAchatHT
-    };
+  var newEquipment = {
+    categorie: categorie,
+    designation: designation,
+    quantite: quantite,
+    marque: marque,
+    modele: modele,
+    dimensions: dimensions,
+    prix: prixAchatHT
+  };
 
-    // Envoi du nouvel équipement à la base de données
-    var newEquipmentRef = equipmentsRef.push();
-    newEquipmentRef.set(newEquipment);
+  // Envoi du nouvel équipement à la base de données
+  var newEquipmentRef = equipmentsRef.push();
+  newEquipmentRef.set(newEquipment);
 
-    // Fermeture de la fenêtre modale après l'ajout de l'équipement
-    var modal = document.getElementById("add-equipment-modal");
-    modal.style.display = "none";
+  // Fermeture de la fenêtre modale après l'ajout de l'équipement
+  var modal = document.getElementById("add-equipment-modal");
+  modal.style.display = "none";
 
-    // Réinitialisation du formulaire
-    form.reset();
-  }
+  // Réinitialisation du formulaire
+  form.reset();
+
+  // Mettre à jour le tableau d'équipements
+  equipmentsRef.once("value", function(snapshot) {
+    var equipments = [];
+    snapshot.forEach(function(childSnapshot) {
+      var key = childSnapshot.key;
+      var equipment = childSnapshot.val();
+      equipment.key = key;
+      equipments.push(equipment);
+    });
+    displayEquipments(equipments);
+  });
+}
 
   // Fonction pour supprimer un équipement
-  function deleteEquipment(key) {
-    // Suppression de l'équipement dans la base de données
-    var equipmentRef = database.ref("equipments/" + key);
-    equipmentRef.remove();
+function deleteEquipment(key) {
+  // Suppression de l'équipement dans la base de données
+  var equipmentRef = database.ref("equipments/" + key);
+  equipmentRef.remove();
 
-    // Fermeture de la fenêtre modale après la suppression
-    var modal = document.getElementById("equipment-detail-modal");
-    modal.style.display = "none";
-  }
+  // Fermeture de la fenêtre modale après la suppression
+  var modal = document.getElementById("equipment-detail-modal");
+  modal.style.display = "none";
+
+  // Mettre à jour le tableau d'équipements
+  equipmentsRef.once("value", function(snapshot) {
+    var equipments = [];
+    snapshot.forEach(function(childSnapshot) {
+      var key = childSnapshot.key;
+      var equipment = childSnapshot.val();
+      equipment.key = key;
+      equipments.push(equipment);
+    });
+    displayEquipments(equipments);
+  });
+}
 
   // Gestion du filtre par catégorie
   var categorieFilter = document.getElementById("categorie-filter");
@@ -340,10 +358,10 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   // Gestion du bouton d'ajout d'équipement
-  var addEquipmentButton = document.getElementById("add-equipment-button");
+  var addEquipmentButton = document.getElementById("bouton-pageprincipale-ajouterequipement");
   addEquipmentButton.addEventListener("click", function () {
     var modal = document.getElementById("add-equipment-modal");
-    var closeButton = document.querySelector("#add-equipment-modal .close-modal");
+    var closeButton = document.getElementById("bouton-ajouterequipement-fermer");
 
     // Affichage de la fenêtre modale pour l'ajout
     modal.style.display = "block";
