@@ -233,6 +233,7 @@ body {
   margin: 1%;
   padding: 1%;
 }
+
 /* Styles pour les smartphones */
 @media screen and (max-width: 767px) {
   .class-entete {
@@ -263,4 +264,15 @@ body {
   .class-modal-modificationequipement-container {
     font-size: 16px;
   }
-}
+  
+  /* Ajustements pour les smartphones */
+  .class-pageprincipale-filtre {
+    font-size: 16px;
+  }
+
+  .class-pageprincipale-tableau th,
+  .class-pageprincipale-tableau td {
+    font-size: 16px;
+    padding: 6px; /* Ajustement du rembourrage */
+  }
+  }
