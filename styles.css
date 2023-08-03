@@ -233,3 +233,34 @@ body {
   margin: 1%;
   padding: 1%;
 }
+/* Styles pour les smartphones */
+@media screen and (max-width: 767px) {
+  .class-entete {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .class-entete-logo {
+    height: 60px;
+  }
+
+  .class-entete-titre {
+    font-size: 30px;
+    margin-top: 10px;
+  }
+
+  .class-pageprincipale-container {
+    justify-content: center;
+  }
+
+  .class-pageprincipale-soustitre {
+    font-size: 24px;
+  }
+
+  .class-modal-detailequipement-container,
+  .class-modal-ajouterequipement-container,
+  .class-modal-modificationequipement-container {
+    font-size: 16px;
+  }
+}
