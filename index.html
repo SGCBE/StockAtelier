@@ -14,38 +14,40 @@
       <h1>Gestion des équipements en stock à vendre</h1>
   </header>
 
-  <main class="class-pageprincipale">
-      <h2>Liste des équipements</h2>
-      <div class="class-pageprincipale-filtre">
-        <label for="categorie-filter">Filtrer par catégorie :</label>
-        <select id="categorie-filter" class="class-pageprincipale-saisieliste">
-          <option value="All">Tous</option>
-          <option value="Inox">Inox</option>
-          <option value="Préparation">Préparation</option>
-          <option value="Laverie">Laverie</option>
-          <option value="Cuisson">Cuisson</option>
-          <option value="Froid">Froid</option>
-        </select>
-      </div>
-      <table id="equipment-list" class="class-pageprincipale-tableau">
-        <thead>
-          <tr>
-            <th>Catégorie</th>
-            <th>Désignation</th>
-            <th>Quantité</th>
-            <th>Marque</th>
-            <th>Modèle</th>
-            <th>Dimensions</th>
-            <th>Prix d'achat HT</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <div class="class-pageprincipale-container">
-        <button id="bouton-pageprincipale-ajouterequipement" class="class-pageprincipale-bouton">Ajouter un équipement</button>
-      </div>
-  </main>
-
+<main class="class-pageprincipale">
+    <h2>Liste des équipements</h2>
+    <div class="class-pageprincipale-container">
+      <label style="text-align: center;">Lorsque vous réservez un équipement et que la quantité arrive sur 0, ne pas le supprimer tant qu'il n'est pas installé/livré chez le client (mettre uniquement la quantité sur 0). Supprimer uniquement quand l'équipement est parti chez le client afin de garder une trace de celui-ci si jamais la réservation est annulée.</label>
+    </div>
+    <div class="class-pageprincipale-filtre">
+      <label for="categorie-filter">Filtrer par catégorie :</label>
+      <select id="categorie-filter" class="class-pageprincipale-saisieliste">
+        <option value="All">Tous</option>
+        <option value="Inox">Inox</option>
+        <option value="Préparation">Préparation</option>
+        <option value="Laverie">Laverie</option>
+        <option value="Cuisson">Cuisson</option>
+        <option value="Froid">Froid</option>
+      </select>
+    </div>
+    <table id="equipment-list" class="class-pageprincipale-tableau">
+      <thead>
+        <tr>
+          <th>Catégorie</th>
+          <th>Désignation</th>
+          <th>Quantité</th>
+          <th>Marque</th>
+          <th>Modèle</th>
+          <th>Dimensions</th>
+          <th>Prix d'achat HT</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div class="class-pageprincipale-containerbouton">
+      <button id="bouton-pageprincipale-ajouterequipement" class="class-pageprincipale-bouton">Ajouter un équipement</button>
+    </div>
+</main>
 
 <div id="auth-modal" class="class-modal-authentification">
   <div class="class-modal-authentification-contenu">
@@ -65,7 +67,6 @@
     </form>
   </div>
 </div>
-
 
 <div id="add-equipment-modal" class="class-modal-ajouterequipement">
   <div class="class-modal-ajouterequipement-contenu">
@@ -107,7 +108,7 @@
       </div>
       <div class="class-modal-ajouterequipement-containerbouton">
         <button id="bouton-ajouterequipement-ajouter" class="class-modal-ajouterequipement-bouton">Ajouter</button>
-        <button id="bouton-fermer" class="class-modal-ajouterequipement-bouton">Annuler</button>
+        <button id="bouton-ajouterequipement-fermer" class="class-modal-ajouterequipement-bouton">Annuler</button>
       </div>
     </form>
   </div>
@@ -141,13 +142,12 @@
       <button id="bouton-detailequipement-modifier" class="class-modal-detailequipement-bouton" data-key="">Modifier</button>
       <button id="bouton-detailequipement-supprimer" class="class-modal-detailequipement-bouton">Supprimer</button>
       <button id="bouton-detailequipement-fermer" class="class-modal-detailequipement-bouton">Fermer</button>
-    </div>
+     </div>
   </div>
 </div>
 
 <div id="edit-equipment-modal" class="class-modal-modificationequipement">
   <div class="class-modal-modificationequipement-contenu">
-    <span class="close-modal" id="close-edit-equipment-modal">&times;</span>
     <h2>Modifier un équipement</h2>
     <form id="edit-equipment-form">
       <div class="class-modal-modificationequipement-container">
