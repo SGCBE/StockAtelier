@@ -305,7 +305,6 @@ body {
   .class-modal-ajouterequipement-container,
   .class-modal-modificationequipement-container,
   .class-modal-reservation-container {
-    flex-direction: column;
     text-align: center;
   }
 
