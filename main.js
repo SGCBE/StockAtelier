@@ -116,30 +116,36 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
 
-  // Fonction pour afficher les équipements dans le tableau
-  function displayEquipments(equipments) {
-    var tableBody = document.querySelector("#equipment-list tbody");
-    tableBody.innerHTML = "";
+function displayEquipments(equipments) {
+  var tableBody = document.querySelector("#equipment-list tbody");
+  tableBody.innerHTML = "";
 
-    equipments.forEach(function (equipment) {
-      var row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${equipment.categorie}</td>
-        <td>${equipment.designation}</td>
-        <td>${equipment.quantite}</td>
-        <td>${equipment.marque}</td>
-        <td>${equipment.modele}</td>
-        <td>${equipment.dimensions}</td>
-        <td>${equipment.prix}</td>
-      `;
-      tableBody.appendChild(row);
+  equipments.forEach(function (equipment) {
+    var row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${equipment.categorie}</td>
+      <td>${equipment.designation}</td>
+      <td>${equipment.quantite}</td>
+      <td>${equipment.marque}</td>
+      <td>${equipment.modele}</td>
+      <td>${equipment.dimensions}</td>
+      <td>${equipment.prix}</td>
+    `;
 
-      // Ajout d'un événement click pour afficher le détail de l'équipement
-      row.addEventListener("click", function () {
-        displayEquipmentDetail(equipment.key);
-      });
+    // Add a CSS class to the row if the quantity is zero
+    if (equipment.quantite == 0) {
+      console.log("Adding out-of-stock class to row");
+      row.classList.add("out-of-stock");
+    }
+
+    tableBody.appendChild(row);
+
+    // Ajout d'un événement click pour afficher le détail de l'équipement
+    row.addEventListener("click", function () {
+      displayEquipmentDetail(equipment.key);
     });
-  }
+  });
+}
 
   // Fonction pour afficher la fenêtre modale de modification d'équipement
   function displayEditEquipmentModal(key, equipment) {
@@ -259,7 +265,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
-  // Fonction pour ajouter un nouvel équipement
+// Fonction pour ajouter un nouvel équipement
 function addEquipment(event) {
   event.preventDefault();
   var form = document.getElementById("add-equipment-form");
@@ -371,12 +377,6 @@ function deleteEquipment(key) {
       modal.style.display = "none";
     });
 
-    // Fermeture de la fenêtre modale en cliquant en dehors de la fenêtre
-    window.addEventListener("click", function (event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    });
   });
 
   // Gestion de la soumission du formulaire d'ajout d'équipement
@@ -394,4 +394,5 @@ function deleteEquipment(key) {
     });
     displayEquipments(equipments);
   });
+
 });
