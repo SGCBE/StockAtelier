@@ -36,8 +36,21 @@
   font-size: 18px;
 }
 
+.class-pageprincipale-container {
+  background-color: #F9E79F;
+  margin: 0;
+  justify-content: space-between;
+  display: flex;
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  align-items: center;
+  justify-content: center;
+  font-style: italic;
+}
+
 .class-modal-ajouterequipement-container,
-.class-modal-modificationequipement-container {
+.class-modal-modificationequipement-container,
+.class-modal-reservation-container {
   margin: 0;
   justify-content: space-between;
   display: flex;
@@ -67,7 +80,8 @@
 .class-modal-ajouterequipement-saisieliste,
 .class-modal-ajouterequipement-saisietexte,
 .class-modal-modificationequipement-saisieliste,
-.class-modal-modificationequipement-saisietexte {
+.class-modal-modificationequipement-saisietexte,
+.class-modal-reservation-saisietexte {
   font-family: Arial, sans-serif;
   font-size: 18px;
   margin: 1%;
@@ -98,11 +112,24 @@
   white-space: nowrap;
 }
 
-.class-pageprincipale-bouton,
+.class-pageprincipale-bouton {
+  background-color: #00587C; /* Couleur de fond du bouton */
+  color: #fff; /* Couleur du texte */
+  font-size: 18px; /* Taille de la police */
+  font-weight: bold; /* Gras */
+  padding: 10px 20px; /* Rembourrage (haut/bas gauche/droite) */
+  border: none; /* Supprimer la bordure */
+  border-radius: 4px; /* Bordure arrondie */
+  cursor: pointer; /* Curseur de la souris */
+  width: 100%;
+  margin-top : 1%;
+}
+
 .class-modal-authentification-bouton,
 .class-modal-ajouterequipement-bouton,
 .class-modal-detailequipement-bouton,
-.class-modal-modificationequipement-bouton {
+.class-modal-modificationequipement-bouton,
+.class-modal-reservation-bouton {
   background-color: #00587C; /* Couleur de fond du bouton */
   color: #fff; /* Couleur du texte */
   font-size: 18px; /* Taille de la police */
@@ -118,7 +145,8 @@
 .class-modal-authentification,
 .class-modal-ajouterequipement,
 .class-modal-detailequipement,
-.class-modal-modificationequipement {
+.class-modal-modificationequipement,
+.class-modal-reservation {
   display: none;
   position: fixed;
   z-index: 1;
@@ -134,7 +162,8 @@
 .class-modal-authentification-contenu,
 .class-modal-ajouterequipement-contenu,
 .class-modal-detailequipement-contenu,
-.class-modal-modificationequipement-contenu {
+.class-modal-modificationequipement-contenu,
+.class-modal-reservation-contenu {
   background-color: #fff;
   padding: 0%;
   margin: 1px;
@@ -147,11 +176,15 @@
   height: auto;
 }
 
+.class-pageprincipale-containerbouton {
+}
+
 .class-entete-containerbouton,
 .class-modal-authentification-containerbouton,
 .class-modal-ajouterequipement-containerbouton,
 .class-modal-detailequipement-containerbouton,
-.class-modal-modificationequipement-containerbouton {
+.class-modal-modificationequipement-containerbouton,
+.class-modal-reservation-containerbouton {
   display: flex;
   justify-content: space-between;
 }
@@ -179,10 +212,10 @@ h2 {
 }
 
 .class-pageprincipale-tableau {
-  width: 98%;
+  width: 100%;
   border-collapse: collapse;
   table-layout : auto;
-  margin: 1%;
+  margin: 0%;
 }
 
 /* Largeur dynamique pour la colonne "Catégorie" */
@@ -234,45 +267,46 @@ body {
   padding: 1%;
 }
 
-/* Styles pour les smartphones */
-@media screen and (max-width: 767px) {
-  .class-entete {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 10px;
-  }
+/* Style pour les lignes d'équipement épuisées */
+.out-of-stock {
+  text-decoration: line-through; /* Ligne barrée */
+  color: #cdcdcd; /* Couleur de texte en gris clair */
+}
 
-  .class-entete-logo {
-    height: 60px;
-  }
-
+/* Styles pour l'affichage sur smartphones */
+@media (max-width: 767px) {
   .class-entete-titre {
     font-size: 30px;
-    margin-top: 10px;
   }
-
-  .class-pageprincipale-container {
-    justify-content: center;
-  }
-
-  .class-pageprincipale-soustitre {
-    font-size: 24px;
-  }
-
+  
+  .class-pageprincipale-container,
+  .class-modal-authentification-container,
   .class-modal-detailequipement-container,
   .class-modal-ajouterequipement-container,
-  .class-modal-modificationequipement-container {
+  .class-modal-modificationequipement-container,
+  .class-modal-reservation-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .class-pageprincipale-container {
     font-size: 16px;
   }
   
-  /* Ajustements pour les smartphones */
-  .class-pageprincipale-filtre {
+  .class-modal-authentification-saisietexte,
+  .class-pageprincipale-saisieliste,
+  .class-modal-authentification-bouton,
+  .class-modal-ajouterequipement-bouton,
+  .class-modal-detailequipement-bouton,
+  .class-modal-modificationequipement-bouton,
+  .class-modal-reservation-bouton {
     font-size: 16px;
+    padding: 8px 12px;
   }
-
+  
   .class-pageprincipale-tableau th,
   .class-pageprincipale-tableau td {
-    font-size: 16px;
-    padding: 6px; /* Ajustement du rembourrage */
+    font-size: 14px;
+    padding: 6px;
   }
-  }
+}
