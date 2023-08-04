@@ -272,40 +272,4 @@ body {
   text-decoration: line-through; /* Ligne barrée */
   color: #cdcdcd; /* Couleur de texte en gris clair */
 }
-/* Styles pour l'affichage sur smartphones en mode portrait */
-@media only screen and (max-width: 480px) {
-  .class-entete-titre {
-    font-size: 30px;
-  }
 
-  .class-pageprincipale-container,
-  .class-modal-authentification-container,
-  .class-modal-detailequipement-container,
-  .class-modal-ajouterequipement-container,
-  .class-modal-modificationequipement-container,
-  .class-modal-reservation-container {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .class-pageprincipale-container {
-    font-size: 16px;
-  }
-
-  .class-modal-authentification-saisietexte,
-  .class-pageprincipale-saisieliste,
-  .class-modal-authentification-bouton,
-  .class-modal-ajouterequipement-bouton,
-  .class-modal-detailequipement-bouton,
-  .class-modal-modificationequipement-bouton,
-  .class-modal-reservation-bouton {
-    font-size: 16px;
-    padding: 8px 12px;
-  }
-
-  .class-pageprincipale-tableau th,
-  .class-pageprincipale-tableau td {
-    font-size: 16px;
-    padding: 6px;
-  }
-}
