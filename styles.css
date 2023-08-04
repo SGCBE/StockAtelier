@@ -272,13 +272,12 @@ body {
   text-decoration: line-through; /* Ligne barrée */
   color: #cdcdcd; /* Couleur de texte en gris clair */
 }
-
 /* Styles pour l'affichage sur smartphones en mode portrait */
 @media only screen and (max-width: 480px) {
   .class-entete-titre {
     font-size: 30px;
   }
-  
+
   .class-pageprincipale-container,
   .class-modal-authentification-container,
   .class-modal-detailequipement-container,
@@ -288,11 +287,11 @@ body {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .class-pageprincipale-container {
     font-size: 16px;
   }
-  
+
   .class-modal-authentification-saisietexte,
   .class-pageprincipale-saisieliste,
   .class-modal-authentification-bouton,
@@ -303,11 +302,10 @@ body {
     font-size: 16px;
     padding: 8px 12px;
   }
-  
+
   .class-pageprincipale-tableau th,
   .class-pageprincipale-tableau td {
     font-size: 16px;
     padding: 6px;
   }
 }
-
