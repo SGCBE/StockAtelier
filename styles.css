@@ -273,8 +273,8 @@ body {
   color: #cdcdcd; /* Couleur de texte en gris clair */
 }
 
-/* Styles pour l'affichage sur smartphones */
-@media (max-width: 767px) {
+/* Styles pour l'affichage sur smartphones en mode portrait */
+@media only screen and (max-width: 480px) {
   .class-entete-titre {
     font-size: 30px;
   }
@@ -310,3 +310,4 @@ body {
     padding: 6px;
   }
 }
+
