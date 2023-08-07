@@ -4,18 +4,19 @@
   display: flex;
   align-items: center;
   margin: 2px;
+  padding: 1% 2%; /* Ajustement du rembourrage */
 }
 
 .class-entete-logo {
-  height: 100px;
-  width: auto;
-  max-width: 100%; /* Ajout de cette ligne */
+  height: auto;
+  max-width: 100%;
 }
 
 .class-entete-titre {
   font-family: Arial, sans-serif;
-  font-size: 5vw; /* Modification de la taille de police en unité vw */
+  font-size: 5vw;
   margin: 2px;
+  padding: 0 2%; /* Ajustement du rembourrage */
 }
 
 /* Style pour la page principale */
