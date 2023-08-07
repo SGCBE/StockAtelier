@@ -27,6 +27,7 @@
 .class-pageprincipale-container {
   margin: 0;
   display: flex;
+  font-size: 16 px;
 }
 
 .class-modal-detailequipement-container {
