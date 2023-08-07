@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   margin: 2px;
-  padding: 1% 2%; /* Ajustement du rembourrage */
+  padding: 1% 2%;
 }
 
 .class-entete-logo {
@@ -16,7 +16,8 @@
   font-family: Arial, sans-serif;
   font-size: 5vw;
   margin: 2px;
-  padding: 0 2%; /* Ajustement du rembourrage */
+  padding: 0 2%;
+  width: 100%; /* Ajout de cette ligne */
 }
 
 /* Style pour la page principale */
