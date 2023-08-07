@@ -273,14 +273,41 @@ body {
   color: #cdcdcd; /* Couleur de texte en gris clair */
 }
 
-/* Media query pour les écrans de petite taille en mode portrait */
-@media only screen and (max-width: 480px) and (orientation: portrait) {
-  /* Ajustement de la taille de police du titre */
+/* Styles pour l'affichage sur smartphones en mode portrait ou paysage */
+@media (max-width: 767px) {
+  .class-entete {
+    margin: 2px;
+    text-align: center;
+    flex-direction: column;
+  }
+  
+  .class-entete-logo {
+    height: auto;
+    max-width: 100%;
+    margin: 0;
+  }
+  
   .class-entete-titre {
     font-size: 30px;
+    margin: 10px 0;
   }
-
-  /* Ajustement de la taille de police pour les éléments de saisie */
+  
+  .class-pageprincipale-container,
+  .class-modal-authentification-container,
+  .class-modal-detailequipement-container,
+  .class-modal-ajouterequipement-container,
+  .class-modal-modificationequipement-container,
+  .class-modal-reservation-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .class-pageprincipale-filtre,
+  .class-pageprincipale-soustitre {
+    font-size: 16px;
+    margin: 5px 0;
+  }
+  
   .class-modal-authentification-saisietexte,
   .class-pageprincipale-saisieliste,
   .class-modal-authentification-bouton,
@@ -291,28 +318,29 @@ body {
     font-size: 16px;
     padding: 8px 12px;
   }
-
-  /* Ajustement de la taille de police pour les éléments de tableau */
+  
   .class-pageprincipale-tableau th,
   .class-pageprincipale-tableau td {
-    font-size: 16px;
+    font-size: 14px;
     padding: 6px;
   }
   
-  /* Ajustement de la disposition des conteneurs */
-  .class-pageprincipale-container,
-  .class-modal-authentification-container,
-  .class-modal-detailequipement-container,
-  .class-modal-ajouterequipement-container,
-  .class-modal-modificationequipement-container,
-  .class-modal-reservation-container {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .class-pageprincipale-container {
+  .class-pageprincipale-bouton {
     font-size: 16px;
+    padding: 8px 16px;
+    margin-top: 5px;
   }
-
-  /* ... (autres ajustements de styles) ... */
+  
+  .class-modal-authentification-contenu,
+  .class-modal-ajouterequipement-contenu,
+  .class-modal-detailequipement-contenu,
+  .class-modal-modificationequipement-contenu,
+  .class-modal-reservation-contenu {
+    width: 80%;
+    max-width: 300px;
+    height: auto;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
