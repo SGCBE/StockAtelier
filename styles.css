@@ -1,34 +1,40 @@
+/* Style pour l'en-tête */
 .class-entete {
   background-color: #fff;
   display: flex;
   align-items: center;
   margin: 2px;
 }
- 
+
 .class-entete-logo {
   height: 100px;
   width: auto;
+  max-width: 100%; /* Ajout de cette ligne */
 }
 
 .class-entete-titre {
   font-family: Arial, sans-serif;
-  font-size: 50px;
+  font-size: 5vw; /* Modification de la taille de police en unité vw */
   margin: 2px;
 }
 
+/* Style pour la page principale */
 .class-pageprincipale {
 }
 
+/* Style pour le conteneur de la modal d'authentification */
 .class-modal-authentification-container {
   justify-content: space-between;
   display: flex;
 }
 
+/* Style pour le conteneur de la page principale */
 .class-pageprincipale-container {
   margin: 0;
   display: flex;
 }
 
+/* Style pour le conteneur de la modal de détail d'équipement */
 .class-modal-detailequipement-container {
   margin: 1%;
   display: flex;
@@ -36,6 +42,7 @@
   font-size: 18px;
 }
 
+/* Style pour le conteneur de la page principale */
 .class-pageprincipale-container {
   background-color: #F9E79F;
   margin: 0;
@@ -48,6 +55,7 @@
   font-style: italic;
 }
 
+/* Styles pour les conteneurs de diverses modals */
 .class-modal-ajouterequipement-container,
 .class-modal-modificationequipement-container,
 .class-modal-reservation-container {
@@ -58,16 +66,19 @@
   font-size: 18px;
 }
 
+/* Style pour le sous-titre de la page principale */
 .class-pageprincipale-soustitre {
   max-width: 100%;
 }
 
+/* Style pour les filtres de la page principale */
 .class-pageprincipale-filtre {
   font-family: Arial, sans-serif;
   font-size: 18px;
-  margin: 10px ;
+  margin: 10px;
 }
 
+/* Style pour la saisie de texte dans la modal d'authentification */
 .class-modal-authentification-saisietexte {
   margin: 1%;
   padding: 10px;
@@ -75,6 +86,7 @@
   font-size: 18px;
 }
 
+/* Styles pour les saisies de liste et de texte */
 .class-pageprincipale-saisieliste,
 .class-modal-authentification-saisietexte,
 .class-modal-ajouterequipement-saisieliste,
@@ -89,9 +101,10 @@
   flex: 1;
 }
 
+/* Style pour l'en-tête du tableau */
 .class-pageprincipale-tableau th {
   font-family: Arial, sans-serif;
-  font-size : 20px;
+  font-size: 20px;
   font-weight: bold;
   padding: 8px;
   border: 1px solid #ddd;
@@ -101,6 +114,7 @@
   white-space: nowrap;
 }
 
+/* Style pour les cellules du tableau */
 .class-pageprincipale-tableau td {
   font-family: Arial, sans-serif;
   font-size: 18px;
@@ -112,36 +126,39 @@
   white-space: nowrap;
 }
 
+/* Style pour les boutons de la page principale */
 .class-pageprincipale-bouton {
-  background-color: #00587C; /* Couleur de fond du bouton */
-  color: #fff; /* Couleur du texte */
-  font-size: 18px; /* Taille de la police */
-  font-weight: bold; /* Gras */
-  padding: 10px 20px; /* Rembourrage (haut/bas gauche/droite) */
-  border: none; /* Supprimer la bordure */
-  border-radius: 4px; /* Bordure arrondie */
-  cursor: pointer; /* Curseur de la souris */
+  background-color: #00587C;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
   width: 100%;
-  margin-top : 1%;
+  margin-top: 1%;
 }
 
+/* Styles pour les boutons des modals */
 .class-modal-authentification-bouton,
 .class-modal-ajouterequipement-bouton,
 .class-modal-detailequipement-bouton,
 .class-modal-modificationequipement-bouton,
 .class-modal-reservation-bouton {
-  background-color: #00587C; /* Couleur de fond du bouton */
-  color: #fff; /* Couleur du texte */
-  font-size: 18px; /* Taille de la police */
-  font-weight: bold; /* Gras */
-  padding: 10px 20px; /* Rembourrage (haut/bas gauche/droite) */
-  border: none; /* Supprimer la bordure */
-  border-radius: 4px; /* Bordure arrondie */
-  cursor: pointer; /* Curseur de la souris */
+  background-color: #00587C;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
   width: 98%;
   margin: 1%;
 }
 
+/* Styles pour les modals */
 .class-modal-authentification,
 .class-modal-ajouterequipement,
 .class-modal-detailequipement,
@@ -159,6 +176,7 @@
   background-color: rgba(255, 255, 255, 1);
 }
 
+/* Styles pour les contenus des modals */
 .class-modal-authentification-contenu,
 .class-modal-ajouterequipement-contenu,
 .class-modal-detailequipement-contenu,
@@ -176,6 +194,7 @@
   height: auto;
 }
 
+/* Styles pour les conteneurs de boutons */
 .class-pageprincipale-containerbouton {
 }
 
@@ -189,6 +208,7 @@
   justify-content: space-between;
 }
 
+/* Style pour les titres de niveau 1 */
 h1 {
   font-size: 50px;
   font-family: Arial, sans-serif;
@@ -196,6 +216,7 @@ h1 {
   margin-left: 50px;
 }
 
+/* Style pour les titres de niveau 2 */
 h2 {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -207,59 +228,43 @@ h2 {
   color: white;
 }
 
+/* Style pour la dernière colonne du tableau */
 .class-pageprincipale-tableau td:last-child::after {
   content: " €"; /* Ajouter le symbole € à la fin */
 }
 
+/* Style pour le tableau de la page principale */
 .class-pageprincipale-tableau {
   width: 100%;
   border-collapse: collapse;
-  table-layout : auto;
+  table-layout: auto;
   margin: 0%;
 }
 
-/* Largeur dynamique pour la colonne "Catégorie" */
+/* Styles pour la largeur dynamique des colonnes du tableau */
 .class-pageprincipale-tableau th:nth-child(1),
-.class-pageprincipale-tableau td:nth-child(1) {
-  width: auto;
-}
-
-/* Largeur dynamique pour la colonne "Quantité" */
+.class-pageprincipale-tableau td:nth-child(1),
 .class-pageprincipale-tableau th:nth-child(3),
-.class-pageprincipale-tableau td:nth-child(3) {
-  width: auto;
-}
-
-/* Largeur dynamique pour la colonne "Marque" */
+.class-pageprincipale-tableau td:nth-child(3),
 .class-pageprincipale-tableau th:nth-child(4),
-.class-pageprincipale-tableau td:nth-child(4) {
-  width: auto;
-}
-
-/* Largeur dynamique pour la colonne "Modèle" */
+.class-pageprincipale-tableau td:nth-child(4),
 .class-pageprincipale-tableau th:nth-child(5),
-.class-pageprincipale-tableau td:nth-child(5) {
-  width: auto;
-}
-
-/* Largeur dynamique pour la colonne "Dimensions" */
+.class-pageprincipale-tableau td:nth-child(5),
 .class-pageprincipale-tableau th:nth-child(6),
-.class-pageprincipale-tableau td:nth-child(6) {
-  width: auto;
-}
-
-/* Largeur dynamique pour la colonne "Prix d'achat HT" */
+.class-pageprincipale-tableau td:nth-child(6),
 .class-pageprincipale-tableau th:nth-child(7),
 .class-pageprincipale-tableau td:nth-child(7) {
   width: auto;
 }
 
+/* Style pour les étiquettes */
 label {
   font-family: Arial, sans-serif;
   font-size: 18px;
   margin: 1%;
 }
 
+/* Style pour le corps de la page */
 body {
   font-family: Arial, sans-serif;
   font-size: 18px;
@@ -269,6 +274,6 @@ body {
 
 /* Style pour les lignes d'équipement épuisées */
 .out-of-stock {
-  text-decoration: line-through; /* Ligne barrée */
-  color: #cdcdcd; /* Couleur de texte en gris clair */
+  text-decoration: line-through;
+  color: #cdcdcd;
 }
