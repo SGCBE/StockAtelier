@@ -279,7 +279,7 @@ function addEquipment(event) {
   var marque = form.elements["marque-input"].value;
   var modele = form.elements["modele-input"].value;
   var dimensions = form.elements["dimensions-input"].value;
-  var prixAchatHT = form.elements["prix-input"].value;
+  var prixAchatHT = parseFloat(form.elements["prix-input"].value);
 
   var newEquipment = {
     categorie: categorie,
