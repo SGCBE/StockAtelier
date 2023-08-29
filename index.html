@@ -138,6 +138,10 @@
      <div class="class-modal-detailequipement-container">
       <strong>Prix d'achat HT :</strong> <span id="equipment-detail-prixAchatHT" style="margin-left: 1%"></span> €
      </div>
+     <div class="class-modal-detailequipement-container">
+      <strong>Détail:</strong> <span id="equipment-detail-details" style="margin-left: 1%"></span>
+     </div>
+
      <div class="class-modal-detailequipement-containerbouton">
       <button id="bouton-detailequipement-modifier" class="class-modal-detailequipement-bouton" data-key="">Modifier</button>
       <button id="bouton-detailequipement-supprimer" class="class-modal-detailequipement-bouton">Supprimer</button>
@@ -184,6 +188,11 @@
         <label for="prix-input">Prix d'achat HT :</label>
         <input type="number" id="edit-equipment-prixAchatHT" class="class-modal-modificationequipement-saisietexte" required>
       </div>
+      <div class="class-modal-modificationequipement-container">
+        <label for="details-input">Détail:</label>
+        <textarea id="edit-equipment-details" class="class-modal-modificationequipement-saisietexte"></textarea>
+      </div>
+
     <div class="class-modal-modificationequipement-containerbouton">
       <button id="bouton-modificationequipement-enregistrer" class="class-modal-modificationequipement-bouton">Enregistrer modification</button>
       <button id="bouton-modificationequipement-fermer" class="class-modal-modificationequipement-bouton">Annuler</button>
