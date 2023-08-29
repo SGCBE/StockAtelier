@@ -132,7 +132,7 @@ function displayEquipments(equipments) {
       <td>${equipment.prix}</td>
     `;
 
-    // Add a CSS class to the row if the quantity is zero
+    // Ajouter une class CSS si la quantité est à 0
     if (equipment.quantite == 0) {
       console.log("Adding out-of-stock class to row");
       row.classList.add("out-of-stock");
@@ -159,6 +159,7 @@ function displayEquipments(equipments) {
     var modeleInput = document.getElementById("edit-equipment-modele");
     var dimensionsInput = document.getElementById("edit-equipment-dimensions");
     var prixAchatHTInput = document.getElementById("edit-equipment-prixAchatHT");
+    var detailsInput = document.getElementById("edit-equipment-details");
 
     categorieInput.value = equipment.categorie;
     designationInput.value = equipment.designation;
@@ -167,6 +168,7 @@ function displayEquipments(equipments) {
     modeleInput.value = equipment.modele;
     dimensionsInput.value = equipment.dimensions;
     prixAchatHTInput.value = equipment.prix;
+    detailsInput.value = equipment.details;
 
     // Affichage de la fenêtre modale pour la modification
     modal.style.display = "block";
@@ -191,7 +193,8 @@ function displayEquipments(equipments) {
         marque: marqueInput.value,
         modele: modeleInput.value,
         dimensions: dimensionsInput.value,
-        prix: prixAchatHTInput.value
+        prix: prixAchatHTInput.value,
+        details: detailsInput.value
       };
 
       // Mise à jour de l'équipement dans la base de données
@@ -239,6 +242,7 @@ function displayEquipments(equipments) {
         document.getElementById("equipment-detail-modele").textContent = equipment.modele;
         document.getElementById("equipment-detail-dimensions").textContent = equipment.dimensions;
         document.getElementById("equipment-detail-prixAchatHT").textContent = equipment.prix;
+	document.getElementById("equipment-detail-details").textContent = equipment.details;
 
         // Affichage de la fenêtre modale
         modal.style.display = "block";
