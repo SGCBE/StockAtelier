@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // Référence à la table "equipments"
   var equipmentsRef = database.ref("equipments");
 
+/*
   // Vérifiez si l'utilisateur est connecté avant d'afficher les fonctionnalités de l'application
   function checkUserAuth() {
     firebase.auth().onAuthStateChanged(function (user) {
@@ -114,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     }
   });
-
+*/
 
 function displayEquipments(equipments) {
   var tableBody = document.querySelector("#equipment-list tbody");
