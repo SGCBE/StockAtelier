@@ -455,5 +455,4 @@ function sortTable(columnIndex) {
     }
   }
 }
-}
 });
