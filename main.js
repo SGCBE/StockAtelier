@@ -300,7 +300,7 @@ function displayEditEquipmentModal(key, equipment) {
       displayEquipments(equipments);
     });
   }
-  }
+}
 
 // Fonction pour ajouter un nouvel équipement
 function addEquipment(event) {
