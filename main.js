@@ -122,6 +122,10 @@ function displayEquipments(equipments) {
 
   equipments.forEach(function (equipment) {
     var row = document.createElement("tr");
+
+    // Ajouter la classe de catégorie à la ligne
+    row.className = "class-cat-" + equipment.categorie.toLowerCase();
+
     row.innerHTML = `
       <td>${equipment.categorie}</td>
       <td>${equipment.designation}</td>
@@ -144,6 +148,13 @@ function displayEquipments(equipments) {
     row.addEventListener("click", function () {
       displayEquipmentDetail(equipment.key);
     });
+  // Ajouter un gestionnaire d'événement de clic aux en-têtes de colonne pour le tri
+  var thElements = document.querySelectorAll(".class-pageprincipale-tableau th");
+  thElements.forEach(function (th, columnIndex) {
+    th.addEventListener("click", function () {
+      sortTable(columnIndex);
+    });
+  });
   });
 }
 
@@ -398,5 +409,27 @@ function deleteEquipment(key) {
     });
     displayEquipments(equipments);
   });
-
+// Fonction pour trier les lignes du tableau en fonction de la colonne sélectionnée
+function sortTable(columnIndex) {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("equipment-list");
+  switching = true;
+  while (switching) {
+    switching = false;
+    rows = table.getElementsByTagName("tr");
+    for (i = 1; i < rows.length - 1; i++) {
+      shouldSwitch = false;
+      x = rows[i].getElementsByTagName("td")[columnIndex];
+      y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}
 });
