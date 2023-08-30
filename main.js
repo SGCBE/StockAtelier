@@ -19,7 +19,9 @@ document.addEventListener("DOMContentLoaded", function() {
   // Référence à la table "equipments"
   var equipmentsRef = database.ref("equipments");
 
-/*
+  // Ajout d'un état pour suivre si le modal de détail est ouvert
+  var isDetailModalOpen = false;
+
   // Vérifiez si l'utilisateur est connecté avant d'afficher les fonctionnalités de l'application
   function checkUserAuth() {
     firebase.auth().onAuthStateChanged(function (user) {
@@ -115,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     }
   });
-*/
+
 
 function displayEquipments(equipments) {
   var tableBody = document.querySelector("#equipment-list tbody");
@@ -149,13 +151,15 @@ function displayEquipments(equipments) {
     row.addEventListener("click", function () {
       displayEquipmentDetail(equipment.key);
     });
+  });
+
   // Ajouter un gestionnaire d'événement de clic aux en-têtes de colonne pour le tri
   var thElements = document.querySelectorAll(".class-pageprincipale-tableau th");
   thElements.forEach(function (th, columnIndex) {
     th.addEventListener("click", function () {
       sortTable(columnIndex);
     });
-  });
+
   });
 }
 
@@ -213,11 +217,18 @@ function displayEquipments(equipments) {
       var equipmentRef = database.ref("equipments/" + key);
       equipmentRef.update(updatedEquipment);
 
+      // Mettre à jour le modal "Détail de l'équipement"
+      document.getElementById("equipment-detail-categorie").textContent = updatedEquipment.categorie;
+      document.getElementById("equipment-detail-designation").textContent = updatedEquipment.designation;
+      document.getElementById("equipment-detail-quantite").textContent = updatedEquipment.quantite;
+      document.getElementById("equipment-detail-marque").textContent = updatedEquipment.marque;
+      document.getElementById("equipment-detail-modele").textContent = updatedEquipment.modele;
+      document.getElementById("equipment-detail-dimensions").textContent = updatedEquipment.dimensions;
+      document.getElementById("equipment-detail-prixAchatHT").textContent = updatedEquipment.prix;
+      document.getElementById("equipment-detail-details").textContent = updatedEquipment.details;
+
       // Fermeture de la fenêtre modale après la mise à jour
       modal.style.display = "none";
-
-      // Mettre à jour le modal "Détail de l'équipement"
-      displayEquipmentDetail(key);
 
       // Mettre à jour le tableau des équipements
       equipmentsRef.once("value", function (snapshot) {
@@ -259,9 +270,14 @@ function displayEquipments(equipments) {
         // Affichage de la fenêtre modale
         modal.style.display = "block";
 
+        // Mettre à jour l'état du modal de détail
+        isDetailModalOpen = true;
+
         // Fermeture de la fenêtre modale en cliquant sur le bouton de fermeture
         closeButton.addEventListener("click", function () {
           modal.style.display = "none";
+        // Mettre à jour l'état du modal de détail
+        isDetailModalOpen = false;
         });
 
         // Gestion du bouton de modification de l'équipement
@@ -279,6 +295,20 @@ function displayEquipments(equipments) {
         console.log("L'équipement n'existe pas ou n'a pas été trouvé.");
       }
     });
+
+  // Mettre à jour le tableau des équipements uniquement si le modal de détail est fermé
+  if (!isDetailModalOpen) {
+    equipmentsRef.once("value", function (snapshot) {
+      var equipments = [];
+      snapshot.forEach(function (childSnapshot) {
+        var key = childSnapshot.key;
+        var equipment = childSnapshot.val();
+        equipment.key = key;
+        equipments.push(equipment);
+      });
+      displayEquipments(equipments);
+    });
+  }
   }
 
 // Fonction pour ajouter un nouvel équipement
@@ -286,7 +316,7 @@ function addEquipment(event) {
   event.preventDefault();
   var form = document.getElementById("add-equipment-form");
   var categorie = form.elements["categorie-input"].value;
-  var designation = form.elements["designation-input"].value;
+  var designation = parseIn(form.elements["designation-input"].value);
   var quantite = form.elements["quantite-input"].value;
   var marque = form.elements["marque-input"].value;
   var modele = form.elements["modele-input"].value;
