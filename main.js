@@ -316,8 +316,8 @@ function addEquipment(event) {
   event.preventDefault();
   var form = document.getElementById("add-equipment-form");
   var categorie = form.elements["categorie-input"].value;
-  var designation = parseIn(form.elements["designation-input"].value);
-  var quantite = form.elements["quantite-input"].value;
+  var designation = form.elements["designation-input"].value;
+  var quantite = parseInt(form.elements["quantite-input"].value);
   var marque = form.elements["marque-input"].value;
   var modele = form.elements["modele-input"].value;
   var dimensions = form.elements["dimensions-input"].value;
