@@ -463,18 +463,21 @@ function deleteEquipment(key) {
   });
 
   // Fonction pour trier la table par colonne
-  function sortTable(columnIndex) {
-    var table, rows, switching, i, x, y, shouldSwitch;
-    table = document.getElementById("equipment-list");
-    switching = true;
+function sortTable(columnIndex) {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("equipment-list");
+  switching = true;
 
-    while (switching) {
-      switching = false;
-      rows = table.getElementsByTagName("tr");
-      for (i = 1; i < rows.length - 1; i++) {
-        shouldSwitch = false;
-        x = rows[i].getElementsByTagName("td")[columnIndex];
-        y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+  while (switching) {
+    switching = false;
+    rows = table.getElementsByTagName("tr");
+    for (i = 1; i < rows.length - 1; i++) {
+      shouldSwitch = false;
+      x = rows[i].getElementsByTagName("td")[columnIndex];
+      y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+
+      // Vérifiez si x et y ne sont pas nuls
+      if (x && y) {
         var xValue = x.textContent || x.innerText;
         var yValue = y.textContent || y.innerText;
         if (xValue.toLowerCase() > yValue.toLowerCase()) {
@@ -482,13 +485,14 @@ function deleteEquipment(key) {
           break;
         }
       }
+    }
 
-      if (shouldSwitch) {
-        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-        switching = true;
-      }
+    if (shouldSwitch) {
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
     }
   }
+}
 
   // Fonction pour afficher les équipements triés
   function displaySortedEquipments(columnIndex) {
