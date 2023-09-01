@@ -147,6 +147,27 @@ function displayEquipments(equipments) {
 
     tableBody.appendChild(row);
 
+  // Fonction pour trier la colonne "Catégorie"
+  function trierParCategorie() {
+    const table = document.getElementById("equipment-list");
+    const rows = Array.from(table.querySelectorAll("tbody tr"));
+
+    rows.sort((a, b) => {
+      const categorieA = a.cells[0].textContent.trim();
+      const categorieB = b.cells[0].textContent.trim();
+      return categorieA.localeCompare(categorieB);
+    });
+
+    // Supprime les lignes existantes
+    rows.forEach(row => table.querySelector("tbody").removeChild(row));
+
+    // Ajoute les lignes triées à nouveau
+    rows.forEach(row => table.querySelector("tbody").appendChild(row));
+  }
+
+  // Appel initial pour trier la colonne "Catégorie" au chargement de la page
+  trierParCategorie();
+
     // Ajout d'un événement click pour afficher le détail de l'équipement
     row.addEventListener("click", function () {
       displayEquipmentDetail(equipment.key);
@@ -475,25 +496,4 @@ function sortTable(columnIndex) {
     }
   }
 }
-
-// Gestionnaire d'événement pour le clic sur les en-têtes de colonne
-var thElements = document.querySelectorAll(".class-pageprincipale-tableau th");
-thElements.forEach(function (th, columnIndex) {
-  th.addEventListener("click", function () {
-    // Si la colonne est déjà triée, changer la direction du tri
-    if (th.classList.contains("sorted")) {
-      th.classList.toggle("asc");
-      th.classList.toggle("desc");
-    } else {
-      // Sinon, enlever la classe de tri des autres en-têtes et trier en ascendant
-      thElements.forEach(function (otherTh) {
-        otherTh.classList.remove("sorted", "asc", "desc");
-      });
-      th.classList.add("sorted", "asc");
-    }
-    
-    // Appeler la fonction de tri en utilisant l'index de la colonne
-    sortTable(columnIndex);
-  });
-});
 });
