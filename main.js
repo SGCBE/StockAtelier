@@ -462,38 +462,56 @@ function deleteEquipment(key) {
     displayEquipments(equipments);
   });
 
-// Fonction pour trier les lignes du tableau en fonction de la colonne sélectionnée
-function sortTable(columnIndex) {
-  var table, rows, switching, i, x, y, shouldSwitch;
-  table = document.getElementById("equipment-list");
-  switching = true;
-  
-  // Récupérer la colonne actuelle de tri depuis l'en-tête
-  var currentSortColumn = table.querySelector("th.sorted").getAttribute("data-column");
-  
-  while (switching) {
-    switching = false;
-    rows = table.getElementsByTagName("tr");
-    for (i = 1; i < rows.length - 1; i++) {
-      shouldSwitch = false;
-      x = rows[i].getElementsByTagName("td")[columnIndex];
-      y = rows[i + 1].getElementsByTagName("td")[columnIndex];
-      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-        shouldSwitch = true;
-        break;
+  // Fonction pour trier la table par colonne
+  function sortTable(columnIndex) {
+    var table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("equipment-list");
+    switching = true;
+
+    while (switching) {
+      switching = false;
+      rows = table.getElementsByTagName("tr");
+      for (i = 1; i < rows.length - 1; i++) {
+        shouldSwitch = false;
+        x = rows[i].getElementsByTagName("td")[columnIndex];
+        y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+        var xValue = x.textContent || x.innerText;
+        var yValue = y.textContent || y.innerText;
+        if (xValue.toLowerCase() > yValue.toLowerCase()) {
+          shouldSwitch = true;
+          break;
+        }
+      }
+
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
       }
     }
-    
-    // Si la colonne de tri a changé, réinitialiser la classe de tri
-    if (currentSortColumn !== table.querySelector("th.sorted").getAttribute("data-column")) {
-      currentSortColumn = table.querySelector("th.sorted").getAttribute("data-column");
-      switching = true;
-    }
-    
-    if (shouldSwitch) {
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-    }
   }
-}
+
+  // Fonction pour afficher les équipements triés
+  function displaySortedEquipments(columnIndex) {
+    sortTable(columnIndex);
+  }
+
+  // Appel initial pour trier la colonne "Catégorie" au chargement de la page
+  displaySortedEquipments(0); // Tri initial sur la colonne "Catégorie"
+
+  // Ajouter un gestionnaire d'événement de clic aux en-têtes de colonne pour le tri
+  var thElements = document.querySelectorAll(".class-pageprincipale-tableau th");
+  thElements.forEach(function (th, columnIndex) {
+    th.addEventListener("click", function () {
+      // Appliquer le tri lorsque l'utilisateur clique sur l'en-tête de colonne
+      displaySortedEquipments(columnIndex);
+
+      // Réinitialiser la classe "sorted" sur tous les en-têtes de colonne
+      thElements.forEach(function (header) {
+        header.classList.remove("sorted");
+      });
+
+      // Ajouter la classe "sorted" à l'en-tête de colonne actuel
+      th.classList.add("sorted");
+    });
+  });
 });
