@@ -153,15 +153,16 @@ function displayEquipments(equipments) {
     // Ajouter la classe de catégorie à la ligne
     row.className = "class-cat-" + equipment.categorie.toLowerCase();
 
-    row.innerHTML = `
-      <td>${equipment.categorie}</td>
-      <td>${equipment.designation}</td>
-      <td>${equipment.quantite}</td>
-      <td>${equipment.marque}</td>
-      <td>${equipment.modele}</td>
-      <td>${equipment.dimensions}</td>
-      <td>${equipment.prix}</td>
-    `;
+row.innerHTML = `
+  <td>${equipment.categorie}</td>
+  <td>${equipment.designation}</td>
+  <td>${equipment.quantite}</td>
+  <td>${equipment.marque}</td>
+  <td>${equipment.modele}</td>
+  <td>${equipment.dimensions}</td>
+  <td>${equipment.prix}</td>
+  <td><button class="edit-button" data-key="${equipment.key}">Modifier</button></td>
+`;
 
     // Ajouter une class CSS si la quantité est à 0
     if (equipment.quantite == 0) {
@@ -177,10 +178,11 @@ function displayEquipments(equipments) {
 // Ajoutez un gestionnaire d'événements de délégation sur la table
 document.getElementById("equipment-list").addEventListener("click", function (event) {
   var target = event.target;
-  // Vérifiez si le clic a été effectué sur une ligne du tableau
-  if (target.tagName === 'TD' && target.parentElement.tagName === 'TR') {
-    var equipmentKey = target.parentElement.dataset.key;
-    displayEquipmentDetail(equipmentKey);
+
+  // Vérifiez si le clic a été effectué sur un bouton de modification
+  if (target.classList.contains("edit-button")) {
+    var equipmentKey = target.dataset.key;
+    displayEditEquipmentModal(equipmentKey);
   }
 });
   });
