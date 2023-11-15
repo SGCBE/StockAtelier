@@ -252,21 +252,25 @@ form.addEventListener("submit", function (event) {
         document.getElementById("equipment-detail-prixAchatHT").textContent = equipment.prix;
 	document.getElementById("equipment-detail-details").textContent = equipment.details;
 	    
-      // Fermeture de la fenêtre modale après la mise à jour
-      modal.style.display = "none";
-
-      // Mettre à jour le tableau des équipements
-      equipmentsRef.once("value", function (snapshot) {
-        var equipments = [];
-        snapshot.forEach(function (childSnapshot) {
-          var key = childSnapshot.key;
-          var equipment = childSnapshot.val();
-          equipment.key = key;
-          equipments.push(equipment);
-        });
-        displayEquipments(equipments);
+    // Fermeture de la fenêtre modale après la mise à jour
+    modal.style.display = "none";
+  })
+  .catch(function (error) {
+    console.error("Erreur lors de la mise à jour de l'équipement :", error);
+  })
+  .finally(function () {
+    // Mettre à jour le tableau des équipements après la résolution de la promesse
+    equipmentsRef.once("value", function (snapshot) {
+      var equipments = [];
+      snapshot.forEach(function (childSnapshot) {
+        var key = childSnapshot.key;
+        var equipment = childSnapshot.val();
+        equipment.key = key;
+        equipments.push(equipment);
       });
-    })
+      displayEquipments(equipments);
+    });
+  });
     .catch(function (error) {
       console.error("Erreur lors de la mise à jour de l'équipement :", error);
     });
