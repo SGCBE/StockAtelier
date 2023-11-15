@@ -234,34 +234,32 @@ function displayEquipments(equipments) {
         details: detailsInput.value
       };
 
-      // Mise à jour de l'équipement dans la base de données
-      var equipmentRef = database.ref("equipments/" + key);
-      equipmentRef.update(updatedEquipment);
+// Mise à jour de l'équipement dans la base de données
+var equipmentRef = database.ref("equipments/" + key);
+equipmentRef.update(updatedEquipment)
+  .then(function () {
+    // Mettre à jour le modal "Détail de l'équipement"
+    document.getElementById("equipment-detail-categorie").textContent = updatedEquipment.categorie;
+    // ... (autres mises à jour)
 
-      // Mettre à jour le modal "Détail de l'équipement"
-      document.getElementById("equipment-detail-categorie").textContent = updatedEquipment.categorie;
-      document.getElementById("equipment-detail-designation").textContent = updatedEquipment.designation;
-      document.getElementById("equipment-detail-quantite").textContent = updatedEquipment.quantite;
-      document.getElementById("equipment-detail-marque").textContent = updatedEquipment.marque;
-      document.getElementById("equipment-detail-modele").textContent = updatedEquipment.modele;
-      document.getElementById("equipment-detail-dimensions").textContent = updatedEquipment.dimensions;
-      document.getElementById("equipment-detail-prixAchatHT").textContent = updatedEquipment.prix;
-      document.getElementById("equipment-detail-details").textContent = updatedEquipment.details;
+    // Fermeture de la fenêtre modale après la mise à jour
+    modal.style.display = "none";
 
-      // Fermeture de la fenêtre modale après la mise à jour
-      modal.style.display = "none";
-
-      // Mettre à jour le tableau des équipements
-      equipmentsRef.once("value", function (snapshot) {
-        var equipments = [];
-        snapshot.forEach(function (childSnapshot) {
-          var key = childSnapshot.key;
-          var equipment = childSnapshot.val();
-          equipment.key = key;
-          equipments.push(equipment);
-        });
-        displayEquipments(equipments);
+    // Mettre à jour le tableau des équipements
+    equipmentsRef.once("value", function (snapshot) {
+      var equipments = [];
+      snapshot.forEach(function (childSnapshot) {
+        var key = childSnapshot.key;
+        var equipment = childSnapshot.val();
+        equipment.key = key;
+        equipments.push(equipment);
       });
+      displayEquipments(equipments);
+    });
+  })
+  .catch(function (error) {
+    console.error("Erreur lors de la mise à jour de l'équipement :", error);
+  });
     });
   }
 
