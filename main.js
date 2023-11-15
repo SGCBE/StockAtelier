@@ -1,13 +1,13 @@
 document.addEventListener("DOMContentLoaded", function() {
   // Configuration Firebase
   var firebaseConfig = {
-    apiKey: "AIzaSyCRxjJPOHEBAbnXQariFN6funIWPpsIe28",
-    authDomain: "atelier---gestion-de-stock.firebaseapp.com",
-    databaseURL: "https://atelier---gestion-de-stock-default-rtdb.firebaseio.com",
-    projectId: "atelier---gestion-de-stock",
-    storageBucket: "atelier---gestion-de-stock.appspot.com",
-    messagingSenderId: "92935528444",
-    appId: "1:92935528444:web:57786855ed9cc7ef129c79"
+    apiKey: "your-api-key",
+    authDomain: "your-auth-domain",
+    databaseURL: "your-database-url",
+    projectId: "your-project-id",
+    storageBucket: "your-storage-bucket",
+    messagingSenderId: "your-messaging-sender-id",
+    appId: "your-app-id"
   };
 
   // Initialisation de Firebase
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Vérifiez si l'utilisateur est connecté avant d'afficher les fonctionnalités de l'application
   function checkUserAuth() {
-    firebase.auth().onAuthStateChanged(function (user) {
+    firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         // L'utilisateur est connecté, affichez les fonctionnalités de l'application
         var elementsToShow = document.querySelectorAll(".user-authenticated");
@@ -58,23 +58,23 @@ document.addEventListener("DOMContentLoaded", function() {
   var authModal = document.getElementById("auth-modal");
   authModal.style.display = "block";
 
- // Gestion de la soumission du formulaire d'authentification
+  // Gestion de la soumission du formulaire d'authentification
   var authForm = document.getElementById("auth-form");
-  authForm.addEventListener("submit", function (event) {
+  authForm.addEventListener("submit", function(event) {
     event.preventDefault();
     var email = authForm.elements["email-input"].value;
     var password = authForm.elements["password-input"].value;
 
     // Utilisation de Firebase Authentication pour se connecter avec l'email et le mot de passe
     firebase.auth().signInWithEmailAndPassword(email, password)
-      .then(function () {
+      .then(function() {
         // Connexion réussie, fermer la fenêtre modale d'authentification
         authModal.style.display = "none";
 
         // Affichez les fonctionnalités de l'application maintenant que l'utilisateur est connecté
         checkUserAuth();
       })
-      .catch(function (error) {
+      .catch(function(error) {
         // Gestion des erreurs de connexion
         var errorMessage = error.message;
         console.error(errorMessage);
@@ -84,14 +84,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Gestion du bouton "Mot de passe oublié"
   var forgotPasswordButton = document.getElementById("forgot-password-button");
-  forgotPasswordButton.addEventListener("click", function () {
+  forgotPasswordButton.addEventListener("click", function() {
     var email = prompt("Entrez votre adresse email pour réinitialiser votre mot de passe :");
     if (email) {
       firebase.auth().sendPasswordResetEmail(email)
-        .then(function () {
+        .then(function() {
           alert("Un email de réinitialisation de mot de passe a été envoyé à votre adresse email.");
         })
-        .catch(function (error) {
+        .catch(function(error) {
           var errorMessage = error.message;
           console.error(errorMessage);
         });
@@ -100,16 +100,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Gestion du bouton "Créer un compte"
   var createAccountButton = document.getElementById("create-account-button");
-  createAccountButton.addEventListener("click", function () {
+  createAccountButton.addEventListener("click", function() {
     var email = prompt("Entrez votre adresse email pour créer un compte :");
     if (email) {
       var password = prompt("Entrez un mot de passe pour votre compte :");
       if (password) {
         firebase.auth().createUserWithEmailAndPassword(email, password)
-          .then(function () {
+          .then(function() {
             alert("Compte créé avec succès !");
           })
-          .catch(function (error) {
+          .catch(function(error) {
             var errorMessage = error.message;
             console.error(errorMessage);
             alert("Une erreur s'est produite lors de la création du compte.");
@@ -118,71 +118,69 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 
+  function displayEquipments(equipments) {
+    var tableBody = document.querySelector("#equipment-list tbody");
+    tableBody.innerHTML = "";
 
-function displayEquipments(equipments) {
-  var tableBody = document.querySelector("#equipment-list tbody");
-  tableBody.innerHTML = "";
+    equipments.forEach(function(equipment) {
+      var row = document.createElement("tr");
 
-  equipments.forEach(function (equipment) {
-    var row = document.createElement("tr");
+      // Ajouter la classe de catégorie à la ligne
+      row.className = "class-cat-" + equipment.categorie.toLowerCase();
 
-    // Ajouter la classe de catégorie à la ligne
-    row.className = "class-cat-" + equipment.categorie.toLowerCase();
+      row.innerHTML = `
+        <td>${equipment.categorie}</td>
+        <td>${equipment.designation}</td>
+        <td>${equipment.quantite}</td>
+        <td>${equipment.marque}</td>
+        <td>${equipment.modele}</td>
+        <td>${equipment.dimensions}</td>
+        <td>${equipment.prix}</td>
+      `;
 
-    row.innerHTML = `
-      <td>${equipment.categorie}</td>
-      <td>${equipment.designation}</td>
-      <td>${equipment.quantite}</td>
-      <td>${equipment.marque}</td>
-      <td>${equipment.modele}</td>
-      <td>${equipment.dimensions}</td>
-      <td>${equipment.prix}</td>
-    `;
+      // Ajouter une class CSS si la quantité est à 0
+      if (equipment.quantite == 0) {
+        console.log("Adding out-of-stock class to row");
+        row.classList.add("out-of-stock");
+      }
 
-    // Ajouter une class CSS si la quantité est à 0
-    if (equipment.quantite == 0) {
-      console.log("Adding out-of-stock class to row");
-      row.classList.add("out-of-stock");
-    }
+      tableBody.appendChild(row);
 
-    tableBody.appendChild(row);
+      // Fonction pour trier la colonne "Catégorie"
+      function trierParCategorie() {
+        const table = document.getElementById("equipment-list");
+        const rows = Array.from(table.querySelectorAll("tbody tr"));
 
-  // Fonction pour trier la colonne "Catégorie"
-  function trierParCategorie() {
-    const table = document.getElementById("equipment-list");
-    const rows = Array.from(table.querySelectorAll("tbody tr"));
+        rows.sort((a, b) => {
+          const categorieA = a.cells[0].textContent.trim();
+          const categorieB = b.cells[0].textContent.trim();
+          return categorieA.localeCompare(categorieB);
+        });
 
-    rows.sort((a, b) => {
-      const categorieA = a.cells[0].textContent.trim();
-      const categorieB = b.cells[0].textContent.trim();
-      return categorieA.localeCompare(categorieB);
+        // Supprime les lignes existantes
+        rows.forEach(row => table.querySelector("tbody").removeChild(row));
+
+        // Ajoute les lignes triées à nouveau
+        rows.forEach(row => table.querySelector("tbody").appendChild(row));
+      }
+
+      // Appel initial pour trier la colonne "Catégorie" au chargement de la page
+      trierParCategorie();
+
+      // Ajout d'un événement click pour afficher le détail de l'équipement
+      row.addEventListener("click", function() {
+        displayEquipmentDetail(equipment.key);
+      });
     });
 
-    // Supprime les lignes existantes
-    rows.forEach(row => table.querySelector("tbody").removeChild(row));
-
-    // Ajoute les lignes triées à nouveau
-    rows.forEach(row => table.querySelector("tbody").appendChild(row));
+	    // Ajouter un gestionnaire d'événement de clic aux en-têtes de colonne pour le tri
+    var thElements = document.querySelectorAll(".class-pageprincipale-tableau th");
+    thElements.forEach(function(th, columnIndex) {
+      th.addEventListener("click", function() {
+        sortTable(columnIndex);
+      });
+    });
   }
-
-  // Appel initial pour trier la colonne "Catégorie" au chargement de la page
-  trierParCategorie();
-
-    // Ajout d'un événement click pour afficher le détail de l'équipement
-    row.addEventListener("click", function () {
-      displayEquipmentDetail(equipment.key);
-    });
-  });
-
-  // Ajouter un gestionnaire d'événement de clic aux en-têtes de colonne pour le tri
-  var thElements = document.querySelectorAll(".class-pageprincipale-tableau th");
-  thElements.forEach(function (th, columnIndex) {
-    th.addEventListener("click", function () {
-      sortTable(columnIndex);
-    });
-
-  });
-}
 
   // Fonction pour afficher la fenêtre modale de modification d'équipement
   function displayEditEquipmentModal(key, equipment) {
@@ -211,7 +209,7 @@ function displayEquipments(equipments) {
     modal.style.display = "block";
 
     // Fermeture de la fenêtre modale en cliquant sur le bouton de fermeture
-    closeButton.addEventListener("click", function () {
+    closeButton.addEventListener("click", function() {
       modal.style.display = "none";
     });
 
@@ -220,7 +218,7 @@ function displayEquipments(equipments) {
     detailModal.style.display = "none";
 
     // Gestion de la soumission du formulaire de modification
-    form.addEventListener("submit", function (event) {
+    form.addEventListener("submit", function(event) {
       event.preventDefault();
 
       var updatedEquipment = {
@@ -252,9 +250,9 @@ function displayEquipments(equipments) {
       modal.style.display = "none";
 
       // Mettre à jour le tableau des équipements
-      equipmentsRef.once("value", function (snapshot) {
+      equipmentsRef.once("value", function(snapshot) {
         var equipments = [];
-        snapshot.forEach(function (childSnapshot) {
+        snapshot.forEach(function(childSnapshot) {
           var key = childSnapshot.key;
           var equipment = childSnapshot.val();
           equipment.key = key;
@@ -268,7 +266,7 @@ function displayEquipments(equipments) {
   // Fonction pour afficher le détail d'un équipement dans une fenêtre modale
   function displayEquipmentDetail(key) {
     var equipmentRef = database.ref("equipments/" + key);
-    equipmentRef.once("value", function (snapshot) {
+    equipmentRef.once("value", function(snapshot) {
       var equipment = snapshot.val();
       if (equipment) {
         var modal = document.getElementById("equipment-detail-modal");
@@ -286,7 +284,7 @@ function displayEquipments(equipments) {
         document.getElementById("equipment-detail-modele").textContent = equipment.modele;
         document.getElementById("equipment-detail-dimensions").textContent = equipment.dimensions;
         document.getElementById("equipment-detail-prixAchatHT").textContent = equipment.prix;
-	document.getElementById("equipment-detail-details").textContent = equipment.details;
+        document.getElementById("equipment-detail-details").textContent = equipment.details;
 
         // Affichage de la fenêtre modale
         modal.style.display = "block";
@@ -295,21 +293,21 @@ function displayEquipments(equipments) {
         isDetailModalOpen = true;
 
         // Fermeture de la fenêtre modale en cliquant sur le bouton de fermeture
-        closeButton.addEventListener("click", function () {
+        closeButton.addEventListener("click", function() {
           modal.style.display = "none";
-        // Mettre à jour l'état du modal de détail
-        isDetailModalOpen = false;
+          // Mettre à jour l'état du modal de détail
+          isDetailModalOpen = false;
         });
 
         // Gestion du bouton de modification de l'équipement
-        editButton.addEventListener("click", function () {
+        editButton.addEventListener("click", function() {
           // Récupérer la clé depuis l'attribut data-key
           var equipmentKey = editButton.getAttribute("data-key");
           displayEditEquipmentModal(equipmentKey, equipment);
         });
 
         // Gestion du bouton de suppression de l'équipement
-        deleteButton.addEventListener("click", function () {
+        deleteButton.addEventListener("click", function() {
           deleteEquipment(key);
         });
       } else {
@@ -317,109 +315,11 @@ function displayEquipments(equipments) {
       }
     });
 
-  // Mettre à jour le tableau des équipements uniquement si le modal de détail est fermé
-  if (!isDetailModalOpen) {
-    equipmentsRef.once("value", function (snapshot) {
-      var equipments = [];
-      snapshot.forEach(function (childSnapshot) {
-        var key = childSnapshot.key;
-        var equipment = childSnapshot.val();
-        equipment.key = key;
-        equipments.push(equipment);
-      });
-      displayEquipments(equipments);
-    });
-  }
-  }
-
-// Fonction pour ajouter un nouvel équipement
-function addEquipment(event) {
-  event.preventDefault();
-  var form = document.getElementById("add-equipment-form");
-  var categorie = form.elements["categorie-input"].value;
-  var designation = form.elements["designation-input"].value;
-  var quantite = parseInt(form.elements["quantite-input"].value);
-  var marque = form.elements["marque-input"].value;
-  var modele = form.elements["modele-input"].value;
-  var dimensions = form.elements["dimensions-input"].value;
-  var prixAchatHT = parseFloat(form.elements["prix-input"].value);
-
-  var newEquipment = {
-    categorie: categorie,
-    designation: designation,
-    quantite: quantite,
-    marque: marque,
-    modele: modele,
-    dimensions: dimensions,
-    prix: prixAchatHT
-  };
-
-  // Envoi du nouvel équipement à la base de données
-  var newEquipmentRef = equipmentsRef.push();
-  newEquipmentRef.set(newEquipment);
-
-  // Fermeture de la fenêtre modale après l'ajout de l'équipement
-  var modal = document.getElementById("add-equipment-modal");
-  modal.style.display = "none";
-
-  // Réinitialisation du formulaire
-  form.reset();
-
-  // Mettre à jour le tableau d'équipements
-  equipmentsRef.once("value", function(snapshot) {
-    var equipments = [];
-    snapshot.forEach(function(childSnapshot) {
-      var key = childSnapshot.key;
-      var equipment = childSnapshot.val();
-      equipment.key = key;
-      equipments.push(equipment);
-    });
-    displayEquipments(equipments);
-  });
-}
-
-  // Fonction pour supprimer un équipement
-function deleteEquipment(key) {
-  // Suppression de l'équipement dans la base de données
-  var equipmentRef = database.ref("equipments/" + key);
-  equipmentRef.remove();
-
-  // Fermeture de la fenêtre modale après la suppression
-  var modal = document.getElementById("equipment-detail-modal");
-  modal.style.display = "none";
-
-  // Mettre à jour le tableau d'équipements
-  equipmentsRef.once("value", function(snapshot) {
-    var equipments = [];
-    snapshot.forEach(function(childSnapshot) {
-      var key = childSnapshot.key;
-      var equipment = childSnapshot.val();
-      equipment.key = key;
-      equipments.push(equipment);
-    });
-    displayEquipments(equipments);
-  });
-}
-
-  // Gestion du filtre par catégorie
-  var categorieFilter = document.getElementById("categorie-filter");
-  categorieFilter.addEventListener("change", function () {
-    var selectedCategorie = categorieFilter.value;
-    if (selectedCategorie === "All") {
-      equipmentsRef.once("value", function (snapshot) {
+    // Mettre à jour le tableau des équipements uniquement si le modal de détail est fermé
+    if (!isDetailModalOpen) {
+      equipmentsRef.once("value", function(snapshot) {
         var equipments = [];
-        snapshot.forEach(function (childSnapshot) {
-          var key = childSnapshot.key;
-          var equipment = childSnapshot.val();
-          equipment.key = key;
-          equipments.push(equipment);
-        });
-        displayEquipments(equipments);
-      });
-    } else {
-      equipmentsRef.orderByChild("categorie").equalTo(selectedCategorie).once("value", function (snapshot) {
-        var equipments = [];
-        snapshot.forEach(function (childSnapshot) {
+        snapshot.forEach(function(childSnapshot) {
           var key = childSnapshot.key;
           var equipment = childSnapshot.val();
           equipment.key = key;
@@ -428,94 +328,146 @@ function deleteEquipment(key) {
         displayEquipments(equipments);
       });
     }
-  });
-
-  // Gestion du bouton d'ajout d'équipement
-  var addEquipmentButton = document.getElementById("bouton-pageprincipale-ajouterequipement");
-  addEquipmentButton.addEventListener("click", function () {
+  }
+  // Fonction pour ajouter un nouvel équipement
+function addEquipment() {
     var modal = document.getElementById("add-equipment-modal");
-    var closeButton = document.getElementById("bouton-ajouterequipement-fermer");
+    var closeButton = document.getElementById("bouton-ajoutequipement-fermer");
+    var form = document.getElementById("add-equipment-form");
+    var categorieInput = document.getElementById("add-equipment-categorie");
+    var designationInput = document.getElementById("add-equipment-designation");
+    var quantiteInput = document.getElementById("add-equipment-quantite");
+    var marqueInput = document.getElementById("add-equipment-marque");
+    var modeleInput = document.getElementById("add-equipment-modele");
+    var dimensionsInput = document.getElementById("add-equipment-dimensions");
+    var prixAchatHTInput = document.getElementById("add-equipment-prixAchatHT");
+    var detailsInput = document.getElementById("add-equipment-details");
 
-    // Affichage de la fenêtre modale pour l'ajout
+    // Réinitialiser le formulaire avant d'ouvrir le modal
+    form.reset();
+
+    // Affichage de la fenêtre modale pour l'ajout d'un nouvel équipement
     modal.style.display = "block";
 
     // Fermeture de la fenêtre modale en cliquant sur le bouton de fermeture
-    closeButton.addEventListener("click", function () {
+    closeButton.addEventListener("click", function() {
       modal.style.display = "none";
     });
 
-  });
+    // Gestion de la soumission du formulaire d'ajout
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
 
-  // Gestion de la soumission du formulaire d'ajout d'équipement
-  var addEquipmentForm = document.getElementById("add-equipment-form");
-  addEquipmentForm.addEventListener("submit", addEquipment);
+      var newEquipment = {
+        categorie: categorieInput.value,
+        designation: designationInput.value,
+        quantite: quantiteInput.value,
+        marque: marqueInput.value,
+        modele: modeleInput.value,
+        dimensions: dimensionsInput.value,
+        prix: prixAchatHTInput.value,
+        details: detailsInput.value
+      };
 
-  // Récupération et affichage des équipements au chargement de la page
-  equipmentsRef.once("value", function (snapshot) {
+      // Ajout du nouvel équipement à la base de données
+      var newEquipmentRef = equipmentsRef.push();
+      newEquipmentRef.set(newEquipment);
+
+      // Fermeture de la fenêtre modale après l'ajout
+      modal.style.display = "none";
+
+      // Mettre à jour le tableau des équipements
+      equipmentsRef.once("value", function(snapshot) {
+        var equipments = [];
+        snapshot.forEach(function(childSnapshot) {
+          var key = childSnapshot.key;
+          var equipment = childSnapshot.val();
+          equipment.key = key;
+          equipments.push(equipment);
+        });
+        displayEquipments(equipments);
+      });
+    });
+  }
+
+  // Fonction pour supprimer un équipement
+  function deleteEquipment(key) {
+    var confirmDelete = confirm("Voulez-vous vraiment supprimer cet équipement ?");
+
+    if (confirmDelete) {
+      // Suppression de l'équipement de la base de données
+      var equipmentRef = database.ref("equipments/" + key);
+      equipmentRef.remove();
+
+      // Fermeture du modal de détail si ouvert
+      var detailModal = document.getElementById("equipment-detail-modal");
+      detailModal.style.display = "none";
+
+      // Mettre à jour le tableau des équipements
+      equipmentsRef.once("value", function(snapshot) {
+        var equipments = [];
+        snapshot.forEach(function(childSnapshot) {
+          var key = childSnapshot.key;
+          var equipment = childSnapshot.val();
+          equipment.key = key;
+          equipments.push(equipment);
+        });
+        displayEquipments(equipments);
+      });
+    }
+  }
+
+  // Fonction pour trier le tableau des équipements par colonne
+  function sortTable(columnIndex) {
+    const table = document.getElementById("equipment-list");
+    const rows = Array.from(table.querySelectorAll("tbody tr"));
+
+    rows.sort((a, b) => {
+      const cellA = a.cells[columnIndex].textContent.trim();
+      const cellB = b.cells[columnIndex].textContent.trim();
+
+      // Gérer le tri numérique pour la colonne "Quantité" et "Prix"
+      if (columnIndex === 2 || columnIndex === 6) {
+        return parseFloat(cellA) - parseFloat(cellB);
+      } else {
+        return cellA.localeCompare(cellB);
+      }
+    });
+
+    // Supprimez les lignes existantes
+    rows.forEach(row => table.querySelector("tbody").removeChild(row));
+
+    // Ajoutez les lignes triées à nouveau
+    rows.forEach(row => table.querySelector("tbody").appendChild(row));
+  }
+
+  // Fonction pour se déconnecter
+  function logout() {
+    firebase.auth().signOut()
+      .then(function() {
+        // Déconnexion réussie
+        console.log("Déconnexion réussie.");
+        // Actualiser la page après la déconnexion
+        location.reload();
+      })
+      .catch(function(error) {
+        console.error("Erreur lors de la déconnexion :", error);
+      });
+  }
+
+  // Gestion du bouton de déconnexion
+  var logoutButton = document.getElementById("logout-button");
+  logoutButton.addEventListener("click", logout);
+
+  // Initialiser le tableau des équipements au chargement de la page
+  equipmentsRef.once("value", function(snapshot) {
     var equipments = [];
-    snapshot.forEach(function (childSnapshot) {
+    snapshot.forEach(function(childSnapshot) {
       var key = childSnapshot.key;
       var equipment = childSnapshot.val();
       equipment.key = key;
       equipments.push(equipment);
     });
     displayEquipments(equipments);
-  });
-
-  // Fonction pour trier la table par colonne
-function sortTable(columnIndex) {
-  var table, rows, switching, i, x, y, shouldSwitch;
-  table = document.getElementById("equipment-list");
-  switching = true;
-
-  while (switching) {
-    switching = false;
-    rows = table.getElementsByTagName("tr");
-    for (i = 1; i < rows.length - 1; i++) {
-      shouldSwitch = false;
-      x = rows[i].getElementsByTagName("td")[columnIndex];
-      y = rows[i + 1].getElementsByTagName("td")[columnIndex];
-
-      // Vérifiez si x et y ne sont pas nuls
-      if (x && y) {
-        var xValue = x.textContent || x.innerText;
-        var yValue = y.textContent || y.innerText;
-        if (xValue.toLowerCase() > yValue.toLowerCase()) {
-          shouldSwitch = true;
-          break;
-        }
-      }
-    }
-
-    if (shouldSwitch) {
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-    }
-  }
-}
-
-  // Fonction pour afficher les équipements triés
-  function displaySortedEquipments(columnIndex) {
-    sortTable(columnIndex);
-  }
-
-  // Appel initial pour trier la colonne "Catégorie" au chargement de la page
-  displaySortedEquipments(0); // Tri initial sur la colonne "Catégorie"
-
-  // Ajouter un gestionnaire d'événement de clic aux en-têtes de colonne pour le tri
-  var thElements = document.querySelectorAll(".class-pageprincipale-tableau th");
-  thElements.forEach(function (th, columnIndex) {
-    th.addEventListener("click", function () {
-      // Appliquer le tri lorsque l'utilisateur clique sur l'en-tête de colonne
-      displaySortedEquipments(columnIndex);
-
-      // Réinitialiser la classe "sorted" sur tous les en-têtes de colonne
-      thElements.forEach(function (header) {
-        header.classList.remove("sorted");
-      });
-
-      // Ajouter la classe "sorted" à l'en-tête de colonne actuel
-      th.classList.add("sorted");
-    });
   });
 });
