@@ -217,12 +217,10 @@ S/N 85,783,751,4
         // Mettre à jour l'état du modal de détail
         isDetailModalOpen = true;
 
-        // Fermeture de la fenêtre modale en cliquant sur le bouton de fermeture
-        closeButton.addEventListener("click", function () {
-          modal.style.display = "none";
-        // Mettre à jour l'état du modal de détail
-        isDetailModalOpen = false;
-        });
+  // Fermeture de la fenêtre modale en cliquant sur le bouton de fermeture
+  closeButton.addEventListener("click", function () {
+    // Supprimer la fenêtre modale
+    modal.dispose();
 
         // Gestion du bouton de modification de l'équipement
         editButton.addEventListener("click", function () {
