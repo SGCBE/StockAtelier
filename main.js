@@ -174,12 +174,15 @@ row.innerHTML = `
   // Appel initial pour trier la colonne "Catégorie" au chargement de la page
   trierParCategorie();
 
-// Ajoutez un gestionnaire d'événements de délégation sur la table
+// Ajout d'un gestionnaire d'événements de délégation sur la table
 document.getElementById("equipment-list").addEventListener("click", function (event) {
   var target = event.target;
 
+  // Recherche de l'élément parent de type "tr" (ligne) du bouton cliqué
+  var row = target.closest("tr");
+
   // Vérifiez si le clic a été effectué sur un bouton de modification
-  if (target.classList.contains("edit-button")) {
+  if (target.classList.contains("edit-button") && row) {
     var equipmentKey = target.dataset.key;
     displayEditEquipmentModal(equipmentKey);
   }
