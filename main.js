@@ -190,6 +190,7 @@ function displayEquipments(equipments) {
 }
 
   // Fonction pour afficher la fenêtre modale de modification d'équipement
+  // Fonction pour afficher la fenêtre modale de modification d'équipement
   function displayEditEquipmentModal(key, equipment) {
     var modal = document.getElementById("edit-equipment-modal");
     var closeButton = document.getElementById("bouton-modificationequipement-fermer");
