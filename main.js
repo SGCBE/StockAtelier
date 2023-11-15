@@ -185,60 +185,8 @@ function displayEquipments(equipments) {
 }
 
   // Fonction pour afficher la fenêtre modale de modification d'équipement
-function displayEditEquipmentModal(key) {
-  var modal = document.getElementById("edit-equipment-modal");
-  var closeButton = document.getElementById("bouton-modificationequipement-fermer");
-  var form = document.getElementById("edit-equipment-form");
-  var categorieInput = document.getElementById("edit-equipment-categorie");
-  var designationInput = document.getElementById("edit-equipment-designation");
-  var quantiteInput = document.getElementById("edit-equipment-quantite");
-  var marqueInput = document.getElementById("edit-equipment-marque");
-  var modeleInput = document.getElementById("edit-equipment-modele");
-  var dimensionsInput = document.getElementById("edit-equipment-dimensions");
-  var prixAchatHTInput = document.getElementById("edit-equipment-prixAchatHT");
-  var detailsInput = document.getElementById("edit-equipment-details");
+S/N 85,783,751,4
 
-  // Écoute des modifications des données de l'équipement
-  var equipmentRef = database.ref("equipments/" + key);
-  equipmentRef.on("value", function (snapshot) {
-    // Récupération des données de l'équipement
-    var equipment = snapshot.val();
-
-    // Récupération des valeurs du formulaire de modification
-    categorieInput.value = equipment.categorie;
-    designationInput.value = equipment.designation;
-    quantiteInput.value = equipment.quantite;
-    marqueInput.value = equipment.marque;
-    modeleInput.value = equipment.modele;
-    dimensionsInput.value = equipment.dimensions;
-    prixAchatHTInput.value = equipment.prix;
-    detailsInput.value = equipment.details;
-  });
-
-  // Affichage de la fenêtre modale pour la modification
-  modal.style.display = "block";
-
-  // Fermeture de la fenêtre modale en cliquant sur le bouton de fermeture
-  closeButton.addEventListener("click", function () {
-    modal.style.display = "none";
-  });
-
-  // Fermer le modal "Détail de l'équipement" s'il est ouvert
-  var detailModal = document.getElementById("equipment-detail-modal");
-  detailModal.style.display = "none";
-
-  // Gestion de la soumission du formulaire de modification
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    // Mise à jour des données de l'équipement dans la base de données
-    var equipmentRef = database.ref("equipments/" + key);
-    equipmentRef.set(equipment);
-
-    // Fermer la fenêtre modale
-    modal.style.display = "none";
-  });
-}
 
   // Fonction pour afficher le détail d'un équipement dans une fenêtre modale
   function displayEquipmentDetail(key) {
