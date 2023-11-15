@@ -1,3 +1,59 @@
+let row;
+	
+function displayEquipments(equipments) {
+  var tableBody = document.querySelector("#equipment-list tbody");
+  tableBody.innerHTML = "";
+
+  equipments.forEach(function (equipment) {
+    row = document.createElement("tr");
+    row.dataset.key = equipment.key;
+
+    // Ajouter la classe de catégorie à la ligne
+    row.className = "class-cat-" + equipment.categorie.toLowerCase();
+
+row.innerHTML = `
+  <td>${equipment.categorie}</td>
+  <td>${equipment.designation}</td>
+  <td>${equipment.quantite}</td>
+  <td>${equipment.marque}</td>
+  <td>${equipment.modele}</td>
+  <td>${equipment.dimensions}</td>
+  <td>${equipment.prix}</td>
+`;
+
+    // Ajouter une class CSS si la quantité est à 0
+    if (equipment.quantite == 0) {
+      console.log("Adding out-of-stock class to row");
+      row.classList.add("out-of-stock");
+    }
+
+    tableBody.appendChild(row);
+
+// Ajout d'un gestionnaire d'événements de délégation sur la table
+document.getElementById("equipment-list").addEventListener("click", function (event) {
+  var target = event.target;
+
+  // Recherche de l'élément parent de type "tr" (ligne) du bouton cliqué
+  var row = target.closest("tr");
+
+  // Vérifiez si le clic a été effectué sur un bouton de modification
+  if (target.classList.contains("edit-button") && row) {
+    var equipmentKey = target.dataset.key;
+    displayEditEquipmentModal(equipmentKey);
+  }
+});
+
+    // Ajout d'un événement click pour afficher le détail de l'équipement
+    row.addEventListener("click", function () {
+      // Utilisation d'une fonction anonyme pour capturer la valeur de equipment
+      (function (currentEquipment) {
+        displayEquipmentDetail(currentEquipment.key);
+      })(equipment);
+    });
+	tableBody.appendChild(row);
+  });
+}
+
 // Fonction pour trier la colonne "Catégorie"
 function trierParCategorie() {
   const table = document.getElementById("equipment-list");
@@ -141,61 +197,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 
-
-function displayEquipments(equipments) {
-  var tableBody = document.querySelector("#equipment-list tbody");
-  tableBody.innerHTML = "";
-
-  equipments.forEach(function (equipment) {
-    var row = document.createElement("tr");
-    row.dataset.key = equipment.key;
-
-    // Ajouter la classe de catégorie à la ligne
-    row.className = "class-cat-" + equipment.categorie.toLowerCase();
-
-row.innerHTML = `
-  <td>${equipment.categorie}</td>
-  <td>${equipment.designation}</td>
-  <td>${equipment.quantite}</td>
-  <td>${equipment.marque}</td>
-  <td>${equipment.modele}</td>
-  <td>${equipment.dimensions}</td>
-  <td>${equipment.prix}</td>
-`;
-
-    // Ajouter une class CSS si la quantité est à 0
-    if (equipment.quantite == 0) {
-      console.log("Adding out-of-stock class to row");
-      row.classList.add("out-of-stock");
-    }
-
-    tableBody.appendChild(row);
-
-// Ajout d'un gestionnaire d'événements de délégation sur la table
-document.getElementById("equipment-list").addEventListener("click", function (event) {
-  var target = event.target;
-
-  // Recherche de l'élément parent de type "tr" (ligne) du bouton cliqué
-  var row = target.closest("tr");
-
-  // Vérifiez si le clic a été effectué sur un bouton de modification
-  if (target.classList.contains("edit-button") && row) {
-    var equipmentKey = target.dataset.key;
-    displayEditEquipmentModal(equipmentKey);
-  }
-});
-
-    // Ajout d'un événement click pour afficher le détail de l'équipement
-    row.addEventListener("click", function () {
-      // Utilisation d'une fonction anonyme pour capturer la valeur de equipment
-      (function (currentEquipment) {
-        displayEquipmentDetail(currentEquipment.key);
-      })(equipment);
-    });
-  });
-}
-
-  // Fonction pour afficher la fenêtre modale de modification d'équipement
   // Fonction pour afficher la fenêtre modale de modification d'équipement
   function displayEditEquipmentModal(key, equipment) {
     var modal = document.getElementById("edit-equipment-modal");
