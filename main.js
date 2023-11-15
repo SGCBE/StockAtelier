@@ -157,20 +157,9 @@ function displayEditEquipmentModal(key, equipment) {
   form.addEventListener("submit", function (event) {
     event.preventDefault();
 
-    var updatedEquipment = {
-      categorie: categorieInput.value,
-      designation: designationInput.value,
-      quantite: quantiteInput.value,
-      marque: marqueInput.value,
-      modele: modeleInput.value,
-      dimensions: dimensionsInput.value,
-      prix: prixAchatHTInput.value,
-      details: detailsInput.value
-    };
-
     // Mise à jour de l'équipement dans la base de données
     var equipmentRef = database.ref("equipments/" + key);
-    equipmentRef.set(updatedEquipment);
+    equipmentRef.set(equipment);
 
     // Fermer la fenêtre modale
     modal.style.display = "none";
