@@ -161,7 +161,6 @@ row.innerHTML = `
   <td>${equipment.modele}</td>
   <td>${equipment.dimensions}</td>
   <td>${equipment.prix}</td>
-  <td><button class="edit-button" data-key="${equipment.key}">Modifier</button></td>
 `;
 
     // Ajouter une class CSS si la quantité est à 0
