@@ -132,14 +132,18 @@ function displayEditEquipmentModal(key, equipment) {
   var prixAchatHTInput = document.getElementById("edit-equipment-prixAchatHT");
   var detailsInput = document.getElementById("edit-equipment-details");
 
-  categorieInput.value = equipment.categorie;
-  designationInput.value = equipment.designation;
-  quantiteInput.value = equipment.quantite;
-  marqueInput.value = equipment.marque;
-  modeleInput.value = equipment.modele;
-  dimensionsInput.value = equipment.dimensions;
-  prixAchatHTInput.value = equipment.prix;
-  detailsInput.value = equipment.details;
+  // Création d'une copie de l'équipement
+  var originalEquipment = equipment;
+
+  // Récupération des valeurs du formulaire de modification
+  categorieInput.value = originalEquipment.categorie;
+  designationInput.value = originalEquipment.designation;
+  quantiteInput.value = originalEquipment.quantite;
+  marqueInput.value = originalEquipment.marque;
+  modeleInput.value = originalEquipment.modele;
+  dimensionsInput.value = originalEquipment.dimensions;
+  prixAchatHTInput.value = originalEquipment.prix;
+  detailsInput.value = originalEquipment.details;
 
   // Affichage de la fenêtre modale pour la modification
   modal.style.display = "block";
@@ -157,9 +161,9 @@ function displayEditEquipmentModal(key, equipment) {
   form.addEventListener("submit", function (event) {
     event.preventDefault();
 
-    // Mise à jour de l'équipement dans la base de données
+    // Mise à jour des données de l'équipement dans la base de données
     var equipmentRef = database.ref("equipments/" + key);
-    equipmentRef.set(equipment);
+    equipmentRef.set(originalEquipment);
 
     // Fermer la fenêtre modale
     modal.style.display = "none";
