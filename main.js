@@ -148,6 +148,7 @@ function displayEquipments(equipments) {
 
   equipments.forEach(function (equipment) {
     var row = document.createElement("tr");
+    row.dataset.key = equipment.key;
 
     // Ajouter la classe de catégorie à la ligne
     row.className = "class-cat-" + equipment.categorie.toLowerCase();
@@ -173,10 +174,15 @@ function displayEquipments(equipments) {
   // Appel initial pour trier la colonne "Catégorie" au chargement de la page
   trierParCategorie();
 
-    // Ajout d'un événement click pour afficher le détail de l'équipement
-    row.addEventListener("click", function () {
-      displayEquipmentDetail(equipment.key);
-    });
+// Ajoutez un gestionnaire d'événements de délégation sur la table
+document.getElementById("equipment-list").addEventListener("click", function (event) {
+  var target = event.target;
+  // Vérifiez si le clic a été effectué sur une ligne du tableau
+  if (target.tagName === 'TD' && target.parentElement.tagName === 'TR') {
+    var equipmentKey = target.parentElement.dataset.key;
+    displayEquipmentDetail(equipmentKey);
+  }
+});
   });
 
   // Ajouter un gestionnaire d'événement de clic aux en-têtes de colonne pour le tri
