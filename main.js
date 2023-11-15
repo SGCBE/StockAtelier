@@ -224,48 +224,53 @@ function displayEquipments(equipments) {
     var detailModal = document.getElementById("equipment-detail-modal");
     detailModal.style.display = "none";
 
-    // Gestion de la soumission du formulaire de modification
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
+// Gestion de la soumission du formulaire de modification
+form.addEventListener("submit", function (event) {
+  event.preventDefault();
 
-      var updatedEquipment = {
-        categorie: categorieInput.value,
-        designation: designationInput.value,
-        quantite: quantiteInput.value,
-        marque: marqueInput.value,
-        modele: modeleInput.value,
-        dimensions: dimensionsInput.value,
-        prix: prixAchatHTInput.value,
-        details: detailsInput.value
-      };
+  var updatedEquipment = {
+    categorie: categorieInput.value,
+    designation: designationInput.value,
+    quantite: quantiteInput.value,
+    marque: marqueInput.value,
+    modele: modeleInput.value,
+    dimensions: dimensionsInput.value,
+    prix: prixAchatHTInput.value,
+    details: detailsInput.value
+  };
 
-// Mise à jour de l'équipement dans la base de données
-var equipmentRef = database.ref("equipments/" + key);
-equipmentRef.update(updatedEquipment)
-  .then(function () {
-    // Mettre à jour le modal "Détail de l'équipement"
-    document.getElementById("equipment-detail-categorie").textContent = updatedEquipment.categorie;
-    // ... (autres mises à jour)
+  // Mise à jour de l'équipement dans la base de données
+  var equipmentRef = database.ref("equipments/" + key);
+  equipmentRef.update(updatedEquipment)
+    .then(function () {
+        document.getElementById("equipment-detail-categorie").textContent = equipment.categorie;
+        document.getElementById("equipment-detail-designation").textContent = equipment.designation;
+        document.getElementById("equipment-detail-quantite").textContent = equipment.quantite;
+        document.getElementById("equipment-detail-marque").textContent = equipment.marque;
+        document.getElementById("equipment-detail-modele").textContent = equipment.modele;
+        document.getElementById("equipment-detail-dimensions").textContent = equipment.dimensions;
+        document.getElementById("equipment-detail-prixAchatHT").textContent = equipment.prix;
+	document.getElementById("equipment-detail-details").textContent = equipment.details;
+	    
+      // Fermeture de la fenêtre modale après la mise à jour
+      modal.style.display = "none";
 
-    // Fermeture de la fenêtre modale après la mise à jour
-    modal.style.display = "none";
-
-    // Mettre à jour le tableau des équipements
-    equipmentsRef.once("value", function (snapshot) {
-      var equipments = [];
-      snapshot.forEach(function (childSnapshot) {
-        var key = childSnapshot.key;
-        var equipment = childSnapshot.val();
-        equipment.key = key;
-        equipments.push(equipment);
+      // Mettre à jour le tableau des équipements
+      equipmentsRef.once("value", function (snapshot) {
+        var equipments = [];
+        snapshot.forEach(function (childSnapshot) {
+          var key = childSnapshot.key;
+          var equipment = childSnapshot.val();
+          equipment.key = key;
+          equipments.push(equipment);
+        });
+        displayEquipments(equipments);
       });
-      displayEquipments(equipments);
+    })
+    .catch(function (error) {
+      console.error("Erreur lors de la mise à jour de l'équipement :", error);
     });
-  })
-  .catch(function (error) {
-    console.error("Erreur lors de la mise à jour de l'équipement :", error);
-  });
-    });
+});
   }
 
   // Fonction pour afficher le détail d'un équipement dans une fenêtre modale
