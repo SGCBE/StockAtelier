@@ -534,5 +534,12 @@ function sortTable(columnIndex) {
       // Ajouter la classe "sorted" à l'en-tête de colonne actuel
       th.classList.add("sorted");
     });
+	  // Ajout d'un événement click pour afficher le détail de l'équipement
+row.addEventListener("click", function () {
+  // Utilisation d'une fonction anonyme pour capturer la valeur de equipment
+  (function (currentEquipment) {
+    displayEquipmentDetail(currentEquipment.key);
+  })(equipment);
+});
   });
 });
