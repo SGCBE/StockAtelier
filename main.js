@@ -1,3 +1,26 @@
+// Fonction pour trier la colonne "Catégorie"
+function trierParCategorie() {
+  const table = document.getElementById("equipment-list");
+  const rows = Array.from(table.querySelectorAll("tbody tr"));
+
+  rows.sort((a, b) => {
+    const categorieA = a.cells[0].textContent.trim();
+    const categorieB = b.cells[0].textContent.trim();
+    return categorieA.localeCompare(categorieB);
+  });
+
+  // Supprime les lignes existantes
+  rows.forEach(row => table.querySelector("tbody").removeChild(row));
+
+  // Ajoute les lignes triées à nouveau
+  rows.forEach(row => table.querySelector("tbody").appendChild(row));
+}
+
+// Fonction pour afficher les équipements triés
+function displaySortedEquipments(columnIndex) {
+  sortTable(columnIndex);
+}
+
 document.addEventListener("DOMContentLoaded", function() {
   // Configuration Firebase
   var firebaseConfig = {
@@ -146,24 +169,6 @@ function displayEquipments(equipments) {
     }
 
     tableBody.appendChild(row);
-
-  // Fonction pour trier la colonne "Catégorie"
-  function trierParCategorie() {
-    const table = document.getElementById("equipment-list");
-    const rows = Array.from(table.querySelectorAll("tbody tr"));
-
-    rows.sort((a, b) => {
-      const categorieA = a.cells[0].textContent.trim();
-      const categorieB = b.cells[0].textContent.trim();
-      return categorieA.localeCompare(categorieB);
-    });
-
-    // Supprime les lignes existantes
-    rows.forEach(row => table.querySelector("tbody").removeChild(row));
-
-    // Ajoute les lignes triées à nouveau
-    rows.forEach(row => table.querySelector("tbody").appendChild(row));
-  }
 
   // Appel initial pour trier la colonne "Catégorie" au chargement de la page
   trierParCategorie();
