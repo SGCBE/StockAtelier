@@ -271,10 +271,10 @@ form.addEventListener("submit", function (event) {
       });
       displayEquipments(equipments);
     });
+  })
+  .catch(function (error) {
+    console.error("Erreur lors de la mise à jour de l'équipement :", error);
   });
-    .catch(function (error) {
-      console.error("Erreur lors de la mise à jour de l'équipement :", error);
-    });
 });
   }
 
