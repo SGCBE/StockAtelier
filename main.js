@@ -171,9 +171,6 @@ row.innerHTML = `
 
     tableBody.appendChild(row);
 
-  // Appel initial pour trier la colonne "Catégorie" au chargement de la page
-  trierParCategorie();
-
 // Ajout d'un gestionnaire d'événements de délégation sur la table
 document.getElementById("equipment-list").addEventListener("click", function (event) {
   var target = event.target;
@@ -187,15 +184,14 @@ document.getElementById("equipment-list").addEventListener("click", function (ev
     displayEditEquipmentModal(equipmentKey);
   }
 });
-  });
 
-  // Ajouter un gestionnaire d'événement de clic aux en-têtes de colonne pour le tri
-  var thElements = document.querySelectorAll(".class-pageprincipale-tableau th");
-  thElements.forEach(function (th, columnIndex) {
-    th.addEventListener("click", function () {
-      sortTable(columnIndex);
+    // Ajout d'un événement click pour afficher le détail de l'équipement
+    row.addEventListener("click", function () {
+      // Utilisation d'une fonction anonyme pour capturer la valeur de equipment
+      (function (currentEquipment) {
+        displayEquipmentDetail(currentEquipment.key);
+      })(equipment);
     });
-
   });
 }
 
