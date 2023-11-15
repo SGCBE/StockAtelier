@@ -185,8 +185,85 @@ function displayEquipments(equipments) {
 }
 
   // Fonction pour afficher la fenêtre modale de modification d'équipement
-S/N 85,783,751,4
+  function displayEditEquipmentModal(key, equipment) {
+    var modal = document.getElementById("edit-equipment-modal");
+    var closeButton = document.getElementById("bouton-modificationequipement-fermer");
+    var form = document.getElementById("edit-equipment-form");
+    var categorieInput = document.getElementById("edit-equipment-categorie");
+    var designationInput = document.getElementById("edit-equipment-designation");
+    var quantiteInput = document.getElementById("edit-equipment-quantite");
+    var marqueInput = document.getElementById("edit-equipment-marque");
+    var modeleInput = document.getElementById("edit-equipment-modele");
+    var dimensionsInput = document.getElementById("edit-equipment-dimensions");
+    var prixAchatHTInput = document.getElementById("edit-equipment-prixAchatHT");
+    var detailsInput = document.getElementById("edit-equipment-details");
 
+    categorieInput.value = equipment.categorie;
+    designationInput.value = equipment.designation;
+    quantiteInput.value = equipment.quantite;
+    marqueInput.value = equipment.marque;
+    modeleInput.value = equipment.modele;
+    dimensionsInput.value = equipment.dimensions;
+    prixAchatHTInput.value = equipment.prix;
+    detailsInput.value = equipment.details;
+
+    // Affichage de la fenêtre modale pour la modification
+    modal.style.display = "block";
+
+    // Fermeture de la fenêtre modale en cliquant sur le bouton de fermeture
+    closeButton.addEventListener("click", function () {
+      modal.style.display = "none";
+    });
+
+    // Fermer le modal "Détail de l'équipement" s'il est ouvert
+    var detailModal = document.getElementById("equipment-detail-modal");
+    detailModal.style.display = "none";
+
+    // Gestion de la soumission du formulaire de modification
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      var updatedEquipment = {
+        categorie: categorieInput.value,
+        designation: designationInput.value,
+        quantite: quantiteInput.value,
+        marque: marqueInput.value,
+        modele: modeleInput.value,
+        dimensions: dimensionsInput.value,
+        prix: prixAchatHTInput.value,
+        details: detailsInput.value
+      };
+
+      // Mise à jour de l'équipement dans la base de données
+      var equipmentRef = database.ref("equipments/" + key);
+      equipmentRef.update(updatedEquipment);
+
+      // Mettre à jour le modal "Détail de l'équipement"
+      document.getElementById("equipment-detail-categorie").textContent = updatedEquipment.categorie;
+      document.getElementById("equipment-detail-designation").textContent = updatedEquipment.designation;
+      document.getElementById("equipment-detail-quantite").textContent = updatedEquipment.quantite;
+      document.getElementById("equipment-detail-marque").textContent = updatedEquipment.marque;
+      document.getElementById("equipment-detail-modele").textContent = updatedEquipment.modele;
+      document.getElementById("equipment-detail-dimensions").textContent = updatedEquipment.dimensions;
+      document.getElementById("equipment-detail-prixAchatHT").textContent = updatedEquipment.prix;
+      document.getElementById("equipment-detail-details").textContent = updatedEquipment.details;
+
+      // Fermeture de la fenêtre modale après la mise à jour
+      modal.style.display = "none";
+
+      // Mettre à jour le tableau des équipements
+      equipmentsRef.once("value", function (snapshot) {
+        var equipments = [];
+        snapshot.forEach(function (childSnapshot) {
+          var key = childSnapshot.key;
+          var equipment = childSnapshot.val();
+          equipment.key = key;
+          equipments.push(equipment);
+        });
+        displayEquipments(equipments);
+      });
+    });
+  }
 
   // Fonction pour afficher le détail d'un équipement dans une fenêtre modale
   function displayEquipmentDetail(key) {
@@ -217,10 +294,12 @@ S/N 85,783,751,4
         // Mettre à jour l'état du modal de détail
         isDetailModalOpen = true;
 
-  // Fermeture de la fenêtre modale en cliquant sur le bouton de fermeture
-  closeButton.addEventListener("click", function () {
-    // Supprimer la fenêtre modale
-    modal.dispose();
+        // Fermeture de la fenêtre modale en cliquant sur le bouton de fermeture
+        closeButton.addEventListener("click", function () {
+          modal.style.display = "none";
+        // Mettre à jour l'état du modal de détail
+        isDetailModalOpen = false;
+        });
 
         // Gestion du bouton de modification de l'équipement
         editButton.addEventListener("click", function () {
