@@ -276,6 +276,9 @@ function displayEquipments(equipments) {
         var editButton = document.getElementById("bouton-detailequipement-modifier");
         var deleteButton = document.getElementById("bouton-detailequipement-supprimer");
 
+        // Ajouter une classe pour indiquer que le modal est ouvert
+        modal.classList.add("open");
+
         // Définir la clé de l'équipement dans l'attribut data-key du bouton "Modifier"
         editButton.setAttribute("data-key", key);
 
@@ -297,8 +300,8 @@ function displayEquipments(equipments) {
         // Fermeture de la fenêtre modale en cliquant sur le bouton de fermeture
         closeButton.addEventListener("click", function () {
           modal.style.display = "none";
-        // Mettre à jour l'état du modal de détail
-        isDetailModalOpen = false;
+          // Retirer la classe qui indique que le modal est ouvert
+          modal.classList.remove("open");
         });
 
         // Gestion du bouton de modification de l'équipement
@@ -317,19 +320,20 @@ function displayEquipments(equipments) {
       }
     });
 
-  // Mettre à jour le tableau des équipements uniquement si le modal de détail est fermé
-  if (!isDetailModalOpen) {
-    equipmentsRef.once("value", function (snapshot) {
-      var equipments = [];
-      snapshot.forEach(function (childSnapshot) {
-        var key = childSnapshot.key;
-        var equipment = childSnapshot.val();
-        equipment.key = key;
-        equipments.push(equipment);
+    // Mettre à jour le tableau des équipements uniquement si le modal de détail est fermé
+    var modal = document.getElementById("equipment-detail-modal");
+    if (!modal.classList.contains("open")) {
+      equipmentsRef.once("value", function (snapshot) {
+        var equipments = [];
+        snapshot.forEach(function (childSnapshot) {
+          var key = childSnapshot.key;
+          var equipment = childSnapshot.val();
+          equipment.key = key;
+          equipments.push(equipment);
+        });
+        displayEquipments(equipments);
       });
-      displayEquipments(equipments);
-    });
-  }
+    }
   }
 
 // Fonction pour ajouter un nouvel équipement
