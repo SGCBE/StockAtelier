@@ -119,7 +119,73 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
 
-function displayEditEquipmentModal(key, equipment) {
+function displayEquipments(equipments) {
+  var tableBody = document.querySelector("#equipment-list tbody");
+  tableBody.innerHTML = "";
+
+  equipments.forEach(function (equipment) {
+    var row = document.createElement("tr");
+
+    // Ajouter la classe de catégorie à la ligne
+    row.className = "class-cat-" + equipment.categorie.toLowerCase();
+
+    row.innerHTML = `
+      <td>${equipment.categorie}</td>
+      <td>${equipment.designation}</td>
+      <td>${equipment.quantite}</td>
+      <td>${equipment.marque}</td>
+      <td>${equipment.modele}</td>
+      <td>${equipment.dimensions}</td>
+      <td>${equipment.prix}</td>
+    `;
+
+    // Ajouter une class CSS si la quantité est à 0
+    if (equipment.quantite == 0) {
+      console.log("Adding out-of-stock class to row");
+      row.classList.add("out-of-stock");
+    }
+
+    tableBody.appendChild(row);
+
+  // Fonction pour trier la colonne "Catégorie"
+  function trierParCategorie() {
+    const table = document.getElementById("equipment-list");
+    const rows = Array.from(table.querySelectorAll("tbody tr"));
+
+    rows.sort((a, b) => {
+      const categorieA = a.cells[0].textContent.trim();
+      const categorieB = b.cells[0].textContent.trim();
+      return categorieA.localeCompare(categorieB);
+    });
+
+    // Supprime les lignes existantes
+    rows.forEach(row => table.querySelector("tbody").removeChild(row));
+
+    // Ajoute les lignes triées à nouveau
+    rows.forEach(row => table.querySelector("tbody").appendChild(row));
+  }
+
+  // Appel initial pour trier la colonne "Catégorie" au chargement de la page
+  trierParCategorie();
+
+    // Ajout d'un événement click pour afficher le détail de l'équipement
+    row.addEventListener("click", function () {
+      displayEquipmentDetail(equipment.key);
+    });
+  });
+
+  // Ajouter un gestionnaire d'événement de clic aux en-têtes de colonne pour le tri
+  var thElements = document.querySelectorAll(".class-pageprincipale-tableau th");
+  thElements.forEach(function (th, columnIndex) {
+    th.addEventListener("click", function () {
+      sortTable(columnIndex);
+    });
+
+  });
+}
+
+  // Fonction pour afficher la fenêtre modale de modification d'équipement
+function displayEditEquipmentModal(key) {
   var modal = document.getElementById("edit-equipment-modal");
   var closeButton = document.getElementById("bouton-modificationequipement-fermer");
   var form = document.getElementById("edit-equipment-form");
@@ -132,18 +198,22 @@ function displayEditEquipmentModal(key, equipment) {
   var prixAchatHTInput = document.getElementById("edit-equipment-prixAchatHT");
   var detailsInput = document.getElementById("edit-equipment-details");
 
-  // Création d'une copie de l'équipement
-  var originalEquipment = equipment;
+  // Écoute des modifications des données de l'équipement
+  var equipmentRef = database.ref("equipments/" + key);
+  equipmentRef.on("value", function (snapshot) {
+    // Récupération des données de l'équipement
+    var equipment = snapshot.val();
 
-  // Récupération des valeurs du formulaire de modification
-  categorieInput.value = originalEquipment.categorie;
-  designationInput.value = originalEquipment.designation;
-  quantiteInput.value = originalEquipment.quantite;
-  marqueInput.value = originalEquipment.marque;
-  modeleInput.value = originalEquipment.modele;
-  dimensionsInput.value = originalEquipment.dimensions;
-  prixAchatHTInput.value = originalEquipment.prix;
-  detailsInput.value = originalEquipment.details;
+    // Récupération des valeurs du formulaire de modification
+    categorieInput.value = equipment.categorie;
+    designationInput.value = equipment.designation;
+    quantiteInput.value = equipment.quantite;
+    marqueInput.value = equipment.marque;
+    modeleInput.value = equipment.modele;
+    dimensionsInput.value = equipment.dimensions;
+    prixAchatHTInput.value = equipment.prix;
+    detailsInput.value = equipment.details;
+  });
 
   // Affichage de la fenêtre modale pour la modification
   modal.style.display = "block";
@@ -163,93 +233,12 @@ function displayEditEquipmentModal(key, equipment) {
 
     // Mise à jour des données de l'équipement dans la base de données
     var equipmentRef = database.ref("equipments/" + key);
-    equipmentRef.set(originalEquipment);
+    equipmentRef.set(equipment);
 
     // Fermer la fenêtre modale
     modal.style.display = "none";
   });
 }
-
-  // Fonction pour afficher la fenêtre modale de modification d'équipement
-  function displayEditEquipmentModal(key, equipment) {
-    var modal = document.getElementById("edit-equipment-modal");
-    var closeButton = document.getElementById("bouton-modificationequipement-fermer");
-    var form = document.getElementById("edit-equipment-form");
-    var categorieInput = document.getElementById("edit-equipment-categorie");
-    var designationInput = document.getElementById("edit-equipment-designation");
-    var quantiteInput = document.getElementById("edit-equipment-quantite");
-    var marqueInput = document.getElementById("edit-equipment-marque");
-    var modeleInput = document.getElementById("edit-equipment-modele");
-    var dimensionsInput = document.getElementById("edit-equipment-dimensions");
-    var prixAchatHTInput = document.getElementById("edit-equipment-prixAchatHT");
-    var detailsInput = document.getElementById("edit-equipment-details");
-
-    categorieInput.value = equipment.categorie;
-    designationInput.value = equipment.designation;
-    quantiteInput.value = equipment.quantite;
-    marqueInput.value = equipment.marque;
-    modeleInput.value = equipment.modele;
-    dimensionsInput.value = equipment.dimensions;
-    prixAchatHTInput.value = equipment.prix;
-    detailsInput.value = equipment.details;
-
-    // Affichage de la fenêtre modale pour la modification
-    modal.style.display = "block";
-
-    // Fermeture de la fenêtre modale en cliquant sur le bouton de fermeture
-    closeButton.addEventListener("click", function () {
-      modal.style.display = "none";
-    });
-
-    // Fermer le modal "Détail de l'équipement" s'il est ouvert
-    var detailModal = document.getElementById("equipment-detail-modal");
-    detailModal.style.display = "none";
-
-    // Gestion de la soumission du formulaire de modification
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
-
-      var updatedEquipment = {
-        categorie: categorieInput.value,
-        designation: designationInput.value,
-        quantite: quantiteInput.value,
-        marque: marqueInput.value,
-        modele: modeleInput.value,
-        dimensions: dimensionsInput.value,
-        prix: prixAchatHTInput.value,
-        details: detailsInput.value
-      };
-
-      // Mise à jour de l'équipement dans la base de données
-      var equipmentRef = database.ref("equipments/" + key);
-      equipmentRef.update(updatedEquipment);
-
-      // Mettre à jour le modal "Détail de l'équipement"
-      document.getElementById("equipment-detail-categorie").textContent = updatedEquipment.categorie;
-      document.getElementById("equipment-detail-designation").textContent = updatedEquipment.designation;
-      document.getElementById("equipment-detail-quantite").textContent = updatedEquipment.quantite;
-      document.getElementById("equipment-detail-marque").textContent = updatedEquipment.marque;
-      document.getElementById("equipment-detail-modele").textContent = updatedEquipment.modele;
-      document.getElementById("equipment-detail-dimensions").textContent = updatedEquipment.dimensions;
-      document.getElementById("equipment-detail-prixAchatHT").textContent = updatedEquipment.prix;
-      document.getElementById("equipment-detail-details").textContent = updatedEquipment.details;
-
-      // Fermeture de la fenêtre modale après la mise à jour
-      modal.style.display = "none";
-
-      // Mettre à jour le tableau des équipements
-      equipmentsRef.once("value", function (snapshot) {
-        var equipments = [];
-        snapshot.forEach(function (childSnapshot) {
-          var key = childSnapshot.key;
-          var equipment = childSnapshot.val();
-          equipment.key = key;
-          equipments.push(equipment);
-        });
-        displayEquipments(equipments);
-      });
-    });
-  }
 
   // Fonction pour afficher le détail d'un équipement dans une fenêtre modale
   function displayEquipmentDetail(key) {
